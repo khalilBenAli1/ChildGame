@@ -1,3 +1,8 @@
 {
-    "greeting": "bonjour"
-  }
+  "experienceLanguage": "EXPÉRIENCE LINGUISTIQUE",
+  "chooseLanguagePrompt": "Avant de commencer, choisissez la langue que vous préférez",
+  "arabic": "Arabe",
+  "english": "Anglais",
+  "french": "Français",
+  "next": "Suivant"
+}

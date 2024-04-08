@@ -1,3 +1,8 @@
 {
-    "greeting": "ضامضى"
-  }
+  "experienceLanguage": "تجربة اللغة",
+  "chooseLanguagePrompt": "قبل أن نبدأ اختر اللغة التي تفضلها",
+  "arabic": "عربي",
+  "english": "إنجليزي",
+  "french": "فرنسي",
+  "next": "التالي"
+}

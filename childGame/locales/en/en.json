@@ -1,3 +1,8 @@
 {
-    "greeting": "hello"
-  }
+  "experienceLanguage": "EXPERIENCE LANGUAGE",
+  "chooseLanguagePrompt": "Before we start choose the language that you Prefer",
+  "arabic": "Arabic",
+  "english": "English",
+  "french": "French",
+  "next": "Next"
+}
