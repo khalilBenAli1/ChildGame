@@ -5,8 +5,10 @@ import AppButton from "../../Components/AppButton";
 import CountryFlag from "react-native-country-flag";
 import { useTranslation } from 'react-i18next';
 import i18next from "../../config/i18n"
+import { useNavigation } from '@react-navigation/native';
 
 const LanguageScreen = () => {
+    const navigation = useNavigation();
 
     const { t } = useTranslation();
 
@@ -18,7 +20,7 @@ const LanguageScreen = () => {
       };
 
   const handleNext = () => {
-    console.log("Next button pressed");
+     navigation.navigate('Expedition');
   };
 
   return (
