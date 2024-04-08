@@ -73,15 +73,20 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: "bold",
     color: "black",
     textAlign: "center",
     marginBottom: 30,
     marginTop:-30,
+    width:"90%",
+    lineHeight:40
+    
   },
   subtitle: {
     fontSize: 18,
+    lineHeight:30,
+    width:"88%",
     color: "black",
     textAlign: "center",
     marginVertical: 40,
