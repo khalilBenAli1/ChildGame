@@ -7,5 +7,9 @@
   "next": "التالي",
   "GATAYA_EXPEDITION": "غطاية إكسبيديشن",
   "board_game": "لعبة اللوح",
-  "AR_experience": "تجربة الواقع المعزز"
+  "AR_experience": "تجربة الواقع المعزز",
+  "createTeams": "إنشاء فرق",
+  "team": "الفريق ",
+  "numberOfPlayers": "عدد اللاعبين:",
+  "startExperience": "ابدأ التجربة"
 }

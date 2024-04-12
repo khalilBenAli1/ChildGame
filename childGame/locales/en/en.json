@@ -13,5 +13,9 @@
   "individuals": "Individuals",
   "individualsDescription": "Each one play as solo against each other",
   "teams": "Teams",
-  "teamsDescription": "Collaborate as teams to face challenges together"
+  "teamsDescription": "Collaborate as teams to face challenges together",
+  "createTeams": "Create Teams",
+  "team": "Team",
+  "numberOfPlayers": "Number of Players:",
+  "startExperience": "START THE EXPERIENCE"
 }
