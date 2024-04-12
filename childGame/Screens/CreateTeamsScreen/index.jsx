@@ -116,6 +116,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+    fontWeight:'bold',
+    fontSize:18
   },
   buttonContainer:{
     marginTop:20,
