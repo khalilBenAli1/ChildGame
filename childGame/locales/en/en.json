@@ -7,5 +7,11 @@
   "next": "Next",
   "GATAYA_EXPEDITION": "GATAYA EXPEDITION",
   "board_game": "Board Game",
-  "AR_experience": "AR Experience"
+  "AR_experience": "AR Experience",
+  "gameType": "Game Type",
+  "selectPlayMode": "Select how you wanna play the game",
+  "individuals": "Individuals",
+  "individualsDescription": "Each one play as solo against each other",
+  "teams": "Teams",
+  "teamsDescription": "Collaborate as teams to face challenges together"
 }
