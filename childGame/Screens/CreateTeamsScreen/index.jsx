@@ -20,6 +20,7 @@ const CreateTeamsScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.background}
     >
+       <Text style={styles.pageTitle}>{t("teams")}</Text>
       <CenteredBox>
         <Text style={styles.title}>{t("createTeams")}</Text>
 
@@ -123,6 +124,13 @@ const styles = StyleSheet.create({
     marginTop:20,
     width:"100%",
     alignItems:"center"
+  },
+  pageTitle:{
+    color:"white",
+    alignSelf:"center",
+    margin:10,
+    fontSize:30,
+    fontWeight:'bold'
   }
 });
 
