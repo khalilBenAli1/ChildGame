@@ -6,13 +6,14 @@ import ExpeditionScreen from "../Screens/ExpeditionScreen";
 import GameTypeScreen from "../Screens/GameTypeScreen";
 import CreateTeamsScreen from "../Screens/CreateTeamsScreen";
 import IndividualsScreen from "../Screens/IndividualsScreen";
+import QuestionScreen from "../Screens/QuestionScreen";
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Individuals"
+        initialRouteName="Questions"
         screenOptions={{
           headerShown: false,
         }}
@@ -31,6 +32,7 @@ const MainNavigation = () => {
         />
         <Stack.Screen name="Individuals" component={IndividualsScreen} />
         <Stack.Screen name="CreateTeams" component={CreateTeamsScreen} />
+        <Stack.Screen name="Questions" component={QuestionScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

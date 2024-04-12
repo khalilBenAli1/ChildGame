@@ -17,5 +17,6 @@
   "createTeams": "Create Teams",
   "team": "Team",
   "numberOfPlayers": "Number of Players:",
-  "startExperience": "START THE EXPERIENCE"
+  "startExperience": "START THE EXPERIENCE",
+  "questions": "Question"
 }
