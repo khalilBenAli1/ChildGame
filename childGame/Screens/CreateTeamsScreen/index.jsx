@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginLeft: 20,
     marginTop: 10,
+    marginRight:5,
   },
   subTiltle: {
     fontSize: 18,

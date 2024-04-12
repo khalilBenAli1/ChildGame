@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet,Image } from 'react-native';
 
 const NumberOfPlayers = ({ initialCount = 0, onCountChange }) => {
   const [count, setCount] = useState(initialCount);
@@ -24,10 +24,12 @@ const NumberOfPlayers = ({ initialCount = 0, onCountChange }) => {
 
   return (
     <View style={styles.container}>
+          
       <TouchableOpacity onPress={decrement} style={styles.button}>
         <Text style={styles.buttonText}>-</Text>
       </TouchableOpacity>
       <View style={styles.numberContainer}>
+      <Image source={require("../../assets/imgs/buttonImage.png")} style={styles.image} />
         <Text style={styles.number}>{count}</Text>
       </View>
       <TouchableOpacity onPress={increment} style={styles.button}>
@@ -41,27 +43,38 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
   },
   button: {
-    padding: 10,
+    padding: 5,
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 40,
+    minWidth: 20,
   },
   buttonText: {
     fontSize: 20,
     color: 'black',
   },
   numberContainer: {
-    padding: 10,
-    marginHorizontal: 10,
+    padding: 9,
+    marginHorizontal: 5,
+    position:"relative",
+    borderRadius:10,
+    paddingHorizontal:20,
+    backgroundColor: '#DEAE48',
+ 
   },
   number: {
     fontSize: 18,
-    color: 'black',
-  }
+    color: 'white',
+  },
+  image: {
+    position: 'absolute',
+    top: 4,
+    right: 5,
+    width:13,
+    height:13,
+  },
 });
 
 export default NumberOfPlayers;
