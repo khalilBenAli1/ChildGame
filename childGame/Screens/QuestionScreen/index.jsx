@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
   ImageBackground,
   SafeAreaView,
 } from "react-native";
@@ -12,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
+import CountdownTimer from "../../Components/CountdownTimer";
 
 const sampleQuestions = [
   {
@@ -64,7 +64,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
-        // Handle end of questions (e.g., navigate to a results screen)
+        // Handle end of questions (navigate to a results screen)
       }
       setSelectedAnswer(null);
       setShowAnswer(false);
@@ -73,16 +73,14 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
 
   return (
     <ImageBackground
-      source={require("../../assets/imgs/imgBg.png")} // Make sure this path is correct
+      source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
+          <Text style={styles.pageTitle}>{t("questions")}</Text>
           <Text style={styles.pageTitle}>
-            {t("questions")}
-          </Text>
-          <Text style={styles.pageTitle}>
-           {currentQuestionIndex + 1} / {totalQuestions}
+            {currentQuestionIndex + 1} / {totalQuestions}
           </Text>
         </View>
         <ProgressBar
@@ -94,9 +92,14 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
           borderWidth={0}
         />
         <CenteredBox style={styles.centeredBox}>
-          <Text style={styles.timerPlaceholder}>
-            {t("timerPlaceholder")} Timer Placeholder
-          </Text>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <CountdownTimer
+              initialTime={10}
+              onEnd={() => console.log("Timer has finished!")}
+            />
+          </View>
           <Image
             source={{ uri: question.image }}
             style={styles.questionImage}
@@ -129,13 +132,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  topContainer:{
-    display:"flex",
-    flexDirection:"row",
-    width:"90%",
-    justifyContent:"space-between",
-    marginTop:-40,
-    marginBottom:10,
+
+  topContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: "90%",
+    justifyContent: "space-between",
+    marginTop: -40,
+    marginBottom: 10,
   },
   container: {
     flex: 1,
@@ -153,8 +157,7 @@ const styles = StyleSheet.create({
   progressBar: {
     alignSelf: "stretch",
     marginHorizontal: 20,
-    marginBottom:20,
-
+    marginBottom: 20,
   },
   centeredBox: {
     flex: 1,
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: "contain",
     marginBottom: 20,
-    borderRadius:10,
+    borderRadius: 10,
   },
   questionText: {
     fontSize: 24,
@@ -178,11 +181,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "white",
   },
-  questionTexte:{
+  questionTexte: {
     fontSize: 18,
     textAlign: "center",
     marginBottom: 20,
-  }
+  },
 });
 
 export default QuestionScreen;
