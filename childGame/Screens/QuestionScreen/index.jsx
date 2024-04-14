@@ -53,6 +53,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
 
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
@@ -63,6 +64,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setResetTimerTrigger(prev => prev + 1);
       } else {
         // Handle end of questions (navigate to a results screen)
       }
@@ -97,7 +99,13 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
           >
             <CountdownTimer
               initialTime={10}
-              onEnd={() => console.log("Timer has finished!")}
+              onEnd={() => {
+                if (currentQuestionIndex + 1 < totalQuestions) {
+                  setCurrentQuestionIndex(currentQuestionIndex + 1);
+                  setResetTimerTrigger(prev => prev + 1);
+                }
+              }}
+              resetTrigger={resetTimerTrigger}
             />
           </View>
           <Image
