@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import CenteredBox from "../../Components/CenteredBox";
 import AppButton from "../../Components/AppButton";
@@ -9,71 +9,74 @@ import { useNavigation } from '@react-navigation/native';
 
 const LanguageScreen = () => {
     const navigation = useNavigation();
-
     const { t } = useTranslation();
+    const [selectedLanguage, setSelectedLanguage] = useState(null);
 
     const handleLanguageChange = (language) => {
+        setSelectedLanguage(language);  // Set the selected language state
         i18next.changeLanguage(language, (err) => {
-          if (err) return console.log('Something went wrong changing the language', err);
-          console.log("Language changed to:", language);
+            if (err) return console.log('Something went wrong changing the language', err);
+            console.log("Language changed to:", language);
         });
-      };
+    };
 
-  const handleNext = () => {
-     navigation.navigate('Expedition');
-  };
+    const handleNext = () => {
+        navigation.navigate('Expedition');
+    };
 
-  return (
-    <ImageBackground
-      source={require("../../assets/imgs/imgBg.png")}
-      style={styles.background}
-    >
-      <CenteredBox>
-        <Text style={styles.title}>{t('experienceLanguage')}</Text>
-        <Text style={styles.subtitle}>
-        {t('chooseLanguagePrompt')}
-        </Text>
-        <AppButton
-          onClick={() => handleLanguageChange("ar")}
-          backgroundColor="#DEAE48"
+    const getButtonColor = (language) => selectedLanguage === language ? "#389936" : "#DEAE48";
+
+    return (
+        <ImageBackground
+            source={require("../../assets/imgs/imgBg.png")}
+            style={styles.background}
         >
-          <View style={styles.languagesContainer}>
-            <View style={styles.flags}>
-              <CountryFlag isoCode="TN" size={25} />
-            </View>
-            <Text style={styles.buttonText}>{t('arabic')}</Text>
-          </View>
-        </AppButton>
-        <AppButton
-          onClick={() => handleLanguageChange("rn")}
-          backgroundColor="#DEAE48"
-        >
-          <View style={styles.languagesContainer}>
-            <View style={styles.flags}>
-              <CountryFlag isoCode="US" size={25} />
-            </View>
-            <Text style={styles.buttonText}>{t('english')}</Text>
-          </View>
-        </AppButton>
-        <AppButton
-          onClick={() => handleLanguageChange("fr")}
-          backgroundColor="#DEAE48"
-        >
-          <View style={styles.languagesContainer}>
-            <View style={styles.flags}>
-              <CountryFlag isoCode="FR" size={25} />
-            </View>
-            <Text style={styles.buttonText}>{t('french')}</Text>
-          </View>
-        </AppButton>
-        <View style={styles.nextButtonContainer}>
-          <AppButton onClick={handleNext} backgroundColor="#389936">
-            <Text style={styles.nextButtonText}>{t('next')}</Text>
-          </AppButton>
-        </View>
-      </CenteredBox>
-    </ImageBackground>
-  );
+            <CenteredBox>
+                <Text style={styles.title}>{t('experienceLanguage')}</Text>
+                <Text style={styles.subtitle}>
+                    {t('chooseLanguagePrompt')}
+                </Text>
+                <AppButton
+                    onClick={() => handleLanguageChange("ar")}
+                    backgroundColor={getButtonColor("ar")}
+                >
+                    <View style={styles.languagesContainer}>
+                        <View style={styles.flags}>
+                            <CountryFlag isoCode="TN" size={25} />
+                        </View>
+                        <Text style={styles.buttonText}>{t('arabic')}</Text>
+                    </View>
+                </AppButton>
+                <AppButton
+                    onClick={() => handleLanguageChange("en")}
+                    backgroundColor={getButtonColor("en")}
+                >
+                    <View style={styles.languagesContainer}>
+                        <View style={styles.flags}>
+                            <CountryFlag isoCode="US" size={25} />
+                        </View>
+                        <Text style={styles.buttonText}>{t('english')}</Text>
+                    </View>
+                </AppButton>
+                <AppButton
+                    onClick={() => handleLanguageChange("fr")}
+                    backgroundColor={getButtonColor("fr")}
+                >
+                    <View style={styles.languagesContainer}>
+                        <View style={styles.flags}>
+                            <CountryFlag isoCode="FR" size={25} />
+                        </View>
+                        <Text style={styles.buttonText}>{t('french')}</Text>
+                    </View>
+                </AppButton>
+                <View style={styles.nextButtonContainer}>
+                    <AppButton onClick={handleNext} backgroundColor="#389936">
+                        <Text style={styles.nextButtonText}>{t('next')}</Text>
+                    </AppButton>
+                </View>
+            </CenteredBox>
+        </ImageBackground>
+    );
 };
 
 const styles = StyleSheet.create({

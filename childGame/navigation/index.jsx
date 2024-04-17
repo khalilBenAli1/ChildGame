@@ -8,13 +8,14 @@ import CreateTeamsScreen from "../Screens/CreateTeamsScreen";
 import IndividualsScreen from "../Screens/IndividualsScreen";
 import QuestionScreen from "../Screens/QuestionScreen";
 import MatchScreen from "../Screens/MatchScreen";
+import SlidingPuzzle from "../Screens/SlidingPuzzle";
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="MatchGame"
+        initialRouteName="Language"
         screenOptions={{
           headerShown: false,
         }}
@@ -26,6 +27,7 @@ const MainNavigation = () => {
         <Stack.Screen name="Individuals" component={IndividualsScreen} />
         <Stack.Screen name="CreateTeams" component={CreateTeamsScreen} />
         <Stack.Screen name="Questions" component={QuestionScreen} />
+        <Stack.Screen name="SlidingPuzzle" component={SlidingPuzzle} />
       </Stack.Navigator>
     </NavigationContainer>
   );
