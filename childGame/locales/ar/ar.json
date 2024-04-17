@@ -18,5 +18,9 @@
   "team": "الفريق ",
   "numberOfPlayers": "عدد اللاعبين:",
   "startExperience": "ابدأ التجربة",
-  "questions": "سؤال"
+  "questions": "سؤال",
+  "names": "الأسماء",
+  "individualNames": "أسماء الأفراد",
+  "player": "لاعب",
+  "enterPlayerName": "ادخل اسم اللاعب"
 }

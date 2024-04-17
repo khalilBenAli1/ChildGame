@@ -18,5 +18,9 @@
   "team": "Team",
   "numberOfPlayers": "Number of Players:",
   "startExperience": "START THE EXPERIENCE",
-  "questions": "Question"
+  "questions": "Question",
+  "names": "Names",
+  "individualNames": "Individual Names",
+  "player": "Player",
+  "enterPlayerName": "Enter player name"
 }

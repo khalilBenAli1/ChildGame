@@ -18,5 +18,9 @@
   "team": "Équipe",
   "numberOfPlayers": "Nombre de Joueurs :",
   "startExperience": "COMMENCER L'EXPÉRIENCE",
-  "questions": "Question"
+  "questions": "Question",
+  "names": "Noms",
+  "individualNames": "Noms individuels",
+  "player": "Joueur",
+  "enterPlayerName": "Entrez le nom du joueur"
 }
