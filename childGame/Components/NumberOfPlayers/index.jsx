@@ -9,9 +9,11 @@ const NumberOfPlayers = ({ initialCount = 0, onCountChange }) => {
   }, [initialCount]);
 
   const increment = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    onCountChange(newCount);
+    if (count < 3) {
+      const newCount = count + 1;
+      setCount(newCount);
+      onCountChange(newCount);
+    }
   };
 
   const decrement = () => {
