@@ -1,0 +1,71 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
+const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color }) => {
+    const completedBarColor = completed ? '#1BAA76' : 'transparent';
+    const percentageText = completed ? '100%' : '0%';
+
+    return (
+        <View style={styles.card}>
+            <LinearGradient
+                colors={['transparent', color]}
+                style={styles.linearGradient}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+            >
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.details}>Challenges: {numberOfChallenges}</Text>
+                <Text style={styles.details}>Difficulty: {difficulty}</Text>
+                <View style={styles.footer}>
+                    <View style={[styles.completionBar, { backgroundColor: completedBarColor }]} />
+                    <Text style={styles.percentage}>{percentageText}</Text>
+                </View>
+            </LinearGradient>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    card: {
+        width: 300,
+        height: 180,
+        borderRadius: 8,
+        overflow: 'hidden',
+        marginBottom: 20,
+    },
+    linearGradient: {
+        flex: 1,
+        padding: 15,
+        justifyContent: 'space-between',
+    },
+    title: {
+        fontSize: 24,
+        color: '#FFF',
+        fontWeight: 'bold',
+    },
+    details: {
+        fontSize: 16,
+        color: '#FFF',
+    },
+    footer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    completionBar: {
+        height: 20,
+        width: '100%',
+        backgroundColor: 'transparent',
+    },
+    percentage: {
+        position: 'absolute',
+        right: 10,
+        top: -25,
+        fontSize: 16,
+        color: '#FFF',
+        fontWeight: 'bold',
+    },
+});
+
+export default SeasonCard;
