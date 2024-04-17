@@ -10,13 +10,14 @@ import QuestionScreen from "../Screens/QuestionScreen";
 import MatchScreen from "../Screens/MatchScreen";
 import SlidingPuzzle from "../Screens/SlidingPuzzle";
 import IndividualNames from "../Screens/IndividualNames";
+import SeasonScreen from "../Screens/SeasonScreen";
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="IndividualNames"
+        initialRouteName="Seasons"
         screenOptions={{
           headerShown: false,
         }}
@@ -30,6 +31,7 @@ const MainNavigation = () => {
         <Stack.Screen name="Questions" component={QuestionScreen} />
         <Stack.Screen name="SlidingPuzzle" component={SlidingPuzzle} />
         <Stack.Screen name="IndividualNames" component={IndividualNames} />
+        <Stack.Screen name="Seasons" component={SeasonScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

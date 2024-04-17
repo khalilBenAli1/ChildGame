@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-
+import { LinearGradient } from 'expo-linear-gradient';
 const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color }) => {
-    const completedBarColor = completed ? '#1BAA76' : 'transparent';
+    const completedBarColor = completed ? '#1BAA76' : 'white';
     const percentageText = completed ? '100%' : '0%';
 
     return (
@@ -28,7 +27,7 @@ const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color })
 
 const styles = StyleSheet.create({
     card: {
-        width: 300,
+        flex:1,
         height: 180,
         borderRadius: 8,
         overflow: 'hidden',
@@ -54,9 +53,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     completionBar: {
-        height: 20,
+        height: 15,
         width: '100%',
         backgroundColor: 'transparent',
+        borderRadius:20
     },
     percentage: {
         position: 'absolute',
