@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color }) => {
+
+const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color, onClick }) => {
     const completedBarColor = completed ? '#1BAA76' : 'white';
     const percentageText = completed ? '100%' : '0%';
 
     return (
-        <View style={styles.card}>
+        <TouchableOpacity onPress={onClick} style={styles.card}>
             <LinearGradient
                 colors={['transparent', color]}
                 style={styles.linearGradient}
@@ -21,13 +22,13 @@ const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color })
                     <Text style={styles.percentage}>{percentageText}</Text>
                 </View>
             </LinearGradient>
-        </View>
+        </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
     card: {
-        flex:1,
+        flex: 1,
         height: 180,
         borderRadius: 8,
         overflow: 'hidden',
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
         height: 15,
         width: '100%',
         backgroundColor: 'transparent',
-        borderRadius:20
+        borderRadius: 20
     },
     percentage: {
         position: 'absolute',

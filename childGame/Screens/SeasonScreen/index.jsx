@@ -60,6 +60,7 @@ const SeasonScreen = () => {
               difficulty={season.difficulty}
               completed={season.completed}
               color={season.completed ? "#1BAA76" : "#ccc"}
+              onClick={() => console.log('Card clicked')}
             />
           </View>
           {index < seasons.length && <View style={styles.line} />}
