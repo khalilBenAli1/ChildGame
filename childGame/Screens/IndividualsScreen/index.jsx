@@ -19,7 +19,7 @@ const IndividualsScreen = () => {
       style={styles.background}
     >
       <Text style={styles.pageTitle}>{t("individuals")}</Text>
-      <CenteredBox>
+      <CenteredBox height={"30%"}>
         <Text style={styles.title}>{t("numberOfPlayers")}</Text>
         <NumberOfPlayers />
         <View style={styles.buttonContainer}>

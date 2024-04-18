@@ -1,15 +1,11 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  ScrollView,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SeasonCard from "../../Components/SeasonCard";
+import CustomModal from "../../Components/CustomModal";
 
 const SeasonScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   const seasons = [
     {
       title: "Spring",
@@ -42,6 +38,12 @@ const SeasonScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.background}
     >
+      <CustomModal
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      >
+        <Text>Hello from the Modal!</Text>
+      </CustomModal>
       <Text style={styles.title}>Seasons</Text>
       {seasons.map((season, index) => (
         <View key={index} style={styles.cardContainer}>
@@ -60,7 +62,7 @@ const SeasonScreen = () => {
               difficulty={season.difficulty}
               completed={season.completed}
               color={season.completed ? "#1BAA76" : "#ccc"}
-              onClick={() => console.log('Card clicked')}
+              onClick={() => setModalVisible(true)}
             />
           </View>
           {index < seasons.length && <View style={styles.line} />}
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    marginTop:30,
+    marginTop: 30,
     fontSize: 24,
     color: "#FFF",
     fontWeight: "bold",
@@ -90,20 +92,20 @@ const styles = StyleSheet.create({
   iconAndCardContainer: {
     flexDirection: "row",
     alignItems: "center",
-    zIndex: 2 
+    zIndex: 2,
   },
   icon: {
     borderRadius: 20,
     alignSelf: "flex-start",
   },
-  iconContainer: { 
+  iconContainer: {
     marginRight: 10,
-    backgroundColor: "#DEAE48" ,
-    borderRadius:30,
-    padding:3,
+    backgroundColor: "#DEAE48",
+    borderRadius: 30,
+    padding: 3,
     alignSelf: "flex-start",
-    zIndex: 7
-},
+    zIndex: 7,
+  },
   line: {
     position: "absolute",
     height: "88%",
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     left: 16,
     top: 3,
-    zIndex: 1
+    zIndex: 1,
   },
 });
 

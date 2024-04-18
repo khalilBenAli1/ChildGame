@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-const CenteredBox = ({ children }) => (
-  <View style={styles.outerBorder}> 
+const CenteredBox = ({ children,height }) => (
+  <View style={[styles.outerBorder, { maxHeight: height || '60%' }]} > 
     <View style={styles.middleBorder}> 
       <View style={styles.innerContent}>
         {children}
@@ -14,12 +14,12 @@ const CenteredBox = ({ children }) => (
 const styles = StyleSheet.create({
   outerBorder: {
     width: '90%',
-    height:"80%",
     borderRadius: 40, 
     backgroundColor: '#774936',
     padding: 2,
     alignSelf: 'center',
     justifyContent:"flex-start",
+    flex:1
 
   },
   middleBorder: {
