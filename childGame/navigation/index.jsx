@@ -17,7 +17,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Individuals"
+        initialRouteName="Seasons"
         screenOptions={{
           headerShown: false,
         }}

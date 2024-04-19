@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SeasonCard from "../../Components/SeasonCard";
 import CustomModal from "../../Components/CustomModal";
+import RoundStart from "../../Modals/RoundStart";
+import Turn from "../../Modals/Turn";
+import RoundPoints from "../../Modals/RoundPoints";
 
 const SeasonScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,12 +41,14 @@ const SeasonScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.background}
     >
-      <CustomModal
-        isVisible={modalVisible}
-        onClose={() => setModalVisible(false)}
-      >
-        <Text>Hello from the Modal!</Text>
-      </CustomModal>
+      <RoundPoints
+        isVisible={true}
+        onClose={() => console.log("Close modal")}
+        bannerText={<Text>Final Scores</Text>}
+        numberOfPlayers={3}
+        mode="team"
+        players={["Team Alpha", "Team Beta", "Team Gamma"]}
+      />
       <Text style={styles.title}>Seasons</Text>
       {seasons.map((season, index) => (
         <View key={index} style={styles.cardContainer}>
