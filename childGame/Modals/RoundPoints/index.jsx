@@ -20,6 +20,7 @@ const RoundPoints = ({ isVisible, onClose, bannerText, numberOfPlayers, mode, pl
             </View>
           ))}
         </View>
+        <View style={styles.horizontalSeparator} />
         <Text style={styles.roundResultTitle}>Round Result</Text>
         <View style={[styles.namesContainer, { justifyContent: numberOfPlayers === 1 ? 'center' : 'space-around' }]}>
           {players.map((name, index) => (
@@ -77,6 +78,14 @@ const styles = StyleSheet.create({
     width: 1,
     backgroundColor: '#000',
     marginHorizontal: 20,
+  },
+  horizontalSeparator:{
+    borderWidth: 1,
+    borderColor: "black",
+    borderStyle: "dashed",
+    width:300,
+    marginVertical:20,
+    height:1
   },
   roundResultTitle: {
     fontSize: 18,
