@@ -3,100 +3,10 @@ const initialState = {
   playerCount: 0,
   playerNames: [],
   teamsInfo: [],
-  seasons: [
-    {
-      title: "Spring",
-      numberOfChallenges: 15,
-      difficulty: "Easy",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
-      playable: false,
-      completed: false,
-    },
-    {
-      title: "Summer",
-      numberOfChallenges: 20,
-      difficulty: "Medium",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
-      playable: false,
-      completed: false,
-    },
-    {
-      title: "Autumn",
-      numberOfChallenges: 10,
-      difficulty: "Hard",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
-      playable: false,
-      completed: false,
-    },
-    {
-      title: "Winter",
-      numberOfChallenges: 5,
-      difficulty: "Medium",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
-      playable: false,
-      completed: false,
-    },
-  ],
+  currentPlayer: null,
+  scores: {},
+  roundStart: false,
+  roundNumber: 1,
 };
 
 const gameReducer = (state = initialState, action) => {
@@ -121,40 +31,19 @@ const gameReducer = (state = initialState, action) => {
         ...state,
         teamsInfo: action.payload,
       };
-    case "ADD_RESPONSE":
+    case "SET_CURRENT_PLAYER":
+      return { ...state, currentPlayer: action.payload };
+    case "UPDATE_SCORE":
+      const { playerName, score } = action.payload;
       return {
         ...state,
-        seasons: state.seasons.map((season) => {
-          if (season.title === action.payload.seasonTitle) {
-            return {
-              ...season,
-              challenges: season.challenges.map((challenge) => {
-                if (challenge.id === action.payload.challengeId) {
-                  return {
-                    ...challenge,
-                    responses: {
-                      ...challenge.responses,
-                      [action.payload.teamId]: action.payload.response,
-                    },
-                  };
-                }
-                return challenge;
-              }),
-            };
-          }
-          return season;
-        }),
+        scores: {
+          ...state.scores,
+          [playerName]: (state.scores[playerName] || 0) + score,
+        },
       };
-    case "UPDATE_SEASON_PLAYABILITY":
-      return {
-        ...state,
-        seasons: state.seasons.map((season) => {
-          if (season.title === action.payload.seasonTitle) {
-            return { ...season, playable: action.payload.isPlayable };
-          }
-          return season;
-        }),
-      };
+    case "TOGGLE_ROUND":
+      return { ...state, roundStart: !state.roundStart };
     default:
       return state;
   }

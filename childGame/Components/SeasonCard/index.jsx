@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color, onClick }) => {
+const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color, onClick ,disabled=false}) => {
     const completedBarColor = completed ? '#1BAA76' : 'white';
     const percentageText = completed ? '100%' : '0%';
 
     return (
-        <TouchableOpacity onPress={onClick} style={styles.card}>
+        <TouchableOpacity onPress={onClick} style={styles.card} disabled={disabled}>
             <LinearGradient
                 colors={['transparent', color]}
                 style={styles.linearGradient}

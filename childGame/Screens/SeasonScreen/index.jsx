@@ -3,10 +3,12 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SeasonCard from "../../Components/SeasonCard";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const SeasonScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const {seasons} = useSelector(state => state.game);
+  const { seasons } = useSelector((state) => state.seasons);
+  const navigation = useNavigation();
 
   return (
     <ImageBackground
@@ -19,7 +21,7 @@ const SeasonScreen = () => {
           <View style={styles.iconAndCardContainer}>
             <View style={styles.iconContainer}>
               <Icon
-                name={season.completed ? "check-circle" : "lock"}
+                name={season.playable ? "check-circle" : "lock"}
                 size={30}
                 color={"white"}
                 style={styles.icon}
@@ -31,7 +33,8 @@ const SeasonScreen = () => {
               difficulty={season.difficulty}
               completed={season.completed}
               color={season.completed ? "#1BAA76" : "#ccc"}
-              onClick={() => setModalVisible(true)}
+              onClick={() => navigation.navigate("Questions")}
+              disabled={!season.playable}
             />
           </View>
           {index < seasons.length && <View style={styles.line} />}

@@ -1,13 +1,22 @@
-import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
-import AppButton from '../../Components/AppButton';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  SafeAreaView,
+} from "react-native";
+import AppButton from "../../Components/AppButton";
+import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
 
 const ExpeditionScreen = () => {
   const { t } = useTranslation();
-
+  const navigation = useNavigation();
   const handleButtonPress = (option) => {
-    console.log(option, "button pressed");
+    option === "board_game"
+      ? navigation.navigate("GameType")
+      : console.log(option, "button pressed");
   };
 
   return (
@@ -18,7 +27,7 @@ const ExpeditionScreen = () => {
       <SafeAreaView style={styles.container}>
         {/* Title Section */}
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{t('GATAYA_EXPEDITION')}</Text>
+          <Text style={styles.title}>{t("GATAYA_EXPEDITION")}</Text>
         </View>
 
         {/* Spacer View to push the buttons to the bottom */}
@@ -31,14 +40,14 @@ const ExpeditionScreen = () => {
             backgroundColor="#389936"
             borderColor="#CD9777"
           >
-            <Text style={styles.buttonText}>{t('board_game')}</Text>
+            <Text style={styles.buttonText}>{t("board_game")}</Text>
           </AppButton>
           <AppButton
             onClick={() => handleButtonPress("AR_experience")}
             backgroundColor="#389936"
             borderColor="#CD9777"
           >
-            <Text style={styles.buttonText}>{t('AR_experience')}</Text>
+            <Text style={styles.buttonText}>{t("AR_experience")}</Text>
           </AppButton>
         </View>
       </SafeAreaView>
@@ -55,8 +64,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    marginTop: 20, 
-    alignItems: 'center',
+    marginTop: 20,
+    alignItems: "center",
   },
   title: {
     fontSize: 40,
@@ -66,8 +75,8 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     marginBottom: 20,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   buttonText: {
     color: "#FFFFFF",

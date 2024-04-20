@@ -12,13 +12,15 @@ import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
+import RoundStart from "../../Modals/RoundStart";
+import { useSelector } from "react-redux";
 
 const sampleQuestions = [
   {
     id: 1,
     text: "What is the capital of France?",
     image:
-      "https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg", // A placeholder image of Paris
+      "https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg",
     answers: [
       { id: "a1", text: "Paris", isCorrect: true },
       { id: "a2", text: "London", isCorrect: false },
@@ -28,7 +30,7 @@ const sampleQuestions = [
   {
     id: 2,
     text: "What is the largest planet in our solar system?",
-    image: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Jupiter.jpg", // A placeholder image of Jupiter
+    image: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Jupiter.jpg",
     answers: [
       { id: "a1", text: "Mars", isCorrect: false },
       { id: "a2", text: "Jupiter", isCorrect: true },
@@ -39,7 +41,7 @@ const sampleQuestions = [
     id: 3,
     text: "What year did the Titanic sink?",
     image:
-      "https://upload.wikimedia.org/wikipedia/commons/f/fd/RMS_Titanic_3.jpg", // A placeholder image of the Titanic
+      "https://upload.wikimedia.org/wikipedia/commons/f/fd/RMS_Titanic_3.jpg",
     answers: [
       { id: "a1", text: "1912", isCorrect: true },
       { id: "a2", text: "1905", isCorrect: false },
@@ -53,8 +55,9 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
-
+  const {game}=useSelector(state=>state)
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
 
@@ -64,7 +67,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setResetTimerTrigger(prev => prev + 1);
+        setResetTimerTrigger((prev) => prev + 1);
       } else {
         // Handle end of questions (navigate to a results screen)
       }
@@ -78,6 +81,14 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
+      <RoundStart
+        isVisible={true}
+        onClose={() => console.log("Close modal")}
+        text={"Round "+game.roundNumber}
+        mode={game.gameMode}
+        orderList={game.playerNames}
+        onClick={() => setShowModal(false)}
+      />
       <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
@@ -93,7 +104,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
           unfilledColor="#CCCCCC"
           borderWidth={0}
         />
-        <CenteredBox style={styles.centeredBox}>
+        <CenteredBox style={styles.centeredBox} height={"80%"}>
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
@@ -102,7 +113,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
               onEnd={() => {
                 if (currentQuestionIndex + 1 < totalQuestions) {
                   setCurrentQuestionIndex(currentQuestionIndex + 1);
-                  setResetTimerTrigger(prev => prev + 1);
+                  setResetTimerTrigger((prev) => prev + 1);
                 }
               }}
               resetTrigger={resetTimerTrigger}

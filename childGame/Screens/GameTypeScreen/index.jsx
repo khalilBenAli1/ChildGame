@@ -11,12 +11,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from 'react-redux';
 import { setGameMode } from "../../store/actions/gameActions";
 
+import { useNavigation } from "@react-navigation/native";
+
 const GameTypeScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const selectMode = (mode) => {
     dispatch(setGameMode(mode));
+    console.log(mode)
+    mode==='individual'?navigation.navigate("Individuals"):navigation.navigate("CreateTeams")
   };
   return (
     <ImageBackground

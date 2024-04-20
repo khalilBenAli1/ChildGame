@@ -5,8 +5,10 @@ import { useTranslation } from "react-i18next";
 import AppButton from "../../Components/AppButton";
 import { useDispatch } from 'react-redux';
 import { setPlayerNames } from "../../store/actions/gameActions";
+import { useNavigation } from "@react-navigation/native";
 
 const IndividualNames = ({ route }) => {
+  const navigation=useNavigation()
   const { t } = useTranslation();
   const { numberOfPlayers  } = route.params; 
   const [names, setNames] = useState(Array(numberOfPlayers).fill(""));
@@ -42,7 +44,7 @@ const IndividualNames = ({ route }) => {
         ))}
         <View style={styles.buttonContainer}>
           <AppButton
-            onClick={() => console.log(state)}
+            onClick={() => navigation.navigate("Seasons")}
             backgroundColor="#389936"
           >
             <Text style={styles.buttonText}>{t("startExperience")}</Text>

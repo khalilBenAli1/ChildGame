@@ -20,7 +20,7 @@ const initialState = {
           responses: {},
         },
       ],
-      playable: false,
+      playable: true,
       completed: false,
     },
     {

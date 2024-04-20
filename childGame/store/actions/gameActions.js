@@ -22,12 +22,16 @@ export const setTeamsInfo = (teamsInfo) => ({
   payload: teamsInfo,
 });
 
-export const addResponse = (seasonTitle, challengeId, teamId, response) => ({
-  type: "ADD_RESPONSE",
-  payload: { seasonTitle, challengeId, teamId, response },
+export const setCurrentPlayer = (playerName) => ({
+  type: "SET_CURRENT_PLAYER",
+  payload: playerName,
 });
 
-export const updateSeasonPlayability = (seasonTitle, isPlayable) => ({
-  type: "UPDATE_SEASON_PLAYABILITY",
-  payload: { seasonTitle, isPlayable },
+export const updateScore = (playerName, score) => ({
+  type: "UPDATE_SCORE",
+  payload: { playerName, score },
 });
+
+export const toggleRound = () => ({
+    type: "TOGGLE_ROUND"
+  });
