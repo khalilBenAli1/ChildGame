@@ -47,9 +47,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 250,
+    height: 250,
     marginBottom: 20,
+    resizeMode:"contain"
   },
   roundPointsTitle: {
     fontSize: 22,
@@ -88,10 +89,11 @@ const styles = StyleSheet.create({
     height:1
   },
   roundResultTitle: {
-    fontSize: 18,
+    fontSize: 22,
     color: '#DEAE48',
     marginBottom: 5,
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   roundResult: {
     fontSize: 16,
