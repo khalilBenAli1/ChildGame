@@ -12,13 +12,14 @@ import SlidingPuzzle from "../Screens/SlidingPuzzle";
 import IndividualNames from "../Screens/IndividualNames";
 import SeasonScreen from "../Screens/SeasonScreen";
 import CompleteWord from "../Screens/CompleteWord";
+import GuessWord from "../Screens/GuessWord";
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CompleteWord"
+        initialRouteName="GuessWord"
         screenOptions={{
           headerShown: false,
         }}
@@ -34,6 +35,7 @@ const MainNavigation = () => {
         <Stack.Screen name="SlidingPuzzle" component={SlidingPuzzle} />
         <Stack.Screen name="IndividualNames" component={IndividualNames} />
         <Stack.Screen name="Seasons" component={SeasonScreen} />
+        <Stack.Screen name="GuessWord" component={GuessWord} />
       </Stack.Navigator>
     </NavigationContainer>
   );
