@@ -21,3 +21,13 @@ export const setTeamsInfo = (teamsInfo) => ({
   type: "SET_TEAMS_INFO",
   payload: teamsInfo,
 });
+
+export const addResponse = (seasonTitle, challengeId, teamId, response) => ({
+  type: "ADD_RESPONSE",
+  payload: { seasonTitle, challengeId, teamId, response },
+});
+
+export const updateSeasonPlayability = (seasonTitle, isPlayable) => ({
+  type: "UPDATE_SEASON_PLAYABILITY",
+  payload: { seasonTitle, isPlayable },
+});

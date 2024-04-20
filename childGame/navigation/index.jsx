@@ -20,7 +20,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CreateTeams"
+        initialRouteName="Seasons"
         screenOptions={{
           headerShown: false,
         }}

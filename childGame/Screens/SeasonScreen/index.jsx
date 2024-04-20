@@ -2,53 +2,17 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SeasonCard from "../../Components/SeasonCard";
-import CustomModal from "../../Components/CustomModal";
-import RoundStart from "../../Modals/RoundStart";
-import Turn from "../../Modals/Turn";
-import RoundPoints from "../../Modals/RoundPoints";
+import { useSelector } from "react-redux";
 
 const SeasonScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const seasons = [
-    {
-      title: "Spring",
-      numberOfChallenges: 15,
-      difficulty: "Easy",
-      completed: true,
-    },
-    {
-      title: "Summer",
-      numberOfChallenges: 20,
-      difficulty: "Medium",
-      completed: false,
-    },
-    {
-      title: "Autumn",
-      numberOfChallenges: 10,
-      difficulty: "Hard",
-      completed: false,
-    },
-    {
-      title: "Winter",
-      numberOfChallenges: 5,
-      difficulty: "Medium",
-      completed: true,
-    },
-  ];
+  const {seasons} = useSelector(state => state.game);
 
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.background}
     >
-      <RoundPoints
-        isVisible={true}
-        onClose={() => console.log("Close modal")}
-        bannerText={<Text>Final Scores</Text>}
-        numberOfPlayers={3}
-        mode="team"
-        players={["Team Alpha", "Team Beta", "Team Gamma"]}
-      />
       <Text style={styles.title}>Seasons</Text>
       {seasons.map((season, index) => (
         <View key={index} style={styles.cardContainer}>
