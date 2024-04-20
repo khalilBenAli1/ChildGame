@@ -1,17 +1,22 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-} from 'react-native';
-import CenteredBox from '../../Components/CenteredBox'; 
-import NumberOfPlayers from '../../Components/NumberOfPlayers'; 
-import AppButton from '../../Components/AppButton'; 
-import { useTranslation } from 'react-i18next';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import CenteredBox from "../../Components/CenteredBox";
+import NumberOfPlayers from "../../Components/NumberOfPlayers";
+import AppButton from "../../Components/AppButton";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { setPlayerCount } from "../../store/actions/gameActions";
+import { useNavigation } from '@react-navigation/native';
 
 const IndividualsScreen = () => {
   const { t } = useTranslation();
+  const [playerCount, setPlayerCountLocal] = useState(0);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const handlePlayerCountChange = (newCount) => {
+    setPlayerCountLocal(newCount);
+    dispatch(setPlayerCount(newCount));
+  };
 
   return (
     <ImageBackground
@@ -21,10 +26,10 @@ const IndividualsScreen = () => {
       <Text style={styles.pageTitle}>{t("individuals")}</Text>
       <CenteredBox height={"30%"}>
         <Text style={styles.title}>{t("numberOfPlayers")}</Text>
-        <NumberOfPlayers />
+        <NumberOfPlayers onCountChange={handlePlayerCountChange} />
         <View style={styles.buttonContainer}>
           <AppButton
-            onClick={() => console.log("Start the experience")}
+            onClick={()=>navigation.navigate('IndividualNames', { numberOfPlayers:playerCount })}
             backgroundColor="#389936"
           >
             <Text style={styles.buttonText}>{t("startExperience")}</Text>
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     margin: 10,
     fontSize: 30,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   title: {
     fontSize: 24,
@@ -58,13 +63,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     width: "100%",
-    alignItems: "center"
+    alignItems: "center",
   },
   buttonText: {
     color: "white",
-    fontWeight: 'bold',
-    fontSize: 18
-  }
+    fontWeight: "bold",
+    fontSize: 18,
+  },
 });
 
 export default IndividualsScreen;

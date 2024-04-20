@@ -10,10 +10,37 @@ import CenteredBox from "../../Components/CenteredBox";
 import NumberOfPlayers from "../../Components/NumberOfPlayers";
 import { useTranslation } from "react-i18next";
 import AppButton from "../../Components/AppButton";
+import { useDispatch } from "react-redux";
+import { setTeamsInfo } from "../../store/actions/gameActions";
+import { useNavigation } from '@react-navigation/native';
 
 const CreateTeamsScreen = () => {
   const { t } = useTranslation();
-  const [teamName, setTeamName] = useState("");
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [teams, setTeams] = useState([
+    { name: "", players: 0 },
+    { name: "", players: 0 },
+    { name: "", players: 0 }
+  ]);
+
+  const handleSetTeamName = (text, index) => {
+    const newTeams = [...teams];
+    newTeams[index].name = text;
+    setTeams(newTeams);
+  };
+
+  const handleSetPlayersCount = (count, index) => {
+    const newTeams = [...teams];
+    newTeams[index].players = count;
+    setTeams(newTeams);
+  };
+
+  const submitTeamsInfo = () => {
+    dispatch(setTeamsInfo(teams));
+    console.log("Teams info submitted:", teams);
+    navigation.navigate("Seasons")
+  };
 
   return (
     <ImageBackground
@@ -21,45 +48,30 @@ const CreateTeamsScreen = () => {
       style={styles.background}
     >
        <Text style={styles.pageTitle}>{t("teams")}</Text>
-      <CenteredBox>
+      <CenteredBox height={"80%"}>
         <Text style={styles.title}>{t("createTeams")}</Text>
 
-        <Text style={styles.subTiltle}>{t("team")} 1</Text>
-        <TextInput
-          style={styles.input}
-          value={teamName}
-          onChangeText={setTeamName}
-          placeholder="Enter team name"
-        />
-        <View style={styles.numberContainer}>
-          <Text style={styles.label}>{t("numberOfPlayers")}</Text>
-          <NumberOfPlayers />
-        </View>
-        <Text style={styles.subTiltle}>{t("team")} 2</Text>
-        <TextInput
-          style={styles.input}
-          value={teamName}
-          onChangeText={setTeamName}
-          placeholder="Enter team name"
-        />
-        <View style={styles.numberContainer}>
-          <Text style={styles.label}>{t("numberOfPlayers")}</Text>
-          <NumberOfPlayers />
-        </View>
-        <Text style={styles.subTiltle}>{t("team")} 3</Text>
-        <TextInput
-          style={styles.input}
-          value={teamName}
-          onChangeText={setTeamName}
-          placeholder="Enter team name"
-        />
-        <View style={styles.numberContainer}>
-          <Text style={styles.label}>{t("numberOfPlayers")}</Text>
-          <NumberOfPlayers />
-        </View>
+        {teams.map((team, index) => (
+          <View key={index} style={styles.mapContainer}>
+            <Text style={styles.subTiltle}>{t("team")} {index + 1}</Text>
+            <TextInput
+              style={styles.input}
+              value={team.name}
+              onChangeText={(text) => handleSetTeamName(text, index)}
+              placeholder={t("enterTeamName")}
+            />
+            <View  style={styles.numberContainer}>
+              <Text>Number of Players : </Text>
+            <NumberOfPlayers
+              initialCount={team.players}
+              onCountChange={(count) => handleSetPlayersCount(count, index)}
+            />
+            </View>
+          </View>
+        ))}
         <View style={styles.buttonContainer}>
           <AppButton
-            onClick={() => console.log("handle start experience")}
+            onClick={() => {submitTeamsInfo()}}
             backgroundColor="#389936"
           >
             <Text style={styles.buttonText}>{t("startExperience")}</Text>
@@ -75,6 +87,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     width: "100%",
+  },
+  mapContainer:{
+    width:"100%"
   },
   title: {
     fontSize: 24,
@@ -108,12 +123,15 @@ const styles = StyleSheet.create({
     padding: 25,
     margin: 20,
     width: "90%",
+    color:'black'
   },
   numberContainer: {
     display: "flex",
     flexDirection: "row",
-    alignItems:"flex-start",
+    alignItems:"center",
+    justifyContent:"center",
     alignSelf: "flex-start",
+    marginLeft:20
   },
   buttonText: {
     color: "white",

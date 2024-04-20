@@ -13,7 +13,7 @@ const LanguageScreen = () => {
     const [selectedLanguage, setSelectedLanguage] = useState(null);
 
     const handleLanguageChange = (language) => {
-        setSelectedLanguage(language);  // Set the selected language state
+        setSelectedLanguage(language); 
         i18next.changeLanguage(language, (err) => {
             if (err) return console.log('Something went wrong changing the language', err);
             console.log("Language changed to:", language);
@@ -31,7 +31,7 @@ const LanguageScreen = () => {
             source={require("../../assets/imgs/imgBg.png")}
             style={styles.background}
         >
-            <CenteredBox>
+            <CenteredBox height={"80%"}>
                 <Text style={styles.title}>{t('experienceLanguage')}</Text>
                 <Text style={styles.subtitle}>
                     {t('chooseLanguagePrompt')}

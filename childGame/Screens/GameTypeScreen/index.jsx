@@ -8,14 +8,16 @@ import {
 } from "react-native";
 import AppButton from "../../Components/AppButton";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from 'react-redux';
+import { setGameMode } from "../../store/actions/gameActions";
 
 const GameTypeScreen = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-  const handleGameTypeSelection = (type) => {
-    console.log(type, "selected");
+  const selectMode = (mode) => {
+    dispatch(setGameMode(mode));
   };
-
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
@@ -27,7 +29,7 @@ const GameTypeScreen = () => {
 
         <View style={styles.buttonContainer}>
           <AppButton
-            onClick={() => handleGameTypeSelection("individuals")}
+            onClick={() => selectMode('individual')}
             backgroundColor="#389936"
             borderColor="#CD9777"
           >
@@ -39,7 +41,7 @@ const GameTypeScreen = () => {
             </View>
           </AppButton>
           <AppButton
-            onClick={() => handleGameTypeSelection("teams")}
+            onClick={() => selectMode('teams')}
             backgroundColor="#389936"
             borderColor="#CD9777"
           >

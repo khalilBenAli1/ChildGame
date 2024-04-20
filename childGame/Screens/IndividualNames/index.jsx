@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, ImageBackground } from "react-native";
 import CenteredBox from "../../Components/CenteredBox";
 import { useTranslation } from "react-i18next";
 import AppButton from "../../Components/AppButton";
+import { useDispatch } from 'react-redux';
+import { setPlayerNames } from "../../store/actions/gameActions";
 
 const IndividualNames = ({ route }) => {
   const { t } = useTranslation();
-  const { numberOfPlayers = 3 } = route.params || {}; 
+  const { numberOfPlayers  } = route.params; 
   const [names, setNames] = useState(Array(numberOfPlayers).fill(""));
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setPlayerNames(names));
+  }, [names, dispatch]);
 
   const handleNameChange = (text, index) => {
     const newNames = [...names];
     newNames[index] = text;
     setNames(newNames);
   };
-
+  
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
@@ -36,7 +42,7 @@ const IndividualNames = ({ route }) => {
         ))}
         <View style={styles.buttonContainer}>
           <AppButton
-            onClick={() => console.log("Start Experience")}
+            onClick={() => console.log(state)}
             backgroundColor="#389936"
           >
             <Text style={styles.buttonText}>{t("startExperience")}</Text>
