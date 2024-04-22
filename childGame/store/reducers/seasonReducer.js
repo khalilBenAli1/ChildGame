@@ -21,7 +21,7 @@ const initialState = {
         },
       ],
       playable: true,
-      completed: false,
+      completed: true,
     },
     {
       title: "Summer",
