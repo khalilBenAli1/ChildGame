@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   flags: {
     width: 25,
     height: 25,
-    borderRadius: "100%",
+    borderRadius: 30,
     overflow: "hidden",
     marginRight: 10,
     alignItems: "center",
