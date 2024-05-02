@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,52 +15,58 @@ import CountdownTimer from "../../Components/CountdownTimer";
 import RoundStart from "../../Modals/RoundStart";
 import { useSelector } from "react-redux";
 
-const sampleQuestions = [
-  {
-    id: 1,
-    text: "What is the capital of France?",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg",
-    answers: [
-      { id: "a1", text: "Paris", isCorrect: true },
-      { id: "a2", text: "London", isCorrect: false },
-      { id: "a3", text: "Berlin", isCorrect: false },
-    ],
-  },
-  {
-    id: 2,
-    text: "What is the largest planet in our solar system?",
-    image: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Jupiter.jpg",
-    answers: [
-      { id: "a1", text: "Mars", isCorrect: false },
-      { id: "a2", text: "Jupiter", isCorrect: true },
-      { id: "a3", text: "Saturn", isCorrect: false },
-    ],
-  },
-  {
-    id: 3,
-    text: "What year did the Titanic sink?",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/f/fd/RMS_Titanic_3.jpg",
-    answers: [
-      { id: "a1", text: "1912", isCorrect: true },
-      { id: "a2", text: "1905", isCorrect: false },
-      { id: "a3", text: "1898", isCorrect: false },
-    ],
-  },
-];
-
 const QuestionScreen = ({ questions = sampleQuestions }) => {
   const { t } = useTranslation();
+  const { gameMode, playerCount, currentPlayerIndex, teamsInfo } = useSelector(
+    (state) => state.game
+  );
+  const seasons = useSelector((state) => state.seasons.seasons);
+  const currentSeasonIndex = useSelector(
+    (state) => state.seasons.currentSeason
+  );
+  const currentSeason = seasons[currentSeasonIndex];
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
-  const {game}=useSelector(state=>state)
+  const { game } = useSelector((state) => state);
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
+  const teamNames = game.teamsInfo.map((player) => "Team " + player.name);
 
+  useEffect(() => {
+    if (currentSeason && currentSeason.challenges) {
+      let questionsPerParticipant;
+      let startIndex;
+      let endIndex;
+
+      if (gameMode === "individual") {
+        questionsPerParticipant = Math.floor(
+          currentSeason.challenges.length / playerCount
+        );
+        startIndex = currentPlayerIndex * questionsPerParticipant;
+        endIndex = startIndex + questionsPerParticipant;
+      } else {
+        questionsPerParticipant = Math.floor(
+          currentSeason.challenges.length / 3
+        );
+        startIndex = currentPlayerIndex * questionsPerParticipant;
+        endIndex = startIndex + questionsPerParticipant;
+      }
+
+      setQuestions(currentSeason.challenges.slice(startIndex, endIndex));
+      setCurrentQuestionIndex(0);
+    }
+  }, [
+    currentSeason,
+    currentPlayerIndex,
+    gameMode,
+    playerCount,
+    teamsInfo,
+    seasons,
+  ]);
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer.id);
     setShowAnswer(true);
@@ -75,18 +81,25 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
       setShowAnswer(false);
     }, 2000);
   };
-
+  useEffect(() => {
+    if (currentSeason) {
+      dispatch(setCurrentPlayerIndex(0));
+    }
+  }, [currentSeason, dispatch]);
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
+      {console.log(game)}
       <RoundStart
         isVisible={true}
         onClose={() => console.log("Close modal")}
-        text={"Round "+game.roundNumber}
+        text={"Round " + game.roundNumber}
         mode={game.gameMode}
-        orderList={game.playerNames}
+        orderList={
+          game.gameMode === "individual" ? game.playerNames : teamNames
+        }
         onClick={() => setShowModal(false)}
       />
       <SafeAreaView style={styles.container}>

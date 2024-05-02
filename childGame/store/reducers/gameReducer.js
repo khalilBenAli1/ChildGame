@@ -3,7 +3,7 @@ const initialState = {
   playerCount: 0,
   playerNames: [],
   teamsInfo: [],
-  currentPlayer: null,
+  currentPlayerIndex: 0,
   scores: {},
   roundStart: false,
   roundNumber: 1,
@@ -31,19 +31,45 @@ const gameReducer = (state = initialState, action) => {
         ...state,
         teamsInfo: action.payload,
       };
-    case "SET_CURRENT_PLAYER":
-      return { ...state, currentPlayer: action.payload };
+      case 'SET_CURRENT_PLAYER_INDEX':
+        return {
+          ...state,
+          currentPlayerIndex: action.payload,
+        };
     case "UPDATE_SCORE":
-      const { playerName, score } = action.payload;
+      const { playerName, isCorrect } = action.payload;
+      const existingScores = state.scores[playerName] || {
+        correct: 0,
+        incorrect: 0,
+      };
+
       return {
         ...state,
         scores: {
           ...state.scores,
-          [playerName]: (state.scores[playerName] || 0) + score,
+          [playerName]: {
+            correct: isCorrect
+              ? existingScores.correct + 1
+              : existingScores.correct,
+            incorrect: !isCorrect
+              ? existingScores.incorrect + 1
+              : existingScores.incorrect,
+          },
         },
       };
+
     case "TOGGLE_ROUND":
       return { ...state, roundStart: !state.roundStart };
+    case "RESET_PLAYER_INFO":
+      return {
+        ...state,
+        playerCount: 0,
+        playerNames: [],
+        currentPlayer: null,
+        scores: {},
+      };
+    case "RESET_ALL":
+      return { ...initialState };
     default:
       return state;
   }

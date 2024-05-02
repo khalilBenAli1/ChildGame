@@ -7,3 +7,8 @@ export const updateSeasonPlayability = (seasonTitle, isPlayable) => ({
   type: "UPDATE_SEASON_PLAYABILITY",
   payload: { seasonTitle, isPlayable },
 });
+
+export const setCurrentSeason = (seasonIndex) => ({
+  type: "SET_CURRENT_SEASON",
+  payload: seasonIndex,
+});

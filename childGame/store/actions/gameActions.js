@@ -22,16 +22,23 @@ export const setTeamsInfo = (teamsInfo) => ({
   payload: teamsInfo,
 });
 
-export const setCurrentPlayer = (playerName) => ({
-  type: "SET_CURRENT_PLAYER",
-  payload: playerName,
+export const setCurrentPlayerIndex = (index) => ({
+  type: "SET_CURRENT_PLAYER_INDEX",
+  payload: index,
 });
-
-export const updateScore = (playerName, score) => ({
+export const updateScore = (playerName, isCorrect) => ({
   type: "UPDATE_SCORE",
-  payload: { playerName, score },
+  payload: { playerName, isCorrect },
 });
 
 export const toggleRound = () => ({
-    type: "TOGGLE_ROUND"
-  });
+  type: "TOGGLE_ROUND",
+});
+
+export const resetPlayerInfo = () => ({
+  type: "RESET_PLAYER_INFO",
+});
+
+export const resetAll = () => ({
+  type: "RESET_ALL",
+});

@@ -1,48 +1,19 @@
+import { questions } from "../../data/questions";
 const initialState = {
   seasons: [
     {
       title: "Spring",
       numberOfChallenges: 15,
       difficulty: "Easy",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
+      challenges: questions.slice(0, 9),
       playable: true,
-      completed: true,
+      completed: false,
     },
     {
       title: "Summer",
       numberOfChallenges: 20,
       difficulty: "Medium",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
+      challenges: questions.slice(9, 18),
       playable: false,
       completed: false,
     },
@@ -50,22 +21,7 @@ const initialState = {
       title: "Autumn",
       numberOfChallenges: 10,
       difficulty: "Hard",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
+      challenges: questions.slice(18, 26),
       playable: false,
       completed: false,
     },
@@ -73,55 +29,16 @@ const initialState = {
       title: "Winter",
       numberOfChallenges: 5,
       difficulty: "Medium",
-      challenges: [
-        {
-          id: 1,
-          type: "question",
-          question: "What is the capital of France?",
-          answer: "Paris",
-          responses: {},
-        },
-        {
-          id: 2,
-          type: "guess_word",
-          question: "Guess the word depicted by the image.",
-          answer: "Eiffel Tower",
-          responses: {},
-        },
-      ],
+      challenges: questions.slice(26, 34),
       playable: false,
       completed: false,
     },
   ],
-  
+  currentSeason: null,
 };
 
 const seasonReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_RESPONSE":
-      return {
-        ...state,
-        seasons: state.seasons.map((season) => {
-          if (season.title === action.payload.seasonTitle) {
-            return {
-              ...season,
-              challenges: season.challenges.map((challenge) => {
-                if (challenge.id === action.payload.challengeId) {
-                  return {
-                    ...challenge,
-                    responses: {
-                      ...challenge.responses,
-                      [action.payload.teamId]: action.payload.response,
-                    },
-                  };
-                }
-                return challenge;
-              }),
-            };
-          }
-          return season;
-        }),
-      };
     case "UPDATE_SEASON_PLAYABILITY":
       return {
         ...state,
@@ -131,6 +48,11 @@ const seasonReducer = (state = initialState, action) => {
           }
           return season;
         }),
+      };
+    case "SET_CURRENT_SEASON":
+      return {
+        ...state,
+        currentSeason: state.seasons[action.payload],
       };
     default:
       return state;

@@ -1,45 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   ImageBackground,
+  Alert,
+  ScrollView
 } from "react-native";
 import CenteredBox from "../../Components/CenteredBox";
 import NumberOfPlayers from "../../Components/NumberOfPlayers";
-import { useTranslation } from "react-i18next";
 import AppButton from "../../Components/AppButton";
-import { useDispatch } from "react-redux";
-import { setTeamsInfo } from "../../store/actions/gameActions";
+import { useTranslation } from "react-i18next";
+import { useDispatch,useSelector } from "react-redux";
+import { setTeamsInfo,resetAll,setGameMode  } from "../../store/actions/gameActions";
 import { useNavigation } from "@react-navigation/native";
 
 const CreateTeamsScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const teamss =useSelector(state=>state)
   const [teams, setTeams] = useState([
     { name: "", players: 0 },
     { name: "", players: 0 },
     { name: "", players: 0 },
   ]);
+  useEffect(() => {
+    dispatch(resetAll());
+  }, []);
 
   const handleSetTeamName = (text, index) => {
-    const newTeams = [...teams];
-    newTeams[index].name = text;
-    setTeams(newTeams);
+    setTeams((teams) =>
+      teams.map((team, i) => (i === index ? { ...team, name: text } : team))
+    );
   };
 
   const handleSetPlayersCount = (count, index) => {
-    const newTeams = [...teams];
-    newTeams[index].players = count;
-    setTeams(newTeams);
+    setTeams((teams) =>
+      teams.map((team, i) => (i === index ? { ...team, players: count } : team))
+    );
   };
 
   const submitTeamsInfo = () => {
-    dispatch(setTeamsInfo(teams));
-    console.log("Teams info submitted:", teams);
-    navigation.navigate("Seasons");
+    const allTeamsValid = teams.every(
+      (team) => team.name !== "" && team.players > 0
+    );
+    if (allTeamsValid) {
+      dispatch(setTeamsInfo(teams));
+      dispatch(setGameMode("teams"));
+      console.log(teamss)
+      navigation.navigate("Seasons");
+    }
   };
 
   return (
@@ -47,13 +59,15 @@ const CreateTeamsScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.background}
     >
+     
       <Text style={styles.pageTitle}>{t("teams")}</Text>
-      <CenteredBox height={"80%"}>
+      <CenteredBox height={"85%"}>
+      <ScrollView style={{ flex: 1 }}>
         <Text style={styles.title}>{t("createTeams")}</Text>
 
         {teams.map((team, index) => (
           <View key={index} style={styles.mapContainer}>
-            <Text style={styles.subTiltle}>
+            <Text style={styles.subTitle}>
               {t("team")} {index + 1}
             </Text>
             <TextInput
@@ -63,7 +77,7 @@ const CreateTeamsScreen = () => {
               placeholder={t("enterTeamName")}
             />
             <View style={styles.numberContainer}>
-              <Text>Number of Players : </Text>
+              <Text>{t("numberOfPlayers")}: </Text>
               <NumberOfPlayers
                 initialCount={team.players}
                 onCountChange={(count) => handleSetPlayersCount(count, index)}
@@ -72,16 +86,13 @@ const CreateTeamsScreen = () => {
           </View>
         ))}
         <View style={styles.buttonContainer}>
-          <AppButton
-            onClick={() => {
-              submitTeamsInfo();
-            }}
-            backgroundColor="#389936"
-          >
+          <AppButton onClick={submitTeamsInfo} backgroundColor="#389936">
             <Text style={styles.buttonText}>{t("startExperience")}</Text>
           </AppButton>
         </View>
+        </ScrollView>
       </CenteredBox>
+      
     </ImageBackground>
   );
 };
@@ -119,15 +130,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   input: {
-    height: 40,
+    height: 60,
     backgroundColor: "white",
     borderColor: "black",
     borderWidth: 0.5,
     borderRadius: 25,
-    padding: 25,
-    margin: 20,
-    width: "90%",
-    color: "black",
+    fontSize:12,
+    padding: 10,
+    marginVertical: 20,
+    width: "98%",
   },
   numberContainer: {
     display: "flex",
