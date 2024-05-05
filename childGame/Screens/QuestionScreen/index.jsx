@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ImageBackground,
   SafeAreaView,
 } from "react-native";
@@ -30,83 +29,53 @@ const QuestionScreen = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
-  const { game } = useSelector((state) => state);
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
-  const teamNames = game.teamsInfo.map((player) => "Team " + player.name);
 
   useEffect(() => {
- 
-    if (currentSeason && currentSeason.challenges) {
-      let questionsPerParticipant;
-      let startIndex;
-      let endIndex;
+    if (currentSeason && currentSeason.challenges.length > 0 && playerCount > 0) {
+      let questionsPerParticipant = gameMode === "individual"
+        ? Math.floor(currentSeason.challenges.length / playerCount)
+        : Math.floor(currentSeason.challenges.length / teamsInfo.length);
 
-      if (gameMode === "individual") {
-        questionsPerParticipant = Math.floor(
-          currentSeason.challenges.length / playerCount
-        );
-        startIndex = currentPlayerIndex * questionsPerParticipant;
-        endIndex = startIndex + questionsPerParticipant;
-      } else {
-        questionsPerParticipant = Math.floor(
-          currentSeason.challenges.length / 3
-        );
-        startIndex = currentPlayerIndex * questionsPerParticipant;
-        endIndex = startIndex + questionsPerParticipant;
-      }
+      let startIndex = currentPlayerIndex * questionsPerParticipant;
+      let endIndex = Math.min(startIndex + questionsPerParticipant, currentSeason.challenges.length);
 
       setQuestions(currentSeason.challenges.slice(startIndex, endIndex));
       setCurrentQuestionIndex(0);
     }
-  }, [
-    currentSeason,
-    currentPlayerIndex,
-    gameMode,
-    playerCount,
-    teamsInfo,
-  ]);
+  }, [currentSeason, currentPlayerIndex, gameMode, playerCount, teamsInfo.length]);
+
   const handleAnswer = (answer) => {
-    setSelectedAnswer(answer.id);
-    setShowAnswer(true);
+    setSelectedAnswer(answer.option); // Track which option was selected
+    setShowAnswer(true); // This will trigger showing the result
+  
+    const isCorrect = answer.option === question.correctAnswer;
+    // Optionally, you could update a score state or handle correct/incorrect logic here
+    
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setResetTimerTrigger((prev) => prev + 1);
       } else {
-        // Handle end of questions (navigate to a results screen)
+        // Handle end of quiz, e.g., navigate to a results screen or show summary
       }
-      setSelectedAnswer(null);
-      setShowAnswer(false);
-    }, 2000);
+      setSelectedAnswer(null); // Reset selection for the next question
+      setShowAnswer(false); // Hide answer highlights
+    }, 2000); // Delay for showing the result briefly
   };
-  useEffect(() => {
-    if (currentSeason) {
-      dispatch(setCurrentPlayerIndex(0));
-    }
-  }, [currentSeason, dispatch]);
+  if (!question) {
+    return <Text>Loading questions or no questions available.</Text>;
+  }
+
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
-      {   console.log("currentSeason " + currentSeason.challenges + "currentSeasonIndex:"+currentSeason.title) }
-      <RoundStart
-        isVisible={true}
-        onClose={() => console.log("Close modal")}
-        text={"Round " + game.roundNumber}
-        mode={game.gameMode}
-        orderList={
-          game.gameMode === "individual" ? game.playerNames : teamNames
-        }
-        onClick={() => setShowModal(false)}
-      />
       <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
-          <Text style={styles.pageTitle}>
-            {currentQuestionIndex + 1} / {totalQuestions}
-          </Text>
+          <Text style={styles.pageTitle}>{currentQuestionIndex + 1} / {totalQuestions}</Text>
         </View>
         <ProgressBar
           progress={(currentQuestionIndex + 1) / totalQuestions}
@@ -117,34 +86,21 @@ const QuestionScreen = () => {
           borderWidth={0}
         />
         <CenteredBox style={styles.centeredBox} height={"80%"}>
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <CountdownTimer
-              initialTime={10}
-              onEnd={() => {
-                if (currentQuestionIndex + 1 < totalQuestions) {
-                  setCurrentQuestionIndex(currentQuestionIndex + 1);
-                  setResetTimerTrigger((prev) => prev + 1);
-                }
-              }}
-              resetTrigger={resetTimerTrigger}
-            />
-          </View>
-          <Text style={styles.questionTexte}>{question.question}</Text>
-          {question.options.map((answer,index) => (
+          <Text style={styles.questionText}>{question.question}</Text>
+          {console.log(question.question)}
+          {question.options.map((answer, index) => (
             <AppButton
               key={index}
               onClick={() => handleAnswer(answer)}
               backgroundColor={
-                showAnswer
-                  ? answer.isCorrect
-                    ? "#389936"
-                    : "#FF2F2F"
-                  : "#DEAE48"
+                selectedAnswer === answer.option && showAnswer
+                  ? answer.option === question.correctAnswer
+                    ? "#389936"  // Green for correct
+                    : "#FF2F2F"  // Red for incorrect
+                  : "#DEAE48"   // Default color when no answer is selected or showing results
               }
             >
-              <Text style={styles.questionText}>{answer.text}</Text>
+              <Text style={styles.optionText}>{answer.text}</Text>
             </AppButton>
           ))}
         </CenteredBox>
@@ -152,6 +108,7 @@ const QuestionScreen = () => {
     </ImageBackground>
   );
 };
+
 
 const styles = StyleSheet.create({
   fullScreen: {
@@ -206,7 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     marginBottom: 20,
-    color: "white",
+    color: "black",
   },
   questionTexte: {
     fontSize: 18,

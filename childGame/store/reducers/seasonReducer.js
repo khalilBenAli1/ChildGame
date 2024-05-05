@@ -54,6 +54,8 @@ const seasonReducer = (state = initialState, action) => {
         ...state,
         currentSeason: state.seasons[action.payload],
       };
+    case "RESET_ALL":
+      return { ...initialState };
     default:
       return state;
   }
