@@ -1,15 +1,22 @@
+
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SeasonCard from "../../Components/SeasonCard";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-
+import { useDispatch } from "react-redux";
+import { setCurrentSeason } from "../../store/actions/seasonActions";
 const SeasonScreen = () => {
+  const dispatch = useDispatch()
   const [modalVisible, setModalVisible] = useState(false);
   const { seasons } = useSelector((state) => state.seasons);
   const navigation = useNavigation();
-
+  const handleSubmit = (season)=>{
+    dispatch(setCurrentSeason(season))
+    console.log(season)
+    navigation.navigate("Questions")
+  }
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
@@ -33,7 +40,7 @@ const SeasonScreen = () => {
               difficulty={season.difficulty}
               completed={season.completed}
               color={season.completed ? "#1BAA76" : "#ccc"}
-              onClick={() => navigation.navigate("Questions")}
+              onClick={() =>handleSubmit(index)}
               disabled={!season.playable}
             />
           </View>

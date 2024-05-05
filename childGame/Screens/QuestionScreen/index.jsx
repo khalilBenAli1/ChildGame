@@ -13,18 +13,17 @@ import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
 import RoundStart from "../../Modals/RoundStart";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-const QuestionScreen = ({ questions = sampleQuestions }) => {
+const QuestionScreen = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { gameMode, playerCount, currentPlayerIndex, teamsInfo } = useSelector(
     (state) => state.game
   );
-  const seasons = useSelector((state) => state.seasons.seasons);
-  const currentSeasonIndex = useSelector(
+  const currentSeason = useSelector(
     (state) => state.seasons.currentSeason
   );
-  const currentSeason = seasons[currentSeasonIndex];
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -37,6 +36,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
   const teamNames = game.teamsInfo.map((player) => "Team " + player.name);
 
   useEffect(() => {
+ 
     if (currentSeason && currentSeason.challenges) {
       let questionsPerParticipant;
       let startIndex;
@@ -65,7 +65,6 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
     gameMode,
     playerCount,
     teamsInfo,
-    seasons,
   ]);
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer.id);
@@ -91,7 +90,7 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
-      {console.log(game)}
+      {   console.log("currentSeason " + currentSeason.challenges + "currentSeasonIndex:"+currentSeason.title) }
       <RoundStart
         isVisible={true}
         onClose={() => console.log("Close modal")}
@@ -132,14 +131,10 @@ const QuestionScreen = ({ questions = sampleQuestions }) => {
               resetTrigger={resetTimerTrigger}
             />
           </View>
-          <Image
-            source={{ uri: question.image }}
-            style={styles.questionImage}
-          />
-          <Text style={styles.questionTexte}>{question.text}</Text>
-          {question.answers.map((answer) => (
+          <Text style={styles.questionTexte}>{question.question}</Text>
+          {question.options.map((answer,index) => (
             <AppButton
-              key={answer.id}
+              key={index}
               onClick={() => handleAnswer(answer)}
               backgroundColor={
                 showAnswer
