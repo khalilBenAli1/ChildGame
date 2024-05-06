@@ -31,8 +31,9 @@ export const updateScore = (playerName, isCorrect) => ({
   payload: { playerName, isCorrect },
 });
 
-export const toggleRound = () => ({
+export const toggleRound = (value) => ({
   type: "TOGGLE_ROUND",
+  payload: value ,
 });
 
 export const resetPlayerInfo = () => ({

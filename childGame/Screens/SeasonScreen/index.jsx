@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { setCurrentSeason } from "../../store/actions/seasonActions";
+import { toggleRound } from "../../store/actions/gameActions";
 const SeasonScreen = () => {
   const dispatch = useDispatch()
   const [modalVisible, setModalVisible] = useState(false);
@@ -14,7 +15,7 @@ const SeasonScreen = () => {
   const navigation = useNavigation();
   const handleSubmit = (season)=>{
     dispatch(setCurrentSeason(season))
-    console.log(season)
+    dispatch(toggleRound(true));
     navigation.navigate("Questions")
   }
   return (

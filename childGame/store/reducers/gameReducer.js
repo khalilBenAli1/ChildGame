@@ -5,7 +5,7 @@ const initialState = {
   teamsInfo: [],
   currentPlayerIndex: 0,
   scores: {},
-  roundStart: false,
+  roundStart: true,
   roundNumber: 1,
 };
 
@@ -59,7 +59,7 @@ const gameReducer = (state = initialState, action) => {
       };
 
     case "TOGGLE_ROUND":
-      return { ...state, roundStart: !state.roundStart };
+      return { ...state, roundStart: action.payload };
     case "RESET_PLAYER_INFO":
       return {
         ...state,
