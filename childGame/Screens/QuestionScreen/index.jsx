@@ -13,19 +13,21 @@ import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
 import RoundStart from "../../Modals/RoundStart";
 import { useSelector, useDispatch } from "react-redux";
+import Turn from "../../Modals/Turn";
 
 const QuestionScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { gameMode, playerCount, currentPlayerIndex, teamsInfo } = useSelector(
+  const { gameMode, playerCount, currentPlayerIndex, teamsInfo,playerNames } = useSelector(
     (state) => state.game
   );
+
   const currentSeason = useSelector((state) => state.seasons.currentSeason);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showRoundStartModal, setShowRoundStartModal] = useState(true);
+  const [showTurnModal, setShowTurnModal] = useState(false);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [revealAnswers, setRevealAnswers] = useState(false);
@@ -35,13 +37,12 @@ const QuestionScreen = () => {
   useEffect(() => {
     if (
       currentSeason &&
-      currentSeason.challenges.length > 0 &&
-      playerCount > 0
+      currentSeason.challenges.length > 0
     ) {
       let questionsPerParticipant =
         gameMode === "individual"
           ? Math.floor(currentSeason.challenges.length / playerCount)
-          : Math.floor(currentSeason.challenges.length / teamsInfo.length);
+          : Math.floor(currentSeason.challenges.length / 3);
 
       let startIndex = currentPlayerIndex * questionsPerParticipant;
       let endIndex = Math.min(
@@ -60,6 +61,28 @@ const QuestionScreen = () => {
     teamsInfo.length,
   ]);
 
+  const handleRoundStartClose = () => {
+    setShowRoundStartModal(false);
+    setTimeout(() => {
+      setShowTurnModal(true);
+    }, 1000);
+  };
+
+  const handleTurnModalClose = () => {
+    setShowTurnModal(false);
+    // Proceed to the next part of your game logic here
+  };
+
+  const handleRoundStart = () => {
+    console.log("Round Started");
+    handleRoundStartClose();
+  };
+
+  const handleTurnStart = () => {
+    console.log("Turn Started");
+    handleTurnModalClose(); // Close modal and proceed
+  };
+
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer.option); // Track which option was selected
     setRevealAnswers(true); // Set to reveal all answers
@@ -77,6 +100,7 @@ const QuestionScreen = () => {
   };
 
   if (!question) {
+    {console.log(playerNames , teamsInfo , gameMode)}
     return <Text>Loading questions or no questions available.</Text>;
   }
 
@@ -85,7 +109,21 @@ const QuestionScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
+      {console.log(playerNames , teamsInfo , gameMode)}
       <SafeAreaView style={styles.container}>
+        <RoundStart
+          isVisible={showRoundStartModal}
+          onClose={handleRoundStartClose}
+          mode={gameMode}
+          orderList={gameMode==="individual"?playerNames:teamsInfo.map(element=>element.name)}
+          onClick={handleRoundStart}
+        />
+        <Turn
+          isVisible={showTurnModal}
+          onClose={handleTurnModalClose}
+          title="Player Khalil's Turn"
+          onClick={handleTurnStart}
+        />
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
           <Text style={styles.pageTitle}>
