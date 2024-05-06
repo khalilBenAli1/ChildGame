@@ -39,16 +39,6 @@ const initialState = {
 
 const seasonReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "UPDATE_SEASON_PLAYABILITY":
-      return {
-        ...state,
-        seasons: state.seasons.map((season) => {
-          if (season.title === action.payload.seasonTitle) {
-            return { ...season, playable: action.payload.isPlayable };
-          }
-          return season;
-        }),
-      };
     case "SET_CURRENT_SEASON":
       return {
         ...state,
@@ -56,6 +46,22 @@ const seasonReducer = (state = initialState, action) => {
       };
     case "RESET_ALL":
       return { ...initialState };
+      case "UPDATE_SEASON_STATUS":
+        const newSeasons = state.seasons.map((season, index) => {
+          if (season.title === action.payload.seasonTitle) {
+            const updatedSeason = { ...season, completed: action.payload.completed };
+            if (action.payload.completed && index + 1 < state.seasons.length) {
+              state.seasons[index + 1].playable = true;  
+            }
+  
+            return updatedSeason;
+          }
+          return season;
+        });
+        return {
+          ...state,
+          seasons: newSeasons
+        };
     default:
       return state;
   }

@@ -15,6 +15,8 @@ import RoundStart from "../../Modals/RoundStart";
 import Turn from "../../Modals/Turn";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleRound, setCurrentPlayerIndex } from "../../store/actions/gameActions";
+import { updateSeasonStatus } from "../../store/actions/seasonActions";
+import { useNavigation } from "@react-navigation/native";
 
 const QuestionScreen = () => {
   const { t } = useTranslation();
@@ -22,7 +24,7 @@ const QuestionScreen = () => {
   const { gameMode, playerCount, currentPlayerIndex, teamsInfo, playerNames, roundStart } = useSelector(
     (state) => state.game
   );
-
+  const navigation = useNavigation();
   const currentSeason = useSelector((state) => state.seasons.currentSeason);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -75,9 +77,10 @@ const QuestionScreen = () => {
       // Reset the questions for the next player
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
-      // All players have completed their turns
       console.log("Round ended. All players have completed their turns.");
-      // Additional logic to handle end of the round
+      dispatch(updateSeasonStatus(currentSeason.title,true))
+      
+      navigation.navigate("Seasons")
     }
   };
   
