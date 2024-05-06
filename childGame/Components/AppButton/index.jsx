@@ -1,11 +1,26 @@
-import React from 'react';
-import { TouchableOpacity, Image, StyleSheet, View } from 'react-native';
+import React from "react";
+import { TouchableOpacity, Image, StyleSheet, View } from "react-native";
 
-const AppButton = ({ children, onClick, backgroundColor = 'blue', borderColor }) => (
-  <TouchableOpacity onPress={onClick} style={[styles.button, { backgroundColor, borderColor, borderWidth: borderColor ? 3 : 0 }]}>
-    <Image source={require("../../assets/imgs/buttonImage.png")} style={styles.image} />
+const AppButton = ({
+  children,
+  onClick,
+  backgroundColor = "blue",
+  borderColor,
+  disabled = false,
+}) => (
+  <TouchableOpacity
+    onPress={onClick}
+    style={[
+      styles.button,
+      { backgroundColor, borderColor, borderWidth: borderColor ? 3 : 0 },
+    ]}
+    disabled={disabled}
+  >
+    <Image
+      source={require("../../assets/imgs/buttonImage.png")}
+      style={styles.image}
+    />
     <View accessible accessibilityRole="button">
-
       {children}
     </View>
   </TouchableOpacity>
@@ -13,23 +28,22 @@ const AppButton = ({ children, onClick, backgroundColor = 'blue', borderColor })
 
 const styles = StyleSheet.create({
   button: {
-    width:'90%',
+    width: "90%",
     padding: 10,
     margin: 5,
-    borderRadius:30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:"relative",
-    minHeight:60,
-    marginBottom:20
-
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    minHeight: 60,
+    marginBottom: 20,
   },
   image: {
-    position: 'absolute',
+    position: "absolute",
     top: 8,
     right: 10,
-    width:30,
-    height:30,
+    width: 30,
+    height: 30,
   },
 });
 

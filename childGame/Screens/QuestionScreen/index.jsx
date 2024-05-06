@@ -20,49 +20,62 @@ const QuestionScreen = () => {
   const { gameMode, playerCount, currentPlayerIndex, teamsInfo } = useSelector(
     (state) => state.game
   );
-  const currentSeason = useSelector(
-    (state) => state.seasons.currentSeason
-  );
+  const currentSeason = useSelector((state) => state.seasons.currentSeason);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [revealAnswers, setRevealAnswers] = useState(false);
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
 
   useEffect(() => {
-    if (currentSeason && currentSeason.challenges.length > 0 && playerCount > 0) {
-      let questionsPerParticipant = gameMode === "individual"
-        ? Math.floor(currentSeason.challenges.length / playerCount)
-        : Math.floor(currentSeason.challenges.length / teamsInfo.length);
+    if (
+      currentSeason &&
+      currentSeason.challenges.length > 0 &&
+      playerCount > 0
+    ) {
+      let questionsPerParticipant =
+        gameMode === "individual"
+          ? Math.floor(currentSeason.challenges.length / playerCount)
+          : Math.floor(currentSeason.challenges.length / teamsInfo.length);
 
       let startIndex = currentPlayerIndex * questionsPerParticipant;
-      let endIndex = Math.min(startIndex + questionsPerParticipant, currentSeason.challenges.length);
+      let endIndex = Math.min(
+        startIndex + questionsPerParticipant,
+        currentSeason.challenges.length
+      );
 
       setQuestions(currentSeason.challenges.slice(startIndex, endIndex));
       setCurrentQuestionIndex(0);
     }
-  }, [currentSeason, currentPlayerIndex, gameMode, playerCount, teamsInfo.length]);
+  }, [
+    currentSeason,
+    currentPlayerIndex,
+    gameMode,
+    playerCount,
+    teamsInfo.length,
+  ]);
 
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer.option); // Track which option was selected
-    setShowAnswer(true); // This will trigger showing the result
-  
-    const isCorrect = answer.option === question.correctAnswer;
-    // Optionally, you could update a score state or handle correct/incorrect logic here
-    
+    setRevealAnswers(true); // Set to reveal all answers
+    setButtonsDisabled(true);
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
         // Handle end of quiz, e.g., navigate to a results screen or show summary
       }
-      setSelectedAnswer(null); // Reset selection for the next question
-      setShowAnswer(false); // Hide answer highlights
-    }, 2000); // Delay for showing the result briefly
+      setSelectedAnswer(null);
+      setRevealAnswers(false);
+      setButtonsDisabled(false); // Reset for the next question
+    }, 2000); // Delay for showing the results briefly
   };
+
   if (!question) {
     return <Text>Loading questions or no questions available.</Text>;
   }
@@ -75,7 +88,9 @@ const QuestionScreen = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
-          <Text style={styles.pageTitle}>{currentQuestionIndex + 1} / {totalQuestions}</Text>
+          <Text style={styles.pageTitle}>
+            {currentQuestionIndex + 1} / {totalQuestions}
+          </Text>
         </View>
         <ProgressBar
           progress={(currentQuestionIndex + 1) / totalQuestions}
@@ -87,18 +102,18 @@ const QuestionScreen = () => {
         />
         <CenteredBox style={styles.centeredBox} height={"80%"}>
           <Text style={styles.questionText}>{question.question}</Text>
-          {console.log(question.question)}
           {question.options.map((answer, index) => (
             <AppButton
               key={index}
               onClick={() => handleAnswer(answer)}
               backgroundColor={
-                selectedAnswer === answer.option && showAnswer
+                revealAnswers
                   ? answer.option === question.correctAnswer
-                    ? "#389936"  // Green for correct
-                    : "#FF2F2F"  // Red for incorrect
-                  : "#DEAE48"   // Default color when no answer is selected or showing results
+                    ? "#389936" // Green for correct
+                    : "#FF2F2F" // Red for incorrect
+                  : "#DEAE48" // Default color
               }
+              disabled={buttonsDisabled}
             >
               <Text style={styles.optionText}>{answer.text}</Text>
             </AppButton>
@@ -108,7 +123,6 @@ const QuestionScreen = () => {
     </ImageBackground>
   );
 };
-
 
 const styles = StyleSheet.create({
   fullScreen: {
