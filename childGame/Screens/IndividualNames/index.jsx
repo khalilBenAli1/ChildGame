@@ -1,16 +1,23 @@
-import React, { useState,useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, ImageBackground } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
 import CenteredBox from "../../Components/CenteredBox";
 import { useTranslation } from "react-i18next";
 import AppButton from "../../Components/AppButton";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { setPlayerNames } from "../../store/actions/gameActions";
 import { useNavigation } from "@react-navigation/native";
+import { resetSeasonAll } from "../../store/actions/seasonActions";
 
 const IndividualNames = ({ route }) => {
-  const navigation=useNavigation()
+  const navigation = useNavigation();
   const { t } = useTranslation();
-  const { numberOfPlayers  } = route.params; 
+  const { numberOfPlayers } = route.params;
   const [names, setNames] = useState(Array(numberOfPlayers).fill(""));
   const dispatch = useDispatch();
   useEffect(() => {
@@ -22,7 +29,7 @@ const IndividualNames = ({ route }) => {
     newNames[index] = text;
     setNames(newNames);
   };
-  
+
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
@@ -44,7 +51,10 @@ const IndividualNames = ({ route }) => {
         ))}
         <View style={styles.buttonContainer}>
           <AppButton
-            onClick={() => navigation.navigate("Seasons")}
+            onClick={() => {
+              dispatch(resetSeasonAll());
+              navigation.navigate("Seasons");
+            }}
             backgroundColor="#389936"
           >
             <Text style={styles.buttonText}>{t("startExperience")}</Text>
@@ -69,9 +79,9 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginBottom: 20,
   },
-  namesStyle:{
+  namesStyle: {
     alignSelf: "flex-start",
-    width:"90%"
+    width: "90%",
   },
   subTitle: {
     fontSize: 18,
@@ -92,21 +102,21 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontWeight: 'bold',
-    fontSize: 18
+    fontWeight: "bold",
+    fontSize: 18,
   },
   buttonContainer: {
     marginTop: 20,
     width: "100%",
-    alignItems: "center"
+    alignItems: "center",
   },
   pageTitle: {
     color: "white",
     alignSelf: "center",
     margin: 10,
     fontSize: 30,
-    fontWeight: 'bold'
-  }
+    fontWeight: "bold",
+  },
 });
 
 export default IndividualNames;

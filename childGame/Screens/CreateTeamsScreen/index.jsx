@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch,useSelector } from "react-redux";
 import { setTeamsInfo,resetAll,setGameMode  } from "../../store/actions/gameActions";
 import { useNavigation } from "@react-navigation/native";
-
+import { resetSeasonAll } from "../../store/actions/seasonActions";
 const CreateTeamsScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -48,6 +48,7 @@ const CreateTeamsScreen = () => {
     );
     if (allTeamsValid) {
       dispatch(setTeamsInfo(teams));
+      dispatch(resetSeasonAll());
       dispatch(setGameMode("teams"));
       console.log(teamss)
       navigation.navigate("Seasons");
