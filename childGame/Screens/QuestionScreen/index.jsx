@@ -37,8 +37,10 @@ const QuestionScreen = () => {
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
   const playerList = gameMode === "individual" ? playerNames : teamsInfo.map(element => element.name);
+  const timerDuration = 10;
 
   useEffect(() => {
+    console.log("executedEffect")
     if (currentSeason && currentSeason.challenges.length > 0) {
       let questionsPerParticipant = gameMode === "individual"
         ? Math.floor(currentSeason.challenges.length / playerCount)
@@ -46,7 +48,6 @@ const QuestionScreen = () => {
 
       let startIndex = currentPlayerIndex * questionsPerParticipant;
       let endIndex = Math.min(startIndex + questionsPerParticipant, currentSeason.challenges.length);
-
       setQuestions(currentSeason.challenges.slice(startIndex, endIndex));
       setCurrentQuestionIndex(0);
 
@@ -54,6 +55,7 @@ const QuestionScreen = () => {
         setShowTurnModal(true);
       }
     }
+    
   }, [currentSeason, currentPlayerIndex, gameMode, playerCount, teamsInfo.length, roundStart]);
 
   const handleRoundStartClose = () => {
@@ -72,9 +74,7 @@ const QuestionScreen = () => {
   const finalizeCurrentPlayerTurn = () => {
     let players=gameMode==='individual'?playerCount:teamsInfo.length;
     if (currentPlayerIndex + 1 < players) {
-      // Prepare to move to next player
       dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
-      // Reset the questions for the next player
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
       console.log("Round ended. All players have completed their turns.");
@@ -94,9 +94,7 @@ const QuestionScreen = () => {
     let endIndex = Math.min(startIndex + questionsPerParticipant, currentSeason.challenges.length);
   
     setQuestions(currentSeason.challenges.slice(startIndex, endIndex));
-    setCurrentQuestionIndex(0);  // Reset the question index for the new player
-  
-    // Now show the turn modal for the new player
+    setCurrentQuestionIndex(0);
     setShowTurnModal(true);
   };
 
@@ -113,14 +111,35 @@ const QuestionScreen = () => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
-        // No more questions, handle end of player's turn
         finalizeCurrentPlayerTurn();
       }
       setSelectedAnswer(null);
       setRevealAnswers(false);
       setButtonsDisabled(false);
-    }, 2000); // Delay for showing the results briefly
+    }, 2000);
   };
+  const handleTimerEnd = () => {
+    console.log(`Timer expired for question ${currentQuestionIndex}`);
+    setSelectedAnswer('time_expired');
+    setRevealAnswers(true);
+    setButtonsDisabled(true);
+
+    setTimeout(() => {
+        if (currentQuestionIndex + 1 < totalQuestions) {
+            console.log(`Moving to next question: ${currentQuestionIndex + 1}`,'executed ');
+            setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+        } else {
+            console.log('No more questions, finalizing player turn.');
+            finalizeCurrentPlayerTurn();
+        }
+        console.log("executed")
+        setSelectedAnswer(null);
+        setRevealAnswers(false);
+        setButtonsDisabled(false);
+        setResetTimerTrigger(prev=>prev+1)
+    }, 2000); 
+    
+};
 
   if (!question) {
 
@@ -161,6 +180,11 @@ const QuestionScreen = () => {
           borderWidth={0}
         />
         <CenteredBox style={styles.centeredBox} height={"80%"}>
+        <CountdownTimer
+          initialTime={timerDuration}
+          onEnd={()=>handleTimerEnd()}
+          resetTrigger={resetTimerTrigger}
+        />
           <Text style={styles.questionText}>{question.question}</Text>
           {question.options.map((answer, index) => (
             <AppButton

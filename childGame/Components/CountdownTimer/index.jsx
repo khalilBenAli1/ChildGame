@@ -5,32 +5,34 @@ const CountdownTimer = ({ initialTime, onEnd, resetTrigger }) => {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    setTime(initialTime);  
+    setTime(initialTime); // Reset the time whenever initialTime or resetTrigger changes
   }, [initialTime, resetTrigger]);
 
   useEffect(() => {
-    let interval = null;
+    // Set up the interval only when there is time left on the clock
     if (time > 0) {
-      interval = setInterval(() => {
-        setTime(t => t - 1);
+      const interval = setInterval(() => {
+        setTime((prevTime) => {
+          if (prevTime - 1 <= 0) {
+            clearInterval(interval); // Clear the interval when the countdown should end
+            onEnd(); // Call onEnd directly here when time runs out
+            return 0;
+          }
+          return prevTime - 1;
+        });
       }, 1000);
-    } else if (time === 0) {
-      if (onEnd) onEnd();
+
+      return () => clearInterval(interval); // Ensure interval is cleared on component unmount
     }
-
-    return () => clearInterval(interval);
   }, [time, onEnd]);
-
-
-  const renderDigit = (digit, index) => (
-    <View key={index} style={styles.digit}>
-      <Text style={styles.digitText}>{digit}</Text>
-    </View>
-  );
 
   return (
     <View style={styles.container}>
-      {String(time).padStart(2, '0').split('').map((digit, index) => renderDigit(digit, index))}
+      {String(time).padStart(2, '0').split('').map((digit, index) => (
+        <View key={index} style={styles.digit}>
+          <Text style={styles.digitText}>{digit}</Text>
+        </View>
+      ))}
     </View>
   );
 };
@@ -47,8 +49,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
-    borderRadius: 10, 
-    backgroundColor:"#1BAA76"
+    borderRadius: 10,
+    backgroundColor: "#1BAA76"
   },
   digitText: {
     fontSize: 20,
