@@ -26,6 +26,7 @@ export const setCurrentPlayerIndex = (index) => ({
   type: "SET_CURRENT_PLAYER_INDEX",
   payload: index,
 });
+
 export const updateScore = (playerName, isCorrect) => ({
   type: "UPDATE_SCORE",
   payload: { playerName, isCorrect },

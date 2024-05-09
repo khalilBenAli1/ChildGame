@@ -5,24 +5,23 @@ const CountdownTimer = ({ initialTime, onEnd, resetTrigger }) => {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    setTime(initialTime); // Reset the time whenever initialTime or resetTrigger changes
+    setTime(initialTime);
   }, [initialTime, resetTrigger]);
 
   useEffect(() => {
-    // Set up the interval only when there is time left on the clock
     if (time > 0) {
       const interval = setInterval(() => {
         setTime((prevTime) => {
           if (prevTime - 1 <= 0) {
-            clearInterval(interval); // Clear the interval when the countdown should end
-            onEnd(); // Call onEnd directly here when time runs out
+            clearInterval(interval);
+            onEnd();
             return 0;
           }
           return prevTime - 1;
         });
       }, 1000);
 
-      return () => clearInterval(interval); // Ensure interval is cleared on component unmount
+      return () => clearInterval(interval);
     }
   }, [time, onEnd]);
 

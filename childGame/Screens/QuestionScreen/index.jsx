@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 const QuestionScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const state=useSelector(state=>state.game)
   const { gameMode, playerCount, currentPlayerIndex, teamsInfo, playerNames, roundStart } = useSelector(
     (state) => state.game
   );
@@ -77,7 +78,6 @@ const QuestionScreen = () => {
       dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
-      console.log("Round ended. All players have completed their turns.");
       dispatch(updateSeasonStatus(currentSeason.title,true))
       
       navigation.navigate("Seasons")
@@ -116,23 +116,20 @@ const QuestionScreen = () => {
       setSelectedAnswer(null);
       setRevealAnswers(false);
       setButtonsDisabled(false);
+      setResetTimerTrigger(prev=>prev+1)
     }, 2000);
   };
   const handleTimerEnd = () => {
-    console.log(`Timer expired for question ${currentQuestionIndex}`);
     setSelectedAnswer('time_expired');
     setRevealAnswers(true);
     setButtonsDisabled(true);
 
     setTimeout(() => {
         if (currentQuestionIndex + 1 < totalQuestions) {
-            console.log(`Moving to next question: ${currentQuestionIndex + 1}`,'executed ');
             setCurrentQuestionIndex(prevIndex => prevIndex + 1);
         } else {
-            console.log('No more questions, finalizing player turn.');
             finalizeCurrentPlayerTurn();
         }
-        console.log("executed")
         setSelectedAnswer(null);
         setRevealAnswers(false);
         setButtonsDisabled(false);
@@ -151,6 +148,7 @@ const QuestionScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
+      {console.log("playername",state)}
       <SafeAreaView style={styles.container}>
         <RoundStart
           isVisible={roundStart}

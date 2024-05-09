@@ -13,22 +13,20 @@ import NumberOfPlayers from "../../Components/NumberOfPlayers";
 import AppButton from "../../Components/AppButton";
 import { useTranslation } from "react-i18next";
 import { useDispatch,useSelector } from "react-redux";
-import { setTeamsInfo,resetAll,setGameMode  } from "../../store/actions/gameActions";
+import { setTeamsInfo,setGameMode  } from "../../store/actions/gameActions";
 import { useNavigation } from "@react-navigation/native";
 import { resetSeasonAll } from "../../store/actions/seasonActions";
 const CreateTeamsScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const teamss =useSelector(state=>state)
+  const teamss =useSelector(state=>state.game)
   const [teams, setTeams] = useState([
     { name: "", players: 0 },
     { name: "", players: 0 },
     { name: "", players: 0 },
   ]);
-  useEffect(() => {
-    dispatch(resetAll());
-  }, []);
+
 
   const handleSetTeamName = (text, index) => {
     setTeams((teams) =>
@@ -47,10 +45,12 @@ const CreateTeamsScreen = () => {
       (team) => team.name !== "" && team.players > 0
     );
     if (allTeamsValid) {
-      dispatch(setTeamsInfo(teams));
       dispatch(resetSeasonAll());
+
+      dispatch(setTeamsInfo(teams));
+      
       dispatch(setGameMode("teams"));
-      console.log(teamss)
+      console.log("teams:",teamss,teams)
       navigation.navigate("Seasons");
     }
   };

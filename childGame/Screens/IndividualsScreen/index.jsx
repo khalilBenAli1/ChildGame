@@ -11,11 +11,10 @@ import { useNavigation } from '@react-navigation/native';
 const IndividualsScreen = () => {
   const { t } = useTranslation();
   const [playerCount, setPlayerCountLocal] = useState(0);
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handlePlayerCountChange = (newCount) => {
     setPlayerCountLocal(newCount);
-    dispatch(setPlayerCount(newCount));
+    
   };
 
   return (
@@ -29,7 +28,7 @@ const IndividualsScreen = () => {
         <NumberOfPlayers onCountChange={handlePlayerCountChange} />
         <View style={styles.buttonContainer}>
           <AppButton
-            onClick={()=>navigation.navigate('IndividualNames', { numberOfPlayers:playerCount })}
+            onClick={()=>{navigation.navigate('IndividualNames', { numberOfPlayers:playerCount })}}
             backgroundColor="#389936"
           >
             <Text style={styles.buttonText}>{t("startExperience")}</Text>

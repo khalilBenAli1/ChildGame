@@ -9,21 +9,19 @@ import {
 import CenteredBox from "../../Components/CenteredBox";
 import { useTranslation } from "react-i18next";
 import AppButton from "../../Components/AppButton";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { setPlayerNames } from "../../store/actions/gameActions";
 import { useNavigation } from "@react-navigation/native";
 import { resetSeasonAll } from "../../store/actions/seasonActions";
-
+import { setPlayerCount } from "../../store/actions/gameActions";
+import { setGameMode } from "../../store/actions/gameActions";
 const IndividualNames = ({ route }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   const { numberOfPlayers } = route.params;
   const [names, setNames] = useState(Array(numberOfPlayers).fill(""));
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setPlayerNames(names));
-  }, [names, dispatch]);
-
+  const users = useSelector(state=>state.game)
   const handleNameChange = (text, index) => {
     const newNames = [...names];
     newNames[index] = text;
@@ -52,7 +50,12 @@ const IndividualNames = ({ route }) => {
         <View style={styles.buttonContainer}>
           <AppButton
             onClick={() => {
+              
               dispatch(resetSeasonAll());
+              dispatch(setPlayerNames(names));
+              dispatch(setPlayerCount(numberOfPlayers))
+              dispatch(setGameMode("individual"))
+              console.log(users)
               navigation.navigate("Seasons");
             }}
             backgroundColor="#389936"
