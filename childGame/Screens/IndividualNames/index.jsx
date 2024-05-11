@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   ImageBackground,
+  ScrollView
 } from "react-native";
 import CenteredBox from "../../Components/CenteredBox";
 import { useTranslation } from "react-i18next";
@@ -35,6 +36,7 @@ const IndividualNames = ({ route }) => {
     >
       <Text style={styles.pageTitle}>{t("names")}</Text>
       <CenteredBox>
+      <ScrollView style={{ flex: 1 }}>
         <Text style={styles.title}>{t("individualNames")}</Text>
         {names.map((name, index) => (
           <View key={index} style={styles.namesStyle}>
@@ -63,6 +65,7 @@ const IndividualNames = ({ route }) => {
             <Text style={styles.buttonText}>{t("startExperience")}</Text>
           </AppButton>
         </View>
+        </ScrollView>
       </CenteredBox>
     </ImageBackground>
   );
