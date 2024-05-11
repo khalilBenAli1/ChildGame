@@ -79,7 +79,7 @@ const QuestionScreen = () => {
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
       dispatch(updateSeasonStatus(currentSeason.title,true))
-      
+      dispatch(setCurrentPlayerIndex(0));
       navigation.navigate("Seasons")
     }
   };
@@ -177,12 +177,14 @@ const QuestionScreen = () => {
           unfilledColor="#CCCCCC"
           borderWidth={0}
         />
-        <CenteredBox style={styles.centeredBox} height={"80%"}>
+        <CenteredBox style={styles.centeredBox} height={"88%"}>
+          <View style={styles.counter}>
         <CountdownTimer
           initialTime={timerDuration}
           onEnd={()=>handleTimerEnd()}
           resetTrigger={resetTimerTrigger}
         />
+        </View>
           <Text style={styles.questionText}>{question.question}</Text>
           {question.options.map((answer, index) => (
             <AppButton
@@ -217,8 +219,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "90%",
     justifyContent: "space-between",
-    marginTop: -40,
+    marginTop: -5,
     marginBottom: 10,
+  },
+  counter:{
+    marginBottom:30,
+    marginTop:-120
   },
   container: {
     flex: 1,
@@ -246,7 +252,7 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 24,
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 50,
     color: "black",
   },
 });
