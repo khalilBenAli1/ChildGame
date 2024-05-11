@@ -1,115 +1,168 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Modal } from 'react-native';
-import CustomModal from '../../Components/CustomModal';
-import AppButton from '../../Components/AppButton';
+import React from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import CustomModal from "../../Components/CustomModal";
+import AppButton from "../../Components/AppButton";
 
-const RoundPoints = ({ isVisible, onClose, bannerText, numberOfPlayers, mode, players }) => {
+const RoundPoints = ({
+  isVisible,
+  onClose,
+  bannerText,
+  numberOfPlayers,
+  mode,
+  players,
+  scores,
+}) => {
+  const getRankDetails = (rank) => {
+    if (rank === 0) {
+      // Highest score
+      return { message: "Roll Dice + BONUS CARD", color: "#389936" }; // Green
+    } else if (rank === 1 && numberOfPlayers > 2) {
+      // Second highest score
+      return { message: "Roll Dice", color: "#389936" }; // Green
+    } else {
+      return { message: "No Card No Rolling Dice", color: "#FF2156" }; // Red
+    }
+  };
+
+  const sortedPlayers = players
+    .map((name) => ({ name, score: scores[name] ? scores[name].correct : 0 }))
+    .sort((a, b) => b.score - a.score);
+
   return (
-    <CustomModal isVisible={isVisible} onClose={onClose} height="80%" hasBanner bannerText={bannerText}>
+    <CustomModal
+      isVisible={isVisible}
+      onClose={onClose}
+      height="80%"
+      hasBanner
+      bannerText={bannerText}
+    >
       <View style={styles.container}>
         <Image
           source={require("../../assets/imgs/Score.png")}
           style={styles.image}
         />
         <Text style={styles.roundPointsTitle}>Round Points</Text>
-        <View style={[styles.namesContainer, { justifyContent: numberOfPlayers === 1 ? 'center' : 'space-around' }]}>
+        <View style={styles.namesContainer}>
           {players.map((name, index) => (
-            <View key={index} style={styles.nameBox}>
-              <Text style={styles.name}>{name}</Text>
+            <>
+              <View key={index} style={styles.nameBox}>
+                <Text style={styles.name}>{name}</Text>
+                <View style={styles.scoreCont}>
+                  <Text
+                    style={styles.numberAnswers}
+                  >{scores[name] ? `${scores[name].correct}`:null}</Text>
+                  <Text style={styles.score}>Correct</Text>
+                  <Text style={styles.score}>Answers</Text>
+                </View>
+              </View>
               {index < players.length - 1 && <View style={styles.separator} />}
-            </View>
+            </>
           ))}
         </View>
-        <View style={styles.horizontalSeparator} />
-        <Text style={styles.roundResultTitle}>Round Result</Text>
-        <View style={[styles.namesContainer, { justifyContent: numberOfPlayers === 1 ? 'center' : 'space-around' }]}>
-          {players.map((name, index) => (
-            <View key={index} style={styles.nameBox}>
-              <Text style={styles.name}>{name}</Text>
-              {index < players.length - 1 && <View style={styles.separator} />}
-            </View>
-          ))}
+        <Text style={styles.roundResult}>Round Result</Text>
+        <View style={styles.namesContainer}>
+          {sortedPlayers.map((player, index) => {
+            const rankDetails = getRankDetails(index);
+            return (
+              <>
+                <View key={index} style={styles.nameBox}>
+                  <Text style={styles.name}>{player.name}</Text>
+                  <View style={styles.scoreCont}>
+                  <Text style={[styles.rankMessage, { color: rankDetails.color }]}>{rankDetails.message}</Text>
+                  </View>
+                </View>
+                {index < players.length - 1 && (
+                  <View style={styles.separator} />
+                )}
+              </>
+            );
+          })}
         </View>
       </View>
+
+      <AppButton onClick={onClose} backgroundColor={"#389936"}>
+        <Text style={styles.buttonText}>Move to the next round</Text>
+      </AppButton>
     </CustomModal>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
-  },
-  bannerText: {
-    fontSize: 18,
-    color: '#000',
-    fontWeight: 'bold',
-    marginBottom: 10,
   },
   image: {
     width: 250,
     height: 250,
     marginBottom: 20,
-    resizeMode:"contain"
+    resizeMode: "contain",
   },
   roundPointsTitle: {
     fontSize: 22,
-    color: '#389936',
-    fontWeight: 'bold',
+    color: "#389936",
+    fontWeight: "bold",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
+  },
+  rankMessage: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#DEAE48",
+    textAlign: "center",
+    marginBottom: 10,
+    width: 80,
+  },
+  roundResult: {
+    fontSize: 22,
+    color: "#DEAE48",
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
   },
   namesContainer: {
-    flexDirection: 'row',
-    marginVertical:20,
-    height:100,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    paddingVertical: 20,
+  },
+  numberAnswers: {
+    color: "#389936",
+    fontWeight: "bold",
   },
   nameBox: {
-    flexDirection: 'row',
-    alignItems: "flex-start",
-    justifyContent:"flex-start"
+    flexDirection: "column", // Ensure vertical stacking of name and score
+    alignItems: "center",
+    paddingHorizontal: 30, // Adjust as necessary for spacing
   },
   name: {
     fontSize: 16,
-    color: '#000',
-    textAlign: 'center',
+    color: "#000",
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  score: {
+    fontSize: 14,
+    flexDirection: "column",
+    alignItems: "center",
+    color: "#555",
+  },
+  scoreCont: {
+    flexDirection: "column",
+    alignItems: "center",
   },
   separator: {
-    height: '100%',
+    height: "100%",
     width: 1,
-    backgroundColor: '#000',
-    marginHorizontal: 20,
+    backgroundColor: "#000",
+    marginHorizontal: 10,
+    alignSelf: "center",
   },
-  horizontalSeparator:{
-    borderWidth: 1,
-    borderColor: "black",
-    borderStyle: "dashed",
-    width:300,
-    marginVertical:20,
-    height:1
-  },
-  roundResultTitle: {
-    fontSize: 22,
-    color: '#DEAE48',
-    marginBottom: 5,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  roundResult: {
-    fontSize: 16,
-    textAlign: 'center',
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 
 export default RoundPoints;
-
-
-//modal usage 
-// <RoundPoints
-// isVisible={true}
-// onClose={() => console.log("Close modal")}
-// bannerText={<Text>Final Scores</Text>}
-// numberOfPlayers={3}
-// mode="team"
-// players={["Team Alpha", "Team Beta", "Team Gamma"]}
-// />

@@ -21,7 +21,8 @@ import {
 import { updateSeasonStatus } from "../../store/actions/seasonActions";
 import { useNavigation } from "@react-navigation/native";
 import { updateScore } from "../../store/actions/gameActions";
-
+import CompletedRound from "../../Modals/CompletedRound";
+import RoundPoints from "../../Modals/RoundPoints";
 const QuestionScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -45,6 +46,8 @@ const QuestionScreen = () => {
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [revealAnswers, setRevealAnswers] = useState(false);
+  const [showCompletedModal, setShowCompletedModal] = useState(false);
+
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
   const playerList =
@@ -100,12 +103,15 @@ const QuestionScreen = () => {
       dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
-      dispatch(updateSeasonStatus(currentSeason.title, true));
-      dispatch(setCurrentPlayerIndex(0));
-      navigation.navigate("Seasons");
+      setShowCompletedModal(true);
     }
   };
-
+  const handleCompletedModalClose = () => {
+    setShowCompletedModal(false);
+    dispatch(updateSeasonStatus(currentSeason.title, true));
+    dispatch(setCurrentPlayerIndex(0));
+    navigation.navigate("Seasons");
+  };
   const resetQuestionsForNextPlayer = (newPlayerIndex) => {
     let questionsPerParticipant =
       gameMode === "individual"
@@ -185,6 +191,16 @@ const QuestionScreen = () => {
           onClose={handleTurnModalClose}
           title={`${playerList[currentPlayerIndex]}'s Turn`}
           onClick={handleTurnModalClose}
+        />
+         <RoundPoints
+          isVisible={showCompletedModal}
+          onClose={handleCompletedModalClose}
+          bannerText={<Text>Final Scores</Text>}
+          numberOfPlayers={playerCount}  
+          mode={gameMode}  
+          players={playerList}  
+          scores={scores}
+
         />
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
