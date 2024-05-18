@@ -23,6 +23,14 @@ import { useNavigation } from "@react-navigation/native";
 import { updateScore } from "../../store/actions/gameActions";
 import CompletedRound from "../../Modals/CompletedRound";
 import RoundPoints from "../../Modals/RoundPoints";
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 const QuestionScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -47,7 +55,7 @@ const QuestionScreen = () => {
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [revealAnswers, setRevealAnswers] = useState(false);
   const [showCompletedModal, setShowCompletedModal] = useState(false);
-
+  const [selectedOption, setSelectedOption] = useState(null);
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
   const playerList =
@@ -57,37 +65,32 @@ const QuestionScreen = () => {
   const timerDuration = 10;
 
   useEffect(() => {
-    let isActive = true;  
-    console.log("avtive")
     if (currentSeason && currentSeason.challenges.length > 0) {
-      let questionsPerParticipant =
-        gameMode === "individual"
-          ? Math.floor(currentSeason.challenges.length / playerCount)
-          : Math.floor(currentSeason.challenges.length / 3);
+        let allQuestions = [...currentSeason.challenges];
+        shuffleArray(allQuestions);
 
-      let startIndex = currentPlayerIndex * questionsPerParticipant;
-      let endIndex = Math.min(
-        startIndex + questionsPerParticipant,
-        currentSeason.challenges.length
-      );
-      setQuestions(currentSeason.challenges.slice(startIndex, endIndex));
-      setCurrentQuestionIndex(0);
+        const questionsPerParticipant = gameMode === "individual"
+            ? Math.floor(allQuestions.length / playerCount)
+            : Math.floor(allQuestions.length / 3);
 
-      if (!roundStart) {
-        setShowTurnModal(true);
-      }
+        const startIndex = currentPlayerIndex * questionsPerParticipant;
+        const endIndex = Math.min(
+            startIndex + questionsPerParticipant,
+            allQuestions.length
+        );
+
+        const selectedQuestions = allQuestions.slice(startIndex, endIndex)
+            .map(question => ({
+                ...question,
+                options: [...question.options]
+            }));
+
+        selectedQuestions.forEach(question => shuffleArray(question.options));
+
+        setQuestions(selectedQuestions);
+        setCurrentQuestionIndex(0);
     }
-    return () => {
-      isActive = false; 
-    };
-  }, [
-    currentSeason,
-    currentPlayerIndex,
-    gameMode,
-    playerCount,
-    teamsInfo.length,
-    roundStart,
-  ]);
+}, [currentSeason, currentPlayerIndex, gameMode, playerCount, teamsInfo.length, roundStart]);
 
   const handleRoundStartClose = () => {
     setShowRoundStartModal(false);
@@ -109,7 +112,7 @@ const QuestionScreen = () => {
     } else {
       // setShowCompletedModal(true);
       dispatch(setCurrentPlayerIndex(0));
-      console.log("reset",currentPlayerIndex)
+      console.log("reset", currentPlayerIndex);
       navigation.replace("CompleteWord");
     }
   };
@@ -143,6 +146,7 @@ const QuestionScreen = () => {
 
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer.option);
+    setSelectedOption(answer);
     setRevealAnswers(true);
     setButtonsDisabled(true);
     setTimeout(() => {
@@ -152,6 +156,7 @@ const QuestionScreen = () => {
         finalizeCurrentPlayerTurn();
       }
       setSelectedAnswer(null);
+      setSelectedOption(null);
       setRevealAnswers(false);
       setButtonsDisabled(false);
       setResetTimerTrigger((prev) => prev + 1);
@@ -176,7 +181,7 @@ const QuestionScreen = () => {
     setSelectedAnswer(null);
     setRevealAnswers(false);
     setButtonsDisabled(false);
-    setResetTimerTrigger(prev => prev + 1);
+    setResetTimerTrigger((prev) => prev + 1);
   };
 
   if (!question) {
@@ -188,7 +193,6 @@ const QuestionScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
-
       <SafeAreaView style={styles.container}>
         <RoundStart
           isVisible={roundStart}
@@ -203,15 +207,14 @@ const QuestionScreen = () => {
           title={`${playerList[currentPlayerIndex]}'s Turn`}
           onClick={handleTurnModalClose}
         />
-         <RoundPoints
+        <RoundPoints
           isVisible={showCompletedModal}
           onClose={handleCompletedModalClose}
           bannerText={<Text>Final Scores</Text>}
-          numberOfPlayers={playerCount || teamsInfo.length}  
-          mode={gameMode}  
-          players={playerList}  
+          numberOfPlayers={playerCount || teamsInfo.length}
+          mode={gameMode}
+          players={playerList}
           scores={scores}
-
         />
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
@@ -241,15 +244,19 @@ const QuestionScreen = () => {
               key={index}
               onClick={() => {
                 answer.option === question.correctAnswer
-                  ? dispatch(updateScore(playerList[currentPlayerIndex],true))
-                  : dispatch(updateScore(playerList[currentPlayerIndex],false));
+                  ? dispatch(updateScore(playerList[currentPlayerIndex], true))
+                  : dispatch(
+                      updateScore(playerList[currentPlayerIndex], false)
+                    );
                 handleAnswer(answer);
               }}
               backgroundColor={
                 revealAnswers
-                  ? answer.option === question.correctAnswer
-                    ? "#389936" // Green for correct
-                    : "#FF2F2F" // Red for incorrect
+                  ? answer.option === selectedOption?.option
+                    ? answer.option === question.correctAnswer
+                      ? "#389936" // Green for correct
+                      : "#FF2F2F" // Red for incorrect
+                    : "#D9D9D9" // Dim other options
                   : "#DEAE48" // Default color
               }
               disabled={buttonsDisabled}
@@ -310,6 +317,11 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     color: "black",
   },
+  optionText:{
+    maxWidth:'80%',
+    color:"white",
+    fontWeight:"600",
+  }
 });
 
 export default QuestionScreen;
