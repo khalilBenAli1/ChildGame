@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ImageBackground,
   SafeAreaView,
+  Image
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Bar as ProgressBar } from "react-native-progress";
@@ -66,31 +67,40 @@ const QuestionScreen = () => {
 
   useEffect(() => {
     if (currentSeason && currentSeason.challenges.length > 0) {
-        let allQuestions = [...currentSeason.challenges];
-        shuffleArray(allQuestions);
+      let allQuestions = [...currentSeason.challenges];
+      shuffleArray(allQuestions);
 
-        const questionsPerParticipant = gameMode === "individual"
-            ? Math.floor(allQuestions.length / playerCount)
-            : Math.floor(allQuestions.length / 3);
+      const questionsPerParticipant =
+        gameMode === "individual"
+          ? Math.floor(allQuestions.length / playerCount)
+          : Math.floor(allQuestions.length / 3);
 
-        const startIndex = currentPlayerIndex * questionsPerParticipant;
-        const endIndex = Math.min(
-            startIndex + questionsPerParticipant,
-            allQuestions.length
-        );
+      const startIndex = currentPlayerIndex * questionsPerParticipant;
+      const endIndex = Math.min(
+        startIndex + questionsPerParticipant,
+        allQuestions.length
+      );
 
-        const selectedQuestions = allQuestions.slice(startIndex, endIndex)
-            .map(question => ({
-                ...question,
-                options: [...question.options]
-            }));
+      const selectedQuestions = allQuestions
+        .slice(startIndex, endIndex)
+        .map((question) => ({
+          ...question,
+          options: [...question.options],
+        }));
 
-        selectedQuestions.forEach(question => shuffleArray(question.options));
+      selectedQuestions.forEach((question) => shuffleArray(question.options));
 
-        setQuestions(selectedQuestions);
-        setCurrentQuestionIndex(0);
+      setQuestions(selectedQuestions);
+      setCurrentQuestionIndex(0);
     }
-}, [currentSeason, currentPlayerIndex, gameMode, playerCount, teamsInfo.length, roundStart]);
+  }, [
+    currentSeason,
+    currentPlayerIndex,
+    gameMode,
+    playerCount,
+    teamsInfo.length,
+    roundStart,
+  ]);
 
   const handleRoundStartClose = () => {
     setShowRoundStartModal(false);
@@ -264,6 +274,13 @@ const QuestionScreen = () => {
               <Text style={styles.optionText}>{answer.text}</Text>
             </AppButton>
           ))}
+          <View style={{width:'60%',justifyContent:"center",alignItems:"center", position:"absolute",bottom:0}}>
+          <Image source={require("../../assets/newImgs/Group 6970.png")} style={{width:60,height:60}} resizeMode="contain"/>
+            <AppButton backgroundColor={"#FF2F2F"}>
+              
+              <Text style={styles.optionText}>Super Card</Text>
+            </AppButton>
+          </View>
         </CenteredBox>
       </SafeAreaView>
     </ImageBackground>
@@ -317,11 +334,11 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     color: "black",
   },
-  optionText:{
-    maxWidth:'80%',
-    color:"white",
-    fontWeight:"600",
-  }
+  optionText: {
+    maxWidth: "80%",
+    color: "white",
+    fontWeight: "600",
+  },
 });
 
 export default QuestionScreen;
