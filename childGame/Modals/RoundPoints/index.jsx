@@ -15,12 +15,11 @@ const RoundPoints = ({
   const getRankDetails = (rank) => {
     if (rank === 0) {
       // Highest score
-      return { message: "Roll Dice + BONUS CARD", color: "#389936" }; // Green
-    } else if (rank === 1 && numberOfPlayers > 2) {
-      // Second highest score
-      return { message: "Roll Dice", color: "#389936" }; // Green
+      return { message: "Roll Dice + BONUS CARD", color: "#389936" };
+    } else if (rank === 1 && numberOfPlayers > 2 ) {
+      return { message: "Roll Dice", color: "#389936" };
     } else {
-      return { message: "No Card No Rolling Dice", color: "#FF2156" }; // Red
+      return { message: "No Card No Rolling Dice", color: "#FF2156" };
     }
   };
 
@@ -44,7 +43,7 @@ const RoundPoints = ({
         <Text style={styles.roundPointsTitle}>Round Points</Text>
         <View style={styles.namesContainer}>
           {players.map((name, index) => (
-            <>
+           <React.Fragment key={index}>
               <View key={index} style={styles.nameBox}>
                 <Text style={styles.name}>{name}</Text>
                 <View style={styles.scoreCont}>
@@ -56,7 +55,7 @@ const RoundPoints = ({
                 </View>
               </View>
               {index < players.length - 1 && <View style={styles.separator} />}
-            </>
+              </React.Fragment>
           ))}
         </View>
         <Text style={styles.roundResult}>Round Result</Text>
@@ -64,7 +63,7 @@ const RoundPoints = ({
           {sortedPlayers.map((player, index) => {
             const rankDetails = getRankDetails(index);
             return (
-              <>
+              <React.Fragment key={index}>
                 <View key={index} style={styles.nameBox}>
                   <Text style={styles.name}>{player.name}</Text>
                   <View style={styles.scoreCont}>
@@ -74,7 +73,7 @@ const RoundPoints = ({
                 {index < players.length - 1 && (
                   <View style={styles.separator} />
                 )}
-              </>
+              </React.Fragment>
             );
           })}
         </View>

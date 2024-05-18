@@ -21,7 +21,7 @@ const ExpeditionScreen = () => {
 
   return (
     <ImageBackground
-      source={require("../../assets/imgs/imgBg.png")}
+      source={require("../../assets/newImgs/Welcome.png")}
       style={styles.background}
     >
       <SafeAreaView style={styles.container}>

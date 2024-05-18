@@ -57,7 +57,8 @@ const QuestionScreen = () => {
   const timerDuration = 10;
 
   useEffect(() => {
-    console.log("executedEffect");
+    let isActive = true;  
+    console.log("avtive")
     if (currentSeason && currentSeason.challenges.length > 0) {
       let questionsPerParticipant =
         gameMode === "individual"
@@ -76,6 +77,9 @@ const QuestionScreen = () => {
         setShowTurnModal(true);
       }
     }
+    return () => {
+      isActive = false; 
+    };
   }, [
     currentSeason,
     currentPlayerIndex,
@@ -103,7 +107,10 @@ const QuestionScreen = () => {
       dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
-      setShowCompletedModal(true);
+      // setShowCompletedModal(true);
+      dispatch(setCurrentPlayerIndex(0));
+      console.log("reset",currentPlayerIndex)
+      navigation.replace("CompleteWord");
     }
   };
   const handleCompletedModalClose = () => {
@@ -158,14 +165,18 @@ const QuestionScreen = () => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+        resetStatesForNextQuestion();
       } else {
         finalizeCurrentPlayerTurn();
       }
-      setSelectedAnswer(null);
-      setRevealAnswers(false);
-      setButtonsDisabled(false);
-      setResetTimerTrigger((prev) => prev + 1);
     }, 2000);
+  };
+
+  const resetStatesForNextQuestion = () => {
+    setSelectedAnswer(null);
+    setRevealAnswers(false);
+    setButtonsDisabled(false);
+    setResetTimerTrigger(prev => prev + 1);
   };
 
   if (!question) {
@@ -177,7 +188,7 @@ const QuestionScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
-      {console.log("playername", state)}
+
       <SafeAreaView style={styles.container}>
         <RoundStart
           isVisible={roundStart}
@@ -196,7 +207,7 @@ const QuestionScreen = () => {
           isVisible={showCompletedModal}
           onClose={handleCompletedModalClose}
           bannerText={<Text>Final Scores</Text>}
-          numberOfPlayers={playerCount}  
+          numberOfPlayers={playerCount || teamsInfo.length}  
           mode={gameMode}  
           players={playerList}  
           scores={scores}

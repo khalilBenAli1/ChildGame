@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ImageBackground,
   SafeAreaView,
+  Image
 } from "react-native";
 import AppButton from "../../Components/AppButton";
 import { useTranslation } from "react-i18next";
@@ -40,6 +41,7 @@ const GameTypeScreen = () => {
           >
             <View style={styles.textContainer}>
               <Text style={styles.buttonTitle}>{t("individuals")}</Text>
+              <Image source={require("../../assets/newImgs/btata 1.png")}/>
               <Text style={styles.buttonSubtitle}>
                 {t("individualsDescription")}
               </Text>
@@ -51,7 +53,13 @@ const GameTypeScreen = () => {
             borderColor="#CD9777"
           >
             <View style={styles.textContainer}>
+              
               <Text style={styles.buttonTitle}>{t("teams")}</Text>
+              <View style={{flexDirection:"row"}}>
+              <Image source={require("../../assets/newImgs/btata 1.png")}/>
+              <Image source={require("../../assets/newImgs/btata 1.png")}/>
+              <Image source={require("../../assets/newImgs/btata 1.png")}/>
+              </View>
               <Text style={styles.buttonSubtitle}>{t("teamsDescription")}</Text>
             </View>
           </AppButton>
