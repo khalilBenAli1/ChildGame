@@ -6,7 +6,8 @@ import {
   StyleSheet,
   ImageBackground,
   Alert,
-  ScrollView
+  ScrollView,
+  Image
 } from "react-native";
 import CenteredBox from "../../Components/CenteredBox";
 import NumberOfPlayers from "../../Components/NumberOfPlayers";
@@ -68,9 +69,12 @@ const CreateTeamsScreen = () => {
 
         {teams.map((team, index) => (
           <View key={index} style={styles.mapContainer}>
+            <View style={{flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
+            <Image  style={{width:20,height:20, marginTop:3, marginRight:3 }} source={require("../../assets/newImgs/btata 1.png")} resizeMode="contain" />
             <Text style={styles.subTitle}>
-              {t("team")} {index + 1}
+           {t("team")} {index + 1}
             </Text>
+            </View>
             <TextInput
               style={styles.input}
               value={team.name}
@@ -129,6 +133,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginLeft: 20,
     marginTop: 10,
+
   },
   input: {
     height: 60,
