@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ImageBackground,
   SafeAreaView,
-  Image
+  Image,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Bar as ProgressBar } from "react-native-progress";
@@ -58,7 +58,7 @@ const QuestionScreen = () => {
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [startTimer, setStartTimer] = useState(false);
-
+  const [showfinishedRound, setShowfinishedRound] = useState(false);
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
   const playerList =
@@ -109,7 +109,7 @@ const QuestionScreen = () => {
     if (roundStart) {
       setTimeout(() => {
         setShowTurnModal(true);
-      }, 1000);
+      }, 500);
     }
   };
 
@@ -156,8 +156,13 @@ const QuestionScreen = () => {
     dispatch(toggleRound(false));
     handleRoundStartClose();
   };
+  const handleFinishedRound=()=>{
+    setShowfinishedRound(false)
+    finalizeCurrentPlayerTurn()
+  }
 
   const handleAnswer = (answer) => {
+    let players = gameMode === "individual" ? playerCount : teamsInfo.length;
     setSelectedAnswer(answer.option);
     setSelectedOption(answer);
     setRevealAnswers(true);
@@ -165,8 +170,12 @@ const QuestionScreen = () => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
-      } else {
-        finalizeCurrentPlayerTurn();
+      } else if( currentPlayerIndex + 1 < players){
+        setShowfinishedRound(true)
+      }
+      else
+      {
+       finalizeCurrentPlayerTurn()
       }
       setSelectedAnswer(null);
       setSelectedOption(null);
@@ -220,6 +229,7 @@ const QuestionScreen = () => {
           title={`${playerList[currentPlayerIndex]}'s Turn`}
           onClick={handleTurnModalClose}
         />
+
         <RoundPoints
           isVisible={showCompletedModal}
           onClose={handleCompletedModalClose}
@@ -228,6 +238,13 @@ const QuestionScreen = () => {
           mode={gameMode}
           players={playerList}
           scores={scores}
+        />
+        <CompletedRound
+          isVisible={showfinishedRound}
+          onClose={handleFinishedRound}
+          title="Round Complete"
+          targetName={playerList[currentPlayerIndex+1]}
+          onClick={handleFinishedRound}
         />
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
@@ -277,10 +294,21 @@ const QuestionScreen = () => {
               <Text style={styles.optionText}>{answer.text}</Text>
             </AppButton>
           ))}
-          <View style={{width:'60%',justifyContent:"center",alignItems:"center", position:"absolute",bottom:0}}>
-          <Image source={require("../../assets/newImgs/Group 6970.png")} style={{width:60,height:60}} resizeMode="contain"/>
+          <View
+            style={{
+              width: "60%",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              bottom: 0,
+            }}
+          >
+            <Image
+              source={require("../../assets/newImgs/Group 6970.png")}
+              style={{ width: 60, height: 60 }}
+              resizeMode="contain"
+            />
             <AppButton backgroundColor={"#FF2F2F"}>
-              
               <Text style={styles.optionText}>Super Card</Text>
             </AppButton>
           </View>
