@@ -57,6 +57,8 @@ const QuestionScreen = () => {
   const [revealAnswers, setRevealAnswers] = useState(false);
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [startTimer, setStartTimer] = useState(false);
+
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
   const playerList =
@@ -113,6 +115,7 @@ const QuestionScreen = () => {
 
   const handleTurnModalClose = () => {
     setShowTurnModal(false);
+    setStartTimer(true);
   };
   const finalizeCurrentPlayerTurn = () => {
     let players = gameMode === "individual" ? playerCount : teamsInfo.length;

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ImageBackground,
   SafeAreaView,
+  Image,
 } from "react-native";
 import AppButton from "../../Components/AppButton";
 import { useTranslation } from "react-i18next";
@@ -29,8 +30,11 @@ const ExpeditionScreen = () => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{t("GATAYA_EXPEDITION")}</Text>
         </View>
-
+        <View style={styles.imageContainer}>
+          <Image source={require("../../assets/newImgs/btata 4.png")} style={styles.image} resizeMode="contain"/>
+        </View>
         {/* Spacer View to push the buttons to the bottom */}
+
         <View style={styles.spacer} />
 
         {/* Buttons Section */}
@@ -63,6 +67,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  imageContainer:{
+   alignItems:"center",
+   justifyContent:"center",
+   flex: 1,
+  },
+  image:{
+    height:"100%",
+    width:"70%",
+  },
   titleContainer: {
     marginTop: 20,
     alignItems: "center",
@@ -84,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   spacer: {
-    flex: 1,
+    
   },
 });
 
