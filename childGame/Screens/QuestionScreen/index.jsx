@@ -24,6 +24,7 @@ import { useNavigation } from "@react-navigation/native";
 import { updateScore } from "../../store/actions/gameActions";
 import CompletedRound from "../../Modals/CompletedRound";
 import RoundPoints from "../../Modals/RoundPoints";
+import SuperCardQuestion from "../../Modals/SuperCardQuestion";
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -59,6 +60,7 @@ const QuestionScreen = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [startTimer, setStartTimer] = useState(false);
   const [showfinishedRound, setShowfinishedRound] = useState(false);
+  const [showSuperCard, setShowSuperCard] = useState(false);
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
   const playerList =
@@ -103,6 +105,12 @@ const QuestionScreen = () => {
     teamsInfo.length,
     roundStart,
   ]);
+
+  const handleEnterCode = (code) => {
+    console.log("Code entered:", code);
+
+    setModalVisible(false);
+  };
 
   const handleRoundStartClose = () => {
     setShowRoundStartModal(false);
@@ -156,10 +164,10 @@ const QuestionScreen = () => {
     dispatch(toggleRound(false));
     handleRoundStartClose();
   };
-  const handleFinishedRound=()=>{
-    setShowfinishedRound(false)
-    finalizeCurrentPlayerTurn()
-  }
+  const handleFinishedRound = () => {
+    setShowfinishedRound(false);
+    finalizeCurrentPlayerTurn();
+  };
 
   const handleAnswer = (answer) => {
     let players = gameMode === "individual" ? playerCount : teamsInfo.length;
@@ -170,12 +178,10 @@ const QuestionScreen = () => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
-      } else if( currentPlayerIndex + 1 < players){
-        setShowfinishedRound(true)
-      }
-      else
-      {
-       finalizeCurrentPlayerTurn()
+      } else if (currentPlayerIndex + 1 < players) {
+        setShowfinishedRound(true);
+      } else {
+        finalizeCurrentPlayerTurn();
       }
       setSelectedAnswer(null);
       setSelectedOption(null);
@@ -243,8 +249,13 @@ const QuestionScreen = () => {
           isVisible={showfinishedRound}
           onClose={handleFinishedRound}
           title="Round Complete"
-          targetName={playerList[currentPlayerIndex+1]}
+          targetName={playerList[currentPlayerIndex + 1]}
           onClick={handleFinishedRound}
+        />
+        <SuperCardQuestion
+          isVisible={showSuperCard}
+          onClose={() => setShowSuperCard(false)}
+          onClick={handleEnterCode}
         />
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
@@ -308,7 +319,7 @@ const QuestionScreen = () => {
               style={{ width: 60, height: 60 }}
               resizeMode="contain"
             />
-            <AppButton backgroundColor={"#FF2F2F"}>
+            <AppButton backgroundColor={"#FF2F2F"} onClick={()=>setShowSuperCard(true)}>
               <Text style={styles.optionText}>Super Card</Text>
             </AppButton>
           </View>
