@@ -110,6 +110,7 @@ const QuestionScreen = () => {
     console.log("Code entered:", code);
 
     setModalVisible(false);
+    
   };
 
   const handleRoundStartClose = () => {
@@ -254,7 +255,7 @@ const QuestionScreen = () => {
         />
         <SuperCardQuestion
           isVisible={showSuperCard}
-          onClose={() => setShowSuperCard(false)}
+          onClose={() =>{ setShowSuperCard(false);resetStatesForNextQuestion();}}
           onClick={handleEnterCode}
         />
         <View style={styles.topContainer}>
@@ -275,7 +276,7 @@ const QuestionScreen = () => {
           <View style={styles.counter}>
             <CountdownTimer
               initialTime={timerDuration}
-              onEnd={() => (buttonsDisabled ? null : handleTimerEnd())}
+              onEnd={() => (buttonsDisabled || showSuperCard? null : handleTimerEnd())}
               resetTrigger={resetTimerTrigger}
             />
           </View>
