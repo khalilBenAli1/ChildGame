@@ -35,7 +35,8 @@
     "react-native-svg": "15.2.0",
     "react-redux": "^9.1.0",
     "redux": "^5.0.1",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "expo-updates": "~0.25.14"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

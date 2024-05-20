@@ -296,10 +296,10 @@ const QuestionScreen = () => {
                 revealAnswers
                   ? answer.option === selectedOption?.option
                     ? answer.option === question.correctAnswer
-                      ? "#389936" // Green for correct
-                      : "#FF2F2F" // Red for incorrect
-                    : "#D9D9D9" // Dim other options
-                  : "#DEAE48" // Default color
+                      ? "#389936" // Green
+                      : "#FF2F2F" // Red 
+                    : "#D9D9D9" // Dim
+                  : "#DEAE48" // Default
               }
               disabled={buttonsDisabled}
             >

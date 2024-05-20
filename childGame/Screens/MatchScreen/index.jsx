@@ -1,36 +1,66 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  Image,
-  SafeAreaView,
-} from "react-native";
-import CenteredBox from "../../Components/CenteredBox"; 
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, SafeAreaView, Alert } from "react-native";
+import { imageUrls } from "../../data/images";
+import CenteredBox from "../../Components/CenteredBox";
+import CountdownTimer from "../../Components/CountdownTimer";
 
-const MatchScreen = ({ images=imageUrls }) => {
+function shuffleArray(array) {
+  let shuffled = array.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+const MatchScreen = ({ images = imageUrls }) => {
+  const [shuffledImages, setShuffledImages] = useState([]);
   const [flippedIndices, setFlippedIndices] = useState([]);
   const [matchedIndices, setMatchedIndices] = useState([]);
+  const [isInteractable, setIsInteractable] = useState(true);
+  const [gameOver, setGameOver] = useState(false);
+  const initialTime = 60; // Set initial timer count down from 60 seconds
+
+  useEffect(() => {
+    setShuffledImages(shuffleArray(images));
+  }, [images]);
+
+  useEffect(() => {
+    if (matchedIndices.length === images.length) {
+      Alert.alert("Congratulations!", "You've won the game!");
+      setGameOver(true);
+    }
+  }, [matchedIndices, images.length]);
+
+  const handleTimeOut = () => {
+    if (!gameOver) {
+      Alert.alert("Time's up!", "You've lost the game.");
+      setGameOver(true);
+      setIsInteractable(false);
+    }
+  };
 
   const handleTilePress = (index) => {
-    if (flippedIndices.includes(index) || matchedIndices.includes(index)) {
-      return; 
+    if (!isInteractable || flippedIndices.includes(index) || matchedIndices.includes(index) || gameOver) {
+      return;
     }
 
     const newFlippedIndices = [...flippedIndices, index];
     setFlippedIndices(newFlippedIndices);
 
     if (newFlippedIndices.length === 2) {
-      const match = images[newFlippedIndices[0]] === images[newFlippedIndices[1]];
+      setIsInteractable(false);
+      const match = shuffledImages[newFlippedIndices[0]] === shuffledImages[newFlippedIndices[1]];
       if (match) {
-        setMatchedIndices([...matchedIndices, ...newFlippedIndices]);
+        const newMatchedIndices = [...matchedIndices, ...newFlippedIndices];
+        setMatchedIndices(newMatchedIndices);
         setFlippedIndices([]);
+        setIsInteractable(true);
       } else {
         setTimeout(() => {
           setFlippedIndices([]);
-        }, 1000); 
+          setIsInteractable(true);
+        }, 1000);
       }
     }
   };
@@ -41,26 +71,29 @@ const MatchScreen = ({ images=imageUrls }) => {
       style={styles.fullScreen}
     >
       <SafeAreaView style={styles.container}>
-        <CenteredBox style={styles.centeredBox}>
+        <CenteredBox style={styles.centeredBox} height={'90%'}>
+        <CountdownTimer initialTime={initialTime} onEnd={handleTimeOut} />
           <View style={styles.grid}>
-            {images.map((image, index) => (
+            {shuffledImages.map((image, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.tile}
                 onPress={() => handleTilePress(index)}
+                disabled={!isInteractable || gameOver}
               >
                 <View style={[
                   styles.card,
-                  (flippedIndices.includes(index) || matchedIndices.includes(index)) ? styles.cardFlipped : styles.cardCovered
+                  flippedIndices.includes(index) || matchedIndices.includes(index) ? styles.cardFlipped : styles.cardCovered
                 ]}>
-                  {flippedIndices.includes(index) || matchedIndices.includes(index) ? (
+                  {(flippedIndices.includes(index) || matchedIndices.includes(index)) && (
                     <Image source={{ uri: image }} style={styles.image} />
-                  ) : null}
+                  )}
                 </View>
               </TouchableOpacity>
             ))}
           </View>
         </CenteredBox>
+        
       </SafeAreaView>
     </ImageBackground>
   );
@@ -80,9 +113,8 @@ const styles = StyleSheet.create({
   },
   centeredBox: {
     width: '100%',
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    alignItems: 'center',
+    marginBottom: 20,  // Space between grid and timer
   },
   grid: {
     flexDirection: "row",
@@ -100,14 +132,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: "#ccc", // Default covered color
+    backgroundColor: "#ccc",
     overflow: 'hidden',
   },
   cardFlipped: {
-    backgroundColor: "#fff", // White background to show the image
+    backgroundColor: "#fff",
   },
   cardCovered: {
-    backgroundColor: "#ccc", // Grey background to hide the image
+    backgroundColor: "#ccc",
   },
   image: {
     width: "100%",
@@ -117,18 +149,3 @@ const styles = StyleSheet.create({
 });
 
 export default MatchScreen;
-
-
-
-const imageUrls = [
-  "https://via.placeholder.com/150/0000FF/808080?Text=Image1",
-  "https://via.placeholder.com/150/0000FF/808080?Text=Image1",
-  "https://via.placeholder.com/150/FF0000/FFFFFF?Text=Image2", 
-  "https://via.placeholder.com/150/FF0000/FFFFFF?Text=Image2",
-  "https://via.placeholder.com/150/FFFF00/000000?Text=Image3",
-  "https://via.placeholder.com/150/FFFF00/000000?Text=Image3",
-  "https://via.placeholder.com/150/008000/FFFFFF?Text=Image4",
-  "https://via.placeholder.com/150/008000/FFFFFF?Text=Image4",
-  "https://via.placeholder.com/150/FFA500/000000?Text=Image5",
-  "https://via.placeholder.com/150/FFA500/000000?Text=Image5"  
-];
