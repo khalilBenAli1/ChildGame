@@ -20,7 +20,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="MatchGame"
+        initialRouteName="Language"
         screenOptions={{
           headerShown: false,
         }}

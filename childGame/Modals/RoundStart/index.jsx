@@ -3,18 +3,19 @@ import { View, Text, Image, StyleSheet, Modal } from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
 
-const RoundStart = ({ isVisible, onClose, text, mode, orderList,onClick }) => {
+const RoundStart = ({ isVisible, onClose, text, mode, orderList,onClick ,bannerText}) => {
   return (
     <CustomModal
       isVisible={isVisible}
       onClose={onClose}
       hasBanner
-      height={"80%"}
+      height={"90%"}
+      bannerText={bannerText}
     >
       <View style={styles.container}>
         <Text style={styles.title}>{text}</Text>
         <Image
-          source={require("../../assets/imgs/first.png")}
+          source={require("../../assets/newImgs/btata 4.png")}
           style={styles.image}
         />
         <View style={styles.orderContainer}>
@@ -35,7 +36,7 @@ const RoundStart = ({ isVisible, onClose, text, mode, orderList,onClick }) => {
         <Text style={styles.note}>Note :</Text>
         <Text style={styles.description}>
           Each Team will have A 5 questions and challenges to answer before the
-          end of the timer and Good luck
+          end of the timer and <Text style={{fontWeight:"bold",color:"#389936"}}>Good luck</Text>
         </Text>
       </View>
       <AppButton
@@ -56,9 +57,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
     color:"#389936"
   },
   sub: {

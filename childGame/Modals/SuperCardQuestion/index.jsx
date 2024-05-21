@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TextInput } from "react-native";
+import { View, Text, Image, StyleSheet, TextInput , ScrollView} from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
 
@@ -9,16 +9,19 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
     <CustomModal
       isVisible={isVisible}
       onClose={onClose}
-      height={"80%"}
+      height={"85%"}
       hasBanner
       bannerText={
-        <Text style={{ fontWeight: "bold", color: "white" ,fontSize:24}}>Super Card</Text>
+        <Text style={{ fontWeight: "bold", color: "white" ,fontSize:24 , marginBottom:14}}>Super Card</Text>
       }
     >
+      <ScrollView contentContainerStyle={{justifyContent:"center",alignItems:"center"}}>
       <View style={styles.container}>
+        
         <Image
           source={require("../../assets/newImgs/Group 6970.png")}
           style={styles.image}
+          resizeMode="contain"
         />
         <Text style={styles.description}>
           Enter Your super card code to get an advantage
@@ -36,6 +39,7 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
       <AppButton onClick={onClose} backgroundColor={"#FF2F2F"}>
         <Text style={styles.buttonText}>Surrender</Text>
       </AppButton>
+      </ScrollView>
     </CustomModal>
   );
 };
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     color: "#389936",
   },
   image: {
-    width: 200,
+    width: 150,
     height: 200,
     resizeMode: "contain",
     marginVertical: 30,

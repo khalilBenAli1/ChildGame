@@ -19,6 +19,7 @@ const AppButton = ({
     <Image
       source={require("../../assets/imgs/buttonImage.png")}
       style={styles.image}
+      resizeMode="contain"
     />
     <View accessible accessibilityRole="button">
       {children}
@@ -42,8 +43,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 10,
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 });
 

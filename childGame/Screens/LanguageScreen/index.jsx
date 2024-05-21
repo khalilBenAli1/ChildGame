@@ -31,7 +31,7 @@ const LanguageScreen = () => {
             source={require("../../assets/imgs/imgBg.png")}
             style={styles.background}
         >
-            <CenteredBox height={"80%"}>
+            <CenteredBox height={"90%"}>
                 <Text style={styles.title}>{t('experienceLanguage')}</Text>
                 <Text style={styles.subtitle}>
                     {t('chooseLanguagePrompt')}
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     justifyContent: "center",
+    paddingTop:10,
     width: '100%',
   },
   title: {

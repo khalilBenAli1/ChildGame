@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const CountdownTimer = ({ initialTime, onEnd, resetTrigger }) => {
+const CountdownTimer = ({ initialTime, onEnd, start, resetTrigger }) => {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
+    // Reset time whenever the initialTime or resetTrigger changes, or when explicitly started
     setTime(initialTime);
   }, [initialTime, resetTrigger]);
 
   useEffect(() => {
-    if (time > 0) {
-      const interval = setInterval(() => {
+    let interval;
+    if (start && time > 0) {
+      interval = setInterval(() => {
         setTime((prevTime) => {
           if (prevTime - 1 <= 0) {
             clearInterval(interval);
@@ -20,10 +22,9 @@ const CountdownTimer = ({ initialTime, onEnd, resetTrigger }) => {
           return prevTime - 1;
         });
       }, 1000);
-
-      return () => clearInterval(interval);
     }
-  }, [time, onEnd]);
+    return () => clearInterval(interval); // Cleanup the interval on component unmount or if start becomes false
+  }, [start, time, onEnd]);
 
   return (
     <View style={styles.container}>

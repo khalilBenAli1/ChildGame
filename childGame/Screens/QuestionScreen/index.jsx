@@ -13,7 +13,6 @@ import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
 import RoundStart from "../../Modals/RoundStart";
-import Turn from "../../Modals/Turn";
 import { useSelector, useDispatch } from "react-redux";
 import {
   toggleRound,
@@ -52,7 +51,6 @@ const QuestionScreen = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showRoundStartModal, setShowRoundStartModal] = useState(true);
-  const [showTurnModal, setShowTurnModal] = useState(false);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [revealAnswers, setRevealAnswers] = useState(false);
@@ -67,8 +65,8 @@ const QuestionScreen = () => {
     gameMode === "individual"
       ? playerNames
       : teamsInfo.map((element) => element.name);
-  const timerDuration = 10;
-
+  const timerDuration = 20;
+  const players = gameMode === "individual" ? playerCount : teamsInfo.length;
   useEffect(() => {
     if (currentSeason && currentSeason.challenges.length > 0) {
       let allQuestions = [...currentSeason.challenges];
@@ -110,31 +108,20 @@ const QuestionScreen = () => {
     console.log("Code entered:", code);
 
     setModalVisible(false);
-    
   };
 
   const handleRoundStartClose = () => {
     setShowRoundStartModal(false);
-    if (roundStart) {
-      setTimeout(() => {
-        setShowTurnModal(true);
-      }, 500);
-    }
-  };
-
-  const handleTurnModalClose = () => {
-    setShowTurnModal(false);
     setStartTimer(true);
   };
+
   const finalizeCurrentPlayerTurn = () => {
     let players = gameMode === "individual" ? playerCount : teamsInfo.length;
     if (currentPlayerIndex + 1 < players) {
       dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
-      // setShowCompletedModal(true);
       dispatch(setCurrentPlayerIndex(0));
-      console.log("reset", currentPlayerIndex);
       navigation.replace("CompleteWord");
     }
   };
@@ -158,7 +145,6 @@ const QuestionScreen = () => {
 
     setQuestions(currentSeason.challenges.slice(startIndex, endIndex));
     setCurrentQuestionIndex(0);
-    setShowTurnModal(true);
   };
 
   const handleRoundStart = () => {
@@ -171,7 +157,7 @@ const QuestionScreen = () => {
   };
 
   const handleAnswer = (answer) => {
-    let players = gameMode === "individual" ? playerCount : teamsInfo.length;
+    
     setSelectedAnswer(answer.option);
     setSelectedOption(answer);
     setRevealAnswers(true);
@@ -200,10 +186,14 @@ const QuestionScreen = () => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         resetStatesForNextQuestion();
+      } else if (currentPlayerIndex + 1 < players) {
+        resetStatesForNextQuestion();
+        setShowfinishedRound(true);
       } else {
         finalizeCurrentPlayerTurn();
       }
     }, 2000);
+    
   };
 
   const resetStatesForNextQuestion = () => {
@@ -229,14 +219,19 @@ const QuestionScreen = () => {
           mode={gameMode}
           orderList={playerList}
           onClick={handleRoundStart}
+          bannerText={
+            <Text
+              style={{
+                fontWeight: "bold",
+                color: "white",
+                fontSize: 20,
+                marginTop: -14,
+              }}
+            >
+              Round 1
+            </Text>
+          }
         />
-        <Turn
-          isVisible={showTurnModal}
-          onClose={handleTurnModalClose}
-          title={`${playerList[currentPlayerIndex]}'s Turn`}
-          onClick={handleTurnModalClose}
-        />
-
         <RoundPoints
           isVisible={showCompletedModal}
           onClose={handleCompletedModalClose}
@@ -247,7 +242,7 @@ const QuestionScreen = () => {
           scores={scores}
         />
         <CompletedRound
-          isVisible={showfinishedRound}
+          isVisible={currentPlayerIndex + 1 <players ?showfinishedRound:false}
           onClose={handleFinishedRound}
           title="Round Complete"
           targetName={playerList[currentPlayerIndex + 1]}
@@ -255,7 +250,10 @@ const QuestionScreen = () => {
         />
         <SuperCardQuestion
           isVisible={showSuperCard}
-          onClose={() =>{ setShowSuperCard(false);resetStatesForNextQuestion();}}
+          onClose={() => {
+            setShowSuperCard(false);
+            resetStatesForNextQuestion();
+          }}
           onClick={handleEnterCode}
         />
         <View style={styles.topContainer}>
@@ -276,8 +274,11 @@ const QuestionScreen = () => {
           <View style={styles.counter}>
             <CountdownTimer
               initialTime={timerDuration}
-              onEnd={() => (buttonsDisabled || showSuperCard? null : handleTimerEnd())}
+              onEnd={() =>
+                buttonsDisabled || showSuperCard ? null : handleTimerEnd()
+              }
               resetTrigger={resetTimerTrigger}
+              start={!roundStart}
             />
           </View>
           <Text style={styles.questionText}>{question.question}</Text>
@@ -297,7 +298,7 @@ const QuestionScreen = () => {
                   ? answer.option === selectedOption?.option
                     ? answer.option === question.correctAnswer
                       ? "#389936" // Green
-                      : "#FF2F2F" // Red 
+                      : "#FF2F2F" // Red
                     : "#D9D9D9" // Dim
                   : "#DEAE48" // Default
               }
@@ -320,7 +321,10 @@ const QuestionScreen = () => {
               style={{ width: 60, height: 60 }}
               resizeMode="contain"
             />
-            <AppButton backgroundColor={"#FF2F2F"} onClick={()=>setShowSuperCard(true)}>
+            <AppButton
+              backgroundColor={"#FF2F2F"}
+              onClick={() => setShowSuperCard(true)}
+            >
               <Text style={styles.optionText}>Super Card</Text>
             </AppButton>
           </View>

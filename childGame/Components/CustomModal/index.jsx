@@ -53,14 +53,15 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   image: {
-    width: 350,
-    height: 200,
+    width: 250,
+    height: 150,
     justifyContent: "center",
     alignItems: "center",
+
   },
   imageContainer: {
     position: "absolute",
-    top: -100,
+    top: -80,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -239,139 +239,151 @@ export const questions = [
   },
   {
     id: 21,
-    question: "Qui a ordonné la construction du premier fort à l'entrée du village en 1659 ?",
+    question:
+      "Qui a ordonné la construction du premier fort à l'entrée du village en 1659 ?",
     options: [
-      {option: "A", "text": "Hammouda Pacha Bey"},
-      {option: "B", "text": "Ahmed Bey"},
-      {option: "C", "text": "Monsef Bey"}
+      { option: "A", text: "Hammouda Pacha Bey" },
+      { option: "B", text: "Ahmed Bey" },
+      { option: "C", text: "Monsef Bey" },
     ],
-    correctAnswer: "A"
+    correctAnswer: "A",
   },
   {
     id: 22,
-    question: "Quand le deuxième fort de Ghar El Melh, également connu sous le nom de Borj El Wistani, a-t-il été achevé ?",
+    question:
+      "Quand le deuxième fort de Ghar El Melh, également connu sous le nom de Borj El Wistani, a-t-il été achevé ?",
     options: [
-      {option: "A", "text": "1640"},
-      {option: "B", "text": "1922"},
-      {option: "C", "text": "1896"}
+      { option: "A", text: "1640" },
+      { option: "B", text: "1922" },
+      { option: "C", text: "1896" },
     ],
-    correctAnswer: "B"
+    correctAnswer: "B",
   },
   {
     id: 23,
-    question: "Est-ce que les trois forts de Ghar El Melh ont été classés monuments historiques?",
+    question:
+      "Est-ce que les trois forts de Ghar El Melh ont été classés monuments historiques?",
     options: [
-      {option: "A", "text": "Oui"},
-      {option: "B", "text": "Non"}
+      { option: "A", text: "Oui" },
+      { option: "B", text: "Non" },
     ],
-    correctAnswer: "A"
-  },  {
+    correctAnswer: "A",
+  },
+  {
     id: 24,
     question: "Combien de forts existent à Ghar El Melh ?",
     options: [
-      {option: "A", "text": "5"},
-      {option: "B", "text": "6"},
-      {option: "C", "text": "3"}
+      { option: "A", text: "5" },
+      { option: "B", text: "6" },
+      { option: "C", text: "3" },
     ],
-    correctAnswer: "C"
+    correctAnswer: "C",
   },
   {
     id: 25,
     question: "Quelle civilisation ancienne a fondé Ghar El Melh ?",
     options: [
-      {option: "A", "text": "les carthaginois"},
-      {option: "B", "text": "les bayes"},
-      {option: "C", "text": "les Phéniciens"}
+      { option: "A", text: "les carthaginois" },
+      { option: "B", text: "les bayes" },
+      { option: "C", text: "les Phéniciens" },
     ],
-    correctAnswer: "C"
+    correctAnswer: "C",
   },
   {
     id: 26,
     question: "Quelles sont les communautés qui vivaient à Ghar El Melh ?",
     options: [
-      {option: "A", "text": "Maltaise"},
-      {option: "B", "text": "Espagnol"},
-      {option: "C", "text": "Arab"},
-      {option: "D", "text": "Chinois"},
-     {option: "", "text": "Français"}
+      { option: "A", text: "Maltaise" },
+      { option: "B", text: "Espagnol" },
+      { option: "C", text: "Arab" },
+      { option: "D", text: "Chinois" },
+      { option: "", text: "Français" },
     ],
-    correctAnswer: "E"
+    correctAnswer: "E",
   },
   {
     id: 27,
-    question: "Sous le règne d'Ahmed 1er Bey (1837-1855), a été decidé de mettre fin à la piraterie en Tunisie",
+    question:
+      "Sous le règne d'Ahmed 1er Bey (1837-1855), a été decidé de mettre fin à la piraterie en Tunisie",
     options: [
-      {option: "A", "text": "Oui"},
-      {option: "B", "text": "Non"}
+      { option: "A", text: "Oui" },
+      { option: "B", text: "Non" },
     ],
-    correctAnswer: "A"
-  },  {
+    correctAnswer: "A",
+  },
+  {
     id: 28,
-    question: "Qui était l'architecte à la tête de la construction du deuxième fort de Ghar El Melh achevé en 1640 ?",
+    question:
+      "Qui était l'architecte à la tête de la construction du deuxième fort de Ghar El Melh achevé en 1640 ?",
     options: [
-      {option: "A", "text": "Frank Lloyd Wright"},
-      {option: "B", "text": "Hadj Moussa Jamiro al-Andaloussi al-Garnati"},
-      {option: "C", "text": "Ammar Khammash"}
+      { option: "A", text: "Frank Lloyd Wright" },
+      { option: "B", text: "Hadj Moussa Jamiro al-Andaloussi al-Garnati" },
+      { option: "C", text: "Ammar Khammash" },
     ],
-    correctAnswer: "B"
+    correctAnswer: "B",
   },
   {
     id: 29,
-    question: "Quelle est l'origine de l'occupation du sol à Ghar El Melh et à quelle époque remonte-t-elle ?",
+    question:
+      "Quelle est l'origine de l'occupation du sol à Ghar El Melh et à quelle époque remonte-t-elle ?",
     options: [
-      {option: "A", "text": "1101 av. J.-C. par les Phéniciens"},
-      {option: "B", "text": "1101 av. J.-C. par les Grecque"},
-      {option: "C", "text": "1101 av. J.-C. par les Romaines"}
+      { option: "A", text: "1101 av. J.-C. par les Phéniciens" },
+      { option: "B", text: "1101 av. J.-C. par les Grecque" },
+      { option: "C", text: "1101 av. J.-C. par les Romaines" },
     ],
-    correctAnswer: "A"
+    correctAnswer: "A",
   },
   {
     id: 30,
     question: "En quelle année a été fondée Ghar El Melh ?",
     options: [
-      {option: "A", "text": "914 av. J.-C."},
-      {option: "B", "text": "814 av. J.-C."},
-      {option: "C", "text": "244 av. J.-C."}
+      { option: "A", text: "914 av. J.-C." },
+      { option: "B", text: "814 av. J.-C." },
+      { option: "C", text: "244 av. J.-C." },
     ],
-    correctAnswer: "B"
+    correctAnswer: "B",
   },
   {
     id: 31,
-    question: "Sous le règne d'Ustad Mourad, dey de Tunis (1638-1640) d'origine génoise, quelle transformation a subi la ville?",
+    question:
+      "Sous le règne d'Ustad Mourad, dey de Tunis (1638-1640) d'origine génoise, quelle transformation a subi la ville?",
     options: [
-      {option: "A", "text": "La ville a subi une extension"},
-      {option: "B", "text": "La ville a été rebâtie"}
+      { option: "A", text: "La ville a subi une extension" },
+      { option: "B", text: "La ville a été rebâtie" },
     ],
-    correctAnswer: "A"
+    correctAnswer: "A",
   },
   {
     id: 32,
-    question: "Quelle la communauté qui a été accueillie à Ghar el Meleh, Sous le règne d'Ustad Mourad, dey de Tunis (1638-1640)?",
+    question:
+      "Quelle la communauté qui a été accueillie à Ghar el Meleh, Sous le règne d'Ustad Mourad, dey de Tunis (1638-1640)?",
     options: [
-      {option: "A", "text": "une colonie andalouse"},
-      {option: "B", "text": "Une Colonie Pénicienne"},
-      {option: "C", "text": "Une Colonie Grecque"}
+      { option: "A", text: "une colonie andalouse" },
+      { option: "B", text: "Une Colonie Pénicienne" },
+      { option: "C", text: "Une Colonie Grecque" },
     ],
-    correctAnswer: "A"
+    correctAnswer: "A",
   },
   {
     id: 33,
-    question: "Comment appelait-on l'habitation ancienne des habitants de Ghar El Melh dans la montagne?",
+    question:
+      "Comment appelait-on l'habitation ancienne des habitants de Ghar El Melh dans la montagne?",
     options: [
-      {option: "A", "text": "un 'Demous'"},
-      {option: "B", "text": "un 'hafhouf'"},
-      {option: "C", "text": "une 'khabya'"}
+      { option: "A", text: "un 'Demous'" },
+      { option: "B", text: "un 'hafhouf'" },
+      { option: "C", text: "une 'khabya'" },
     ],
-    correctAnswer: "B"
+    correctAnswer: "B",
   },
   {
     id: 34,
-    question: "Quel était le rôle principal du premier fort de Ghar El Melh durant tout le XIXe siècle?",
+    question:
+      "Quel était le rôle principal du premier fort de Ghar El Melh durant tout le XIXe siècle?",
     options: [
-      {option: "A", "text": "servi comme lieu de quarantaine"},
-      {option: "B", "text": "servi comme lieu de fête aux rois"},
-      {option: "C", "text": "servi comme lieu aux soldats"}
+      { option: "A", text: "servi comme lieu de quarantaine" },
+      { option: "B", text: "servi comme lieu de fête aux rois" },
+      { option: "C", text: "servi comme lieu aux soldats" },
     ],
-    correctAnswer: "A"
-  }
+    correctAnswer: "A",
+  },
 ];
