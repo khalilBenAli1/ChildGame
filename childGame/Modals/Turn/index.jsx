@@ -8,12 +8,12 @@ const Turn = ({ isVisible, onClose, title, onClick }) => {
     <CustomModal
       isVisible={isVisible}
       onClose={onClose}
-      height={"60%"}
+      height={"70%"}
     >
       <View style={styles.container}>
         
         <Image
-          source={require("../../assets/imgs/turn.png")}
+          source={require("../../assets/newImgs/Group 6969.png")}
           style={styles.image}
         />
         <Text style={styles.title}>{title}</Text>

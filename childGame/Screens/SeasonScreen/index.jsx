@@ -36,7 +36,9 @@ const SeasonScreen = () => {
               />
             </View>
             <SeasonCard
-              title={season.title}
+              title={"Section"+(index+1)+":"}
+              sub={season.title}
+              playable={season.playable}
               numberOfChallenges={season.numberOfChallenges}
               difficulty={season.difficulty}
               completed={season.completed}
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: "column",
-    marginRight: 20,
+    // marginRight: 20,
   },
   iconAndCardContainer: {
     flexDirection: "row",
