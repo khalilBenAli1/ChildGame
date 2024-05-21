@@ -1,41 +1,33 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import { useTranslation } from "react-i18next";
-import { Bar as ProgressBar } from "react-native-progress";
-import AppButton from "../../Components/AppButton";
-import CenteredBox from "../../Components/CenteredBox";
-import CountdownTimer from "../../Components/CountdownTimer";
-import RoundPoints from "../../Modals/RoundPoints";
-import Turn from "../../Modals/Turn";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
-import { setCurrentPlayerIndex } from "../../store/actions/gameActions";
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, ImageBackground, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Bar as ProgressBar } from 'react-native-progress';
+import AppButton from '../../Components/AppButton';
+import CenteredBox from '../../Components/CenteredBox';
+import CountdownTimer from '../../Components/CountdownTimer';
+import RoundPoints from '../../Modals/RoundPoints';
+import Turn from '../../Modals/Turn';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { setCurrentPlayerIndex } from '../../store/actions/gameActions';
 
-const sampleData = {
-  word: "PortioFarina",
-  scrambledLetters: [
-    "P",
-    "O",
-    "R",
-    "T",
-    "I",
-    "O",
-    "F",
-    "A",
-    "R",
-    "I",
-    "N",
-    "A",
-  ],
-};
+const imageData = [
+  {
+    word: "PortioFarina",
+    image: require("../../assets/imgs/nou.png"),
+    scrambledLetters: ["P", "O", "R", "T", "I", "O", "F", "A", "R", "I", "N", "A"],
+  },
+  {
+    word: "Gataaya",
+    image: { uri: "https://drive.google.com/uc?export=view&id=1wN4nPLBj3Fb-CLzkF5dzTTDgycuTbQJL" },
+    scrambledLetters: ["G", "A", "T", "A", "A", "Y", "A"],
+  },
+  {
+    word: "Phéniciens",
+    image: { uri: "https://drive.google.com/uc?export=view&id=1vXaykmelhLQdSi_ZtcZNmk4wZCIvs1ZA" },
+    scrambledLetters: ["P", "H", "É", "N", "I", "C", "I", "E", "N", "S"],
+  }
+];
 
 const shuffleLetters = (letters) => {
   let shuffled = [...letters];
@@ -47,17 +39,15 @@ const shuffleLetters = (letters) => {
 };
 
 const CompleteWord = () => {
-  
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [selectedLetters, setSelectedLetters] = useState([]);
   const [showTurnModal, setShowTurnModal] = useState(false);
   const [showCompletedModal, setShowCompletedModal] = useState(false);
-  const [remainingLetters, setRemainingLetters] = useState([
-    shuffleLetters(sampleData.scrambledLetters),
-  ]);
+  const [remainingLetters, setRemainingLetters] = useState([]);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
+  const [currentData, setCurrentData] = useState(null);
 
   const {
     gameMode,
@@ -66,58 +56,54 @@ const CompleteWord = () => {
     teamsInfo,
     playerNames,
     scores,
-  } = useSelector((state) => state.game);
+  } = useSelector(state => state.game);
   let players = gameMode === "individual" ? playerCount : teamsInfo.length;
   const playerList =
     gameMode === "individual"
       ? playerNames
       : teamsInfo.map((element) => element.name);
-
   useEffect(() => {
-
+    const randomData = imageData[Math.floor(Math.random() * imageData.length)];
+    setCurrentData(randomData);
+    setSelectedLetters([]);
+    setRemainingLetters(shuffleLetters(randomData.scrambledLetters));
     setShowTurnModal(true);
-
-    console.log(currentPlayerIndex)
   }, [currentPlayerIndex]);
 
-  useEffect(() => {
-    setRemainingLetters(shuffleLetters(sampleData.scrambledLetters));
-  }, []);
-  
   const handleLetterSelect = (letter, index) => {
-
-      let newSelected = [...selectedLetters, letter];
-      let newRemaining = remainingLetters.filter((_, i) => i !== index);
-      setSelectedLetters(newSelected);
-      setRemainingLetters(newRemaining);
-    
+    let newSelected = [...selectedLetters, letter];
+    let newRemaining = [...remainingLetters];
+    newRemaining.splice(index, 1);
+    setSelectedLetters(newSelected);
+    setRemainingLetters(newRemaining);
   };
 
   const handleLetterDeselect = (letter, index) => {
-
-      let newRemaining = [...remainingLetters, letter];
-      let newSelected = selectedLetters.filter((_, i) => i !== index);
-      setSelectedLetters(newSelected);
-      setRemainingLetters(newRemaining);
-    
+    let newSelected = [...selectedLetters];
+    newSelected.splice(index, 1);
+    setSelectedLetters(newSelected);
+    setRemainingLetters([...remainingLetters, letter]);
+  };
+  const finalizeCurrentPlayerTurn = () => {
+    let players = gameMode === "individual" ? playerCount : teamsInfo.length;
+    if (currentPlayerIndex + 1 < players) {
+      setShowTurnModal(true);
+      const randomData = imageData[Math.floor(Math.random() * imageData.length)];
+      setCurrentData(randomData);
+      dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
+    } else {
+      setShowCompletedModal(true);
+    }
   };
 
   const handleSubmit = () => {
-
     const formedWord = selectedLetters.join("");
-    if (formedWord === sampleData.word) {
-      console.log("Correct answer!");
-      setShowCompletedModal(true);
+    if (formedWord.toUpperCase() === currentData.word.toUpperCase()) {
+      finalizeCurrentPlayerTurn()
     } else {
-      alert("Incorrect answer");
-      if (currentPlayerIndex + 1 < players) {
-        dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
-        setSelectedLetters([]);
-        setRemainingLetters(shuffleLetters(sampleData.scrambledLetters));
-        setResetTimerTrigger(prev => prev + 1); 
-      } else {
-        setShowCompletedModal(true);
-      }
+      alert("Incorrect answer. Try again!");
+      setSelectedLetters([]);
+      setRemainingLetters(shuffleLetters(currentData.scrambledLetters));
     }
   };
 
@@ -130,6 +116,8 @@ const CompleteWord = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
+      {currentData && (
+      <>
       <RoundPoints
         isVisible={showCompletedModal}
         onClose={() => navigation.navigate("Seasons")}
@@ -158,10 +146,11 @@ const CompleteWord = () => {
           <CountdownTimer
             initialTime={30}
             onEnd={() => console.log("Time's up!")}
+            start={!showTurnModal && !showCompletedModal}
             resetTrigger={resetTimerTrigger}
           />
           <View style={styles.imagesContainer}>
-            <Image source={require("../../assets/imgs/nou.png")} style={styles.image} />
+            <Image source={currentData.image} style={styles.image} />
           </View>
           <Text style={styles.instructionText}>
             {t("Complete the word based on the images above:")}
@@ -177,7 +166,7 @@ const CompleteWord = () => {
               </TouchableOpacity>
             ))}
             {Array.from({
-              length: sampleData.word.length - selectedLetters.length,
+              length: currentData.word.length - selectedLetters.length,
             }).map((_, index) => (
               <View key={index} style={styles.emptyLetterBox}></View>
             ))}
@@ -198,6 +187,7 @@ const CompleteWord = () => {
           </AppButton>
         </CenteredBox>
       </SafeAreaView>
+      </>)}
     </ImageBackground>
   );
 };

@@ -5,7 +5,7 @@ const initialState = {
       title: "Spring",
       numberOfChallenges: questions.length/2 +2,
       difficulty: "Easy",
-      challenges: questions.slice(0, questions.length/2),
+      challenges: questions.slice(0,4),
       playable: true,
       completed: false,
     },
