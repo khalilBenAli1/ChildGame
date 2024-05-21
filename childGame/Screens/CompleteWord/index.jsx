@@ -48,7 +48,7 @@ const CompleteWord = () => {
   const [remainingLetters, setRemainingLetters] = useState([]);
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
   const [currentData, setCurrentData] = useState(null);
-
+const initialTime=30;
   const {
     gameMode,
     playerCount,
@@ -144,9 +144,9 @@ const CompleteWord = () => {
         />
         <CenteredBox height={"90%"}>
           <CountdownTimer
-            initialTime={30}
+            initialTime={initialTime}
             onEnd={() => console.log("Time's up!")}
-            start={!showTurnModal && !showCompletedModal}
+            start={!showTurnModal}
             resetTrigger={resetTimerTrigger}
           />
           <View style={styles.imagesContainer}>

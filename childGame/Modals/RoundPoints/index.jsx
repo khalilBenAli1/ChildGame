@@ -31,7 +31,7 @@ const RoundPoints = ({
     <CustomModal
       isVisible={isVisible}
       onClose={onClose}
-      height="80%"
+      height="93%"
       hasBanner
       bannerText={bannerText}
     >
