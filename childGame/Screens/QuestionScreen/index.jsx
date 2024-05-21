@@ -6,6 +6,7 @@ import {
   ImageBackground,
   SafeAreaView,
   Image,
+  Alert
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Bar as ProgressBar } from "react-native-progress";
@@ -24,7 +25,7 @@ import { updateScore } from "../../store/actions/gameActions";
 import CompletedRound from "../../Modals/CompletedRound";
 import RoundPoints from "../../Modals/RoundPoints";
 import SuperCardQuestion from "../../Modals/SuperCardQuestion";
-
+import { extraTimeCodes , skipAndScoreCodes} from "../../data/extraTimeCodes";
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -59,6 +60,9 @@ const QuestionScreen = () => {
   const [startTimer, setStartTimer] = useState(false);
   const [showfinishedRound, setShowfinishedRound] = useState(false);
   const [showSuperCard, setShowSuperCard] = useState(false);
+  const [extraTime, setExtraTime] = useState(0);
+  const [usedCodes, setUsedCodes] = useState(new Set());
+
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
   const playerList =
@@ -104,12 +108,53 @@ const QuestionScreen = () => {
     roundStart,
   ]);
 
-  const handleEnterCode = (code) => {
-    console.log("Code entered:", code);
 
-    setModalVisible(false);
+  const addExtraTime = (seconds) => {
+    setExtraTime(prevExtra => prevExtra + seconds);
   };
 
+  const handleSuperCardSubmit = (code) => {
+    const upperCaseCode = code.toUpperCase();
+  
+    // Check if the code has already been used
+    if (usedCodes.has(upperCaseCode)) {
+      Alert.alert("Error", "This code has already been used.");
+      return;
+    }
+  
+    // Handle extra time codes
+    if (extraTimeCodes[upperCaseCode]) {
+      addExtraTime(extraTimeCodes[upperCaseCode]);
+      setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
+      Alert.alert("Success", `Added ${extraTimeCodes[upperCaseCode]} seconds!`);
+      return;
+    }
+  
+    // Handle skip and score codes
+    if (skipAndScoreCodes[upperCaseCode]) {
+      if (currentQuestionIndex + 1 < totalQuestions) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setExtraTime(0)
+        dispatch(updateScore(playerList[currentPlayerIndex], true))
+      setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
+      Alert.alert("Success", "Skipped question and added score!");
+      } else if (currentPlayerIndex + 1 < players) {
+        dispatch(updateScore(playerList[currentPlayerIndex], true))
+      setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
+      Alert.alert("Success", "Skipped question and added score!");
+        setShowfinishedRound(true);
+        
+      } else {
+        dispatch(updateScore(playerList[currentPlayerIndex], true))
+      setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
+      Alert.alert("Success", "Skipped question and added score!");
+        finalizeCurrentPlayerTurn();
+      }
+      return;
+    }
+  
+    Alert.alert("Error", "Invalid code");
+  };
   const handleRoundStartClose = () => {
     setShowRoundStartModal(false);
     setStartTimer(true);
@@ -157,7 +202,6 @@ const QuestionScreen = () => {
   };
 
   const handleAnswer = (answer) => {
-    
     setSelectedAnswer(answer.option);
     setSelectedOption(answer);
     setRevealAnswers(true);
@@ -165,6 +209,7 @@ const QuestionScreen = () => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 < totalQuestions) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setExtraTime(0)
       } else if (currentPlayerIndex + 1 < players) {
         setShowfinishedRound(true);
       } else {
@@ -193,7 +238,6 @@ const QuestionScreen = () => {
         finalizeCurrentPlayerTurn();
       }
     }, 2000);
-    
   };
 
   const resetStatesForNextQuestion = () => {
@@ -242,7 +286,9 @@ const QuestionScreen = () => {
           scores={scores}
         />
         <CompletedRound
-          isVisible={currentPlayerIndex + 1 <players ?showfinishedRound:false}
+          isVisible={
+            currentPlayerIndex + 1 < players ? showfinishedRound : false
+          }
           onClose={handleFinishedRound}
           title="Round Complete"
           targetName={playerList[currentPlayerIndex + 1]}
@@ -254,7 +300,7 @@ const QuestionScreen = () => {
             setShowSuperCard(false);
             resetStatesForNextQuestion();
           }}
-          onClick={handleEnterCode}
+          onClick={handleSuperCardSubmit}
         />
         <View style={styles.topContainer}>
           <Text style={styles.pageTitle}>{t("questions")}</Text>
@@ -278,7 +324,8 @@ const QuestionScreen = () => {
                 buttonsDisabled || showSuperCard ? null : handleTimerEnd()
               }
               resetTrigger={resetTimerTrigger}
-              start={!roundStart}
+              start={!roundStart && !showfinishedRound}
+              extraTime={extraTime} 
             />
           </View>
           <Text style={styles.questionText}>{question.question}</Text>

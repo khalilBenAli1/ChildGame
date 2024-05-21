@@ -5,6 +5,12 @@ import AppButton from "../../Components/AppButton";
 
 const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
   const [superCardCode, setSuperCardCode] = useState("");
+  const handleCodeSubmit = () => {
+    onClick(superCardCode); 
+    setSuperCardCode(""); 
+    onClose();    
+  };
+  
   return (
     <CustomModal
       isVisible={isVisible}
@@ -33,7 +39,7 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
           placeholder={"Enter Your Code Here"}
         />
       </View>
-      <AppButton onClick={onClick} backgroundColor={"#389936"}>
+      <AppButton onClick={handleCodeSubmit} backgroundColor={"#389936"}>
         <Text style={styles.buttonText}>Enter Code</Text>
       </AppButton>
       <AppButton onClick={onClose} backgroundColor={"#FF2F2F"}>

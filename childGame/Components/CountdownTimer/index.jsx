@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const CountdownTimer = ({ initialTime, onEnd, start, resetTrigger }) => {
+const CountdownTimer = ({ initialTime, onEnd, start, resetTrigger, extraTime }) => {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    // Reset time whenever the initialTime or resetTrigger changes, or when explicitly started
-    setTime(initialTime);
-  }, [initialTime, resetTrigger]);
+    // Resets time to the initial or modified time
+    setTime(initialTime + extraTime);
+  }, [initialTime, extraTime, resetTrigger]);
 
   useEffect(() => {
     let interval;

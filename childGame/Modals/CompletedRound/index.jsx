@@ -8,13 +8,14 @@ const CompletedRound = ({ isVisible, onClose, title, targetName, onClick }) => {
     <CustomModal
       isVisible={isVisible}
       onClose={onClose}
-      height={"60%"}
+      height={"70%"}
     >
       <View style={styles.container}>
         
         <Image
-          source={require("../../assets/imgs/finished.png")}
+          source={require("../../assets/newImgs/Group 6969.png")}
           style={styles.image}
+          resizeMode="contain"
         />
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>
