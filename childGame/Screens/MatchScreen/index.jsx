@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, SafeAreaView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+  SafeAreaView,
+  Alert,
+} from "react-native";
 import { imageUrls } from "../../data/images";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  toggleRound,
+  setCurrentPlayerIndex,
+} from "../../store/actions/gameActions";
+import Turn from "../../Modals/Turn";
 
 function shuffleArray(array) {
   let shuffled = array.slice();
@@ -18,8 +33,33 @@ const MatchScreen = ({ images = imageUrls }) => {
   const [flippedIndices, setFlippedIndices] = useState([]);
   const [matchedIndices, setMatchedIndices] = useState([]);
   const [isInteractable, setIsInteractable] = useState(true);
+  const [showTurnModal, setShowTurnModal] = useState(true);
   const [gameOver, setGameOver] = useState(false);
-  const initialTime = 60; // Set initial timer count down from 60 seconds
+const dispatch=useDispatch()
+  const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
+
+  useEffect(() => {
+    if (currentPlayerIndex === 0) {
+      resetGameForNextPlayer(); // Initialize the game when the component mounts or when it's the first player's turn
+    }
+    console.log(currentPlayerIndex,"currentPlayerIndex")
+  }, [currentPlayerIndex]);
+
+  const {
+    gameMode,
+    playerCount,
+    currentPlayerIndex,
+    teamsInfo,
+    playerNames,
+    roundStart,
+    scores,
+  } = useSelector((state) => state.game);
+  const initialTime = 60;
+  const playerList =
+    gameMode === "individual"
+      ? playerNames
+      : teamsInfo.map((element) => element.name);
+  const players = gameMode === "individual" ? playerCount : teamsInfo.length;
 
   useEffect(() => {
     setShuffledImages(shuffleArray(images));
@@ -28,20 +68,61 @@ const MatchScreen = ({ images = imageUrls }) => {
   useEffect(() => {
     if (matchedIndices.length === images.length) {
       Alert.alert("Congratulations!", "You've won the game!");
-      setGameOver(true);
+      finalizeCurrentPlayerTurn()
     }
   }, [matchedIndices, images.length]);
 
   const handleTimeOut = () => {
     if (!gameOver) {
-      Alert.alert("Time's up!", "You've lost the game.");
+      Alert.alert("Time's up!", "You've lost the game.", [
+        {
+          text: "OK",
+          onPress: () => {
+            dispatch(updateScore(playerList[currentPlayerIndex], false));
+            if (currentPlayerIndex + 1 < players) {
+              finalizeCurrentPlayerTurn();
+            setResetTimerTrigger((prev) => prev + 1);
+            }
+            else{
+              console.log("finished")
+            }
+            
+          },
+        },
+      ]);
       setGameOver(true);
       setIsInteractable(false);
     }
   };
 
+  const finalizeCurrentPlayerTurn = () => {
+    if (currentPlayerIndex + 1 < players) {
+      dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
+      resetGameForNextPlayer();
+      setShuffledImages(shuffleArray(images)); // Reset images for next player
+      setMatchedIndices([]); // Reset matches
+      setFlippedIndices([]); // Reset flipped indices
+      setIsInteractable(true);
+      setShowTurnModal(true);
+    }
+    else{console.log('fnished')}
+  };
+
+  const resetGameForNextPlayer = () => {
+    setShuffledImages(shuffleArray(images)); // Reset images for next player
+    setMatchedIndices([]); // Reset matches
+    setFlippedIndices([]); // Reset flipped indices
+    setGameOver(false);
+    setIsInteractable(true);
+  };
+
   const handleTilePress = (index) => {
-    if (!isInteractable || flippedIndices.includes(index) || matchedIndices.includes(index) || gameOver) {
+    if (
+      !isInteractable ||
+      flippedIndices.includes(index) ||
+      matchedIndices.includes(index) ||
+      gameOver
+    ) {
       return;
     }
 
@@ -50,7 +131,9 @@ const MatchScreen = ({ images = imageUrls }) => {
 
     if (newFlippedIndices.length === 2) {
       setIsInteractable(false);
-      const match = shuffledImages[newFlippedIndices[0]] === shuffledImages[newFlippedIndices[1]];
+      const match =
+        shuffledImages[newFlippedIndices[0]] ===
+        shuffledImages[newFlippedIndices[1]];
       if (match) {
         const newMatchedIndices = [...matchedIndices, ...newFlippedIndices];
         setMatchedIndices(newMatchedIndices);
@@ -70,9 +153,21 @@ const MatchScreen = ({ images = imageUrls }) => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
+       <Turn
+        isVisible={showTurnModal}
+        onClose={() => setShowTurnModal(false)}
+        title={`${playerList[currentPlayerIndex]}'s Turn`}
+        onClick={() => setShowTurnModal(false)}
+      />
       <SafeAreaView style={styles.container}>
-        <CenteredBox style={styles.centeredBox} height={'90%'}>
-        <CountdownTimer initialTime={initialTime} onEnd={handleTimeOut} />
+        <CenteredBox style={styles.centeredBox} height={"90%"}>
+        <CountdownTimer
+          initialTime={initialTime}
+          onEnd={handleTimeOut}
+          start={!showTurnModal && !gameOver}
+          resetTrigger={resetTimerTrigger}
+          extraTime={0}
+        />
           <View style={styles.grid}>
             {shuffledImages.map((image, index) => (
               <TouchableOpacity
@@ -81,11 +176,17 @@ const MatchScreen = ({ images = imageUrls }) => {
                 onPress={() => handleTilePress(index)}
                 disabled={!isInteractable || gameOver}
               >
-                <View style={[
-                  styles.card,
-                  flippedIndices.includes(index) || matchedIndices.includes(index) ? styles.cardFlipped : styles.cardCovered
-                ]}>
-                  {(flippedIndices.includes(index) || matchedIndices.includes(index)) && (
+                <View
+                  style={[
+                    styles.card,
+                    flippedIndices.includes(index) ||
+                    matchedIndices.includes(index)
+                      ? styles.cardFlipped
+                      : styles.cardCovered,
+                  ]}
+                >
+                  {(flippedIndices.includes(index) ||
+                    matchedIndices.includes(index)) && (
                     <Image source={{ uri: image }} style={styles.image} />
                   )}
                 </View>
@@ -93,7 +194,6 @@ const MatchScreen = ({ images = imageUrls }) => {
             ))}
           </View>
         </CenteredBox>
-        
       </SafeAreaView>
     </ImageBackground>
   );
@@ -112,9 +212,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   centeredBox: {
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 20,  // Space between grid and timer
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 20, // Space between grid and timer
   },
   grid: {
     flexDirection: "row",
@@ -133,7 +233,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     backgroundColor: "#ccc",
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   cardFlipped: {
     backgroundColor: "#fff",

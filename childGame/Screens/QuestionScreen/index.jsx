@@ -167,7 +167,12 @@ const QuestionScreen = () => {
       resetQuestionsForNextPlayer(currentPlayerIndex + 1);
     } else {
       dispatch(setCurrentPlayerIndex(0));
-      navigation.replace("CompleteWord");
+      console.log(currentSeason.title)
+      if (currentSeason.title==="Spring") {
+        navigation.replace("CompleteWord");
+      } else {
+        navigation.replace("MatchGame");
+      }
     }
   };
   const handleCompletedModalClose = () => {

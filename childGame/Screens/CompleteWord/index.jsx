@@ -127,11 +127,14 @@ const CompleteWord = () => {
 
   const handleSubmit = () => {
     const formedWord = selectedLetters.join("");
+
     if (formedWord.toUpperCase() === currentData.word.toUpperCase()) {
       Alert.alert("Correct Answer", "You got the right answer!", [
         { text: "OK", onPress: () => {
           dispatch(updateScore(playerList[currentPlayerIndex], true))
-          finalizeCurrentPlayerTurn() }},
+          finalizeCurrentPlayerTurn() 
+          setResetTimerTrigger(prev=>prev+1)
+        }},
       ]);
     } else {
       Alert.alert("Incorrect Answer", "Please try again!", [
@@ -141,6 +144,7 @@ const CompleteWord = () => {
             setSelectedLetters([]);
             setRemainingLetters(shuffleLetters(currentData.scrambledLetters));
             dispatch(updateScore(playerList[currentPlayerIndex], false))
+            setResetTimerTrigger(prev=>prev+1)
             finalizeCurrentPlayerTurn();
           },
         },
@@ -185,7 +189,7 @@ const CompleteWord = () => {
               <CountdownTimer
                 initialTime={timerDuration}
                 onEnd={handleSubmit}
-                start={!showTurnModal || !showCompletedModal}
+                start={!showTurnModal && !showCompletedModal}
                 resetTrigger={resetTimerTrigger}
                 extraTime={0}
               />
