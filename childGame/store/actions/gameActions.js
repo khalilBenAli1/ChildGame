@@ -44,3 +44,13 @@ export const resetPlayerInfo = () => ({
 export const resetAll = () => ({
   type: "RESET_ALL",
 });
+
+export const setGuessWord = (word) => ({
+  type: "SET_GUESS_WORD",
+  payload: word,
+});
+
+// Reset the guess word
+export const resetGuessWord = () => ({
+  type: "RESET_GUESS_WORD",
+});

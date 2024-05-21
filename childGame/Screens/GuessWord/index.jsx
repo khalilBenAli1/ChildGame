@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {
   View,
   Text,
@@ -12,13 +12,27 @@ import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
-
-const guessWordData = {
-  image: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg",
-  word: "PARIS",
-};
-
+import { imageWords } from "../../data/imagesWords";
+import { useDispatch } from 'react-redux';
+import { useNavigation } from "@react-navigation/native";
+import { setGuessWord } from "../../store/actions/gameActions";
 const GuessWord = () => {
+  const [currentWordData, setCurrentWordData] = useState(null);
+  const dispatch = useDispatch();
+  const navigation= useNavigation()
+
+  useEffect(() => {
+    // Select a random item each time component is loaded or reset
+    const randomItem = imageWords[Math.floor(Math.random() * imageWords.length)];
+    setCurrentWordData(randomItem);
+   ;
+  }, []);
+
+  const handleOnClick = ()=>{
+    dispatch(setGuessWord(currentWordData))
+    navigation.navigate("AnswerScreen")
+  }
+
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
@@ -34,19 +48,22 @@ const GuessWord = () => {
           borderWidth={0}
         />
         <CenteredBox height={"90%"}>
-          <Image
-            source={{ uri: guessWordData.image }}
+        { currentWordData&& 
+        <>
+        <Image
+           source={{ uri: currentWordData.image }}
             style={styles.image}
           />
           <Text style={styles.description}>
             Describe the word to your Teams and give them the phone to insert:
           </Text>
-          <Text style={styles.targetWord}>{guessWordData.word}</Text>
+          <Text style={styles.targetWord}>{currentWordData.word}</Text>
+          </>}
           <Text style={styles.hint}>
             Hint: You can insert the correct word after your teammates give you the answer to ensure it's answered correctly.
           </Text>
           <View style={styles.myFlex}/>
-          <AppButton backgroundColor={"#389936"}>
+          <AppButton backgroundColor={"#389936"} onClick={handleOnClick}>
             <Text style={styles.buttonText}>Start the Timer</Text>
           </AppButton>
         </CenteredBox>
@@ -72,8 +89,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    width: 350,
-    height: 300,
+    width: "90%",
+    height: 230,
     resizeMode: "cover",
     marginVertical:30,
     borderRadius:20

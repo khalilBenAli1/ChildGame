@@ -7,6 +7,7 @@ const initialState = {
   scores: {},
   roundStart: true,
   roundNumber: 1,
+  guessWord: "",
 };
 
 const gameReducer = (state = initialState, action) => {
@@ -31,11 +32,11 @@ const gameReducer = (state = initialState, action) => {
         ...state,
         teamsInfo: action.payload,
       };
-      case 'SET_CURRENT_PLAYER_INDEX':
-        return {
-          ...state,
-          currentPlayerIndex: action.payload,
-        };
+    case "SET_CURRENT_PLAYER_INDEX":
+      return {
+        ...state,
+        currentPlayerIndex: action.payload,
+      };
     case "UPDATE_SCORE":
       const { playerName, isCorrect } = action.payload;
       const existingScores = state.scores[playerName] || {
@@ -70,6 +71,16 @@ const gameReducer = (state = initialState, action) => {
       };
     case "RESET_ALL":
       return { ...initialState };
+    case "SET_GUESS_WORD":
+      return {
+        ...state,
+        guessWord: action.payload,
+      };
+    case "RESET_GUESS_WORD":
+      return {
+        ...state,
+        guessWord: "",
+      };
     default:
       return state;
   }

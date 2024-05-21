@@ -12,15 +12,29 @@ import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
-
+import { useSelector } from 'react-redux';
+import { useNavigation } from "@react-navigation/native";
 const AnswerScreen = () => {
   const [answer, setAnswer] = useState("");
+  const guessWord = useSelector(state => state.game.guessWord);
+  const navigation = useNavigation();
 
+  const handleAnswerSubmit = () => {
+    if (answer.trim().toLowerCase() === guessWord.word.toLowerCase()) {
+      console.log('Correct answer!');
+     navigation.navigate("GuessWord")
+    } else {
+      console.log('Wrong answer, the correct word was:', guessWord);
+      // Optionally handle incorrect guesses
+      navigation.navigate("GuessWord")
+    }
+  };
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
+      {console.log(guessWord)}
       <SafeAreaView style={styles.container}>
         <ProgressBar
           progress={1} 
@@ -49,7 +63,7 @@ const AnswerScreen = () => {
             placeholder="Your word here"
             placeholderTextColor="#ccc"
           />
-          <AppButton backgroundColor={"#389936"} onClick={() => console.log('Answer:', answer)}>
+          <AppButton backgroundColor={"#389936"} onClick={() => handleAnswerSubmit()}>
             <Text style={styles.buttonText}>Submit Answer</Text>
           </AppButton>
         </CenteredBox>
