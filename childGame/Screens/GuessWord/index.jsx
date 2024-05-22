@@ -18,6 +18,7 @@ import Turn from "../../Modals/Turn";
 import RoundPoints from "../../Modals/RoundPoints";
 import useDisableBackButton from "../../utils/useDisableBackButton";
 
+
 const GuessWord = () => {
   useDisableBackButton()
   const [currentWordData, setCurrentWordData] = useState(null);
@@ -74,7 +75,7 @@ const GuessWord = () => {
           isVisible={showCompletedModal}
           onClose={() => navigation.navigate("Seasons")} 
           bannerText={<Text>Final Scores</Text>}
-          numberOfPlayers={playerCount}
+          numberOfPlayers={players}
           mode={gameMode}
           players={playerList}
           scores={scores}

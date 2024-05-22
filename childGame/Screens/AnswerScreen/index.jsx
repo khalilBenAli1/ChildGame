@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import { updateScore } from "../../store/actions/gameActions";
 import { setCurrentPlayerIndex } from "../../store/actions/gameActions";
 import useDisableBackButton from "../../utils/useDisableBackButton";
-
+import { addPoints } from "../../store/actions/gameActions";
 const AnswerScreen = () => {
   useDisableBackButton();
   const [answer, setAnswer] = useState("");

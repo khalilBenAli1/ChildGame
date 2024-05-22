@@ -19,7 +19,7 @@ const RoundPoints = ({
     if (rank === 0) {
       // Highest score
       return { message: "Roll Dice + BONUS CARD", color: "#389936" };
-    } else if (rank === 1 && numberOfPlayers > 2) {
+    } else if (rank === 1 && (numberOfPlayers > 2)) {
       return { message: "Roll Dice", color: "#389936" };
     } else {
       return { message: "No Card No Rolling Dice", color: "#FF2156" };

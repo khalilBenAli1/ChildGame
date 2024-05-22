@@ -38,13 +38,14 @@ const MatchScreen = ({ images = imageUrls }) => {
   const [matchedIndices, setMatchedIndices] = useState([]);
   const [isInteractable, setIsInteractable] = useState(true);
   const [showTurnModal, setShowTurnModal] = useState(true);
+  
   const [gameOver, setGameOver] = useState(false);
 const dispatch=useDispatch()
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
   const navigation= useNavigation()
   useEffect(() => {
     if (currentPlayerIndex === 0) {
-      resetGameForNextPlayer(); // Initialize the game when the component mounts or when it's the first player's turn
+      resetGameForNextPlayer(); 
     }
     console.log(currentPlayerIndex,"currentPlayerIndex")
   }, [currentPlayerIndex]);
@@ -72,6 +73,8 @@ const dispatch=useDispatch()
   useEffect(() => {
     if (matchedIndices.length === images.length) {
       Alert.alert("Congratulations!", "You've won the game!");
+      dispatch(updateScore(playerList[currentPlayerIndex], true));
+      setResetTimerTrigger(prev=>prev+1)
       finalizeCurrentPlayerTurn()
     }
   }, [matchedIndices, images.length]);
@@ -172,7 +175,7 @@ const dispatch=useDispatch()
         <CountdownTimer
           initialTime={initialTime}
           onEnd={handleTimeOut}
-          start={!showTurnModal && !gameOver}
+          start={!showTurnModal}
           resetTrigger={resetTimerTrigger}
           extraTime={0}
         />

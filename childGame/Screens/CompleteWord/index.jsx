@@ -187,7 +187,7 @@ const CompleteWord = () => {
             isVisible={showCompletedModal}
             onClose={handleCloseCompletedModal}
             bannerText={<Text>Final Scores</Text>}
-            numberOfPlayers={playerCount}
+            numberOfPlayers={players}
             mode={gameMode}
             players={playerList}
             scores={scores}
