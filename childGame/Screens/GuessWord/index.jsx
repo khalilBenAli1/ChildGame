@@ -6,12 +6,10 @@ import {
   Image,
   ImageBackground,
   SafeAreaView,
-  TouchableOpacity,
 } from "react-native";
 import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
-import CountdownTimer from "../../Components/CountdownTimer";
 import { imageWords } from "../../data/imagesWords";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -36,11 +34,18 @@ const GuessWord = () => {
     scores,
   } = useSelector((state) => state.game);
   const playerList = gameMode === "individual" ? playerNames : teamsInfo.map((element) => element.name);
+  const players = gameMode === "individual" ? playerCount : teamsInfo.length;
 
   useEffect(() => {
-    // Select a random item each time component is loaded or reset
     const randomItem = imageWords[Math.floor(Math.random() * imageWords.length)];
     setCurrentWordData(randomItem);
+    if(currentPlayerIndex<players){
+      setShowTurnModal(true);
+    }
+    else{
+      setShowCompletedModal(true)
+    }
+    
   }, [currentPlayerIndex]);
 
 
@@ -67,7 +72,7 @@ const GuessWord = () => {
         />
         <RoundPoints
           isVisible={showCompletedModal}
-          onClose={() => navigation.navigate("SeasonEndScreen")} // Assuming you have a navigation point for the end
+          onClose={() => navigation.navigate("Seasons")} 
           bannerText={<Text>Final Scores</Text>}
           numberOfPlayers={playerCount}
           mode={gameMode}
