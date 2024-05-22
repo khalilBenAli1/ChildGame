@@ -41,7 +41,7 @@ const GameTypeScreen = () => {
           >
             <View style={styles.textContainer}>
               <Text style={styles.buttonTitle}>{t("individuals")}</Text>
-              <Image source={require("../../assets/newImgs/btata 1.png")}/>
+              <Image source={require("../../assets/newImgs/btata 4.png")} resizeMode="contain" style={styles.batataImgs}/>
               <Text style={styles.buttonSubtitle}>
                 {t("individualsDescription")}
               </Text>
@@ -56,9 +56,9 @@ const GameTypeScreen = () => {
               
               <Text style={styles.buttonTitle}>{t("teams")}</Text>
               <View style={{flexDirection:"row"}}>
-              <Image source={require("../../assets/newImgs/btata 1.png")}/>
-              <Image source={require("../../assets/newImgs/btata 1.png")}/>
-              <Image source={require("../../assets/newImgs/btata 1.png")}/>
+              <Image source={require("../../assets/newImgs/btata 4.png")} resizeMode="contain" style={styles.batataImgs}/>
+              <Image source={require("../../assets/newImgs/btata 4.png")} resizeMode="contain" style={styles.batataImgs}/>
+              <Image source={require("../../assets/newImgs/btata 4.png")} resizeMode="contain" style={styles.batataImgs}/>
               </View>
               <Text style={styles.buttonSubtitle}>{t("teamsDescription")}</Text>
             </View>
@@ -78,6 +78,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  batataImgs:{
+    width:50,
+    height:50
   },
   title: {
     color: "#FFFFFF",

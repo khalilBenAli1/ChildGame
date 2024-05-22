@@ -26,6 +26,9 @@ import CompletedRound from "../../Modals/CompletedRound";
 import RoundPoints from "../../Modals/RoundPoints";
 import SuperCardQuestion from "../../Modals/SuperCardQuestion";
 import { extraTimeCodes , skipAndScoreCodes} from "../../data/extraTimeCodes";
+import { playSound } from "../../utils/sound";
+import useDisableBackButton from "../../utils/useDisableBackButton";
+
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -34,6 +37,7 @@ function shuffleArray(array) {
 }
 
 const QuestionScreen = () => {
+  useDisableBackButton()
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state.game);
@@ -116,7 +120,6 @@ const QuestionScreen = () => {
   const handleSuperCardSubmit = (code) => {
     const upperCaseCode = code.toUpperCase();
   
-    // Check if the code has already been used
     if (usedCodes.has(upperCaseCode)) {
       Alert.alert("Error", "This code has already been used.");
       return;
@@ -127,6 +130,7 @@ const QuestionScreen = () => {
       addExtraTime(extraTimeCodes[upperCaseCode]);
       setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
       Alert.alert("Success", `Added ${extraTimeCodes[upperCaseCode]} seconds!`);
+      playSound('victory');
       return;
     }
   
@@ -153,7 +157,7 @@ const QuestionScreen = () => {
       return;
     }
   
-    Alert.alert("Error", "Invalid code");
+    Alert.alert("Erreur", "Code invalide");
   };
   const handleRoundStartClose = () => {
     setShowRoundStartModal(false);
@@ -168,7 +172,7 @@ const QuestionScreen = () => {
     } else {
       dispatch(setCurrentPlayerIndex(0));
       console.log(currentSeason.title)
-      if (currentSeason.title==="Spring") {
+      if (currentSeason.title==="Printemps") {
         navigation.replace("CompleteWord");
       } else {
         navigation.replace("MatchGame");
@@ -297,12 +301,20 @@ const QuestionScreen = () => {
           onClose={handleFinishedRound}
           title="Round Complete"
           targetName={playerList[currentPlayerIndex + 1]}
-          onClick={handleFinishedRound}
+          onClick={handleFinishedRound}z
         />
         <SuperCardQuestion
           isVisible={showSuperCard}
           onClose={() => {
             setShowSuperCard(false);
+            if (currentQuestionIndex + 1 < totalQuestions) {
+              setCurrentQuestionIndex(currentQuestionIndex + 1);
+              playSound('defait');
+            }
+            else{
+              finalizeCurrentPlayerTurn();
+              playSound('defait');
+            }
             resetStatesForNextQuestion();
           }}
           onClick={handleSuperCardSubmit}
@@ -338,11 +350,13 @@ const QuestionScreen = () => {
             <AppButton
               key={index}
               onClick={() => {
-                answer.option === question.correctAnswer
-                  ? dispatch(updateScore(playerList[currentPlayerIndex], true))
-                  : dispatch(
-                      updateScore(playerList[currentPlayerIndex], false)
-                    );
+                if (answer.option === question.correctAnswer) {
+                  dispatch(updateScore(playerList[currentPlayerIndex], true));
+                  playSound('victory');
+                } else {
+                  dispatch(updateScore(playerList[currentPlayerIndex], false));
+                  playSound('defait');
+                }
                 handleAnswer(answer);
               }}
               backgroundColor={
@@ -428,9 +442,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   questionText: {
-    fontSize: 24,
+    fontSize: 18,
     textAlign: "center",
-    marginBottom: 50,
+    marginBottom: 15,
     color: "black",
   },
   optionText: {

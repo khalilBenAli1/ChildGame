@@ -18,6 +18,9 @@ import {
   setCurrentPlayerIndex,
 } from "../../store/actions/gameActions";
 import Turn from "../../Modals/Turn";
+import { updateScore } from "../../store/actions/gameActions";
+import useDisableBackButton from "../../utils/useDisableBackButton";
+import { useNavigation } from "@react-navigation/native";
 
 function shuffleArray(array) {
   let shuffled = array.slice();
@@ -29,6 +32,7 @@ function shuffleArray(array) {
 }
 
 const MatchScreen = ({ images = imageUrls }) => {
+  useDisableBackButton()
   const [shuffledImages, setShuffledImages] = useState([]);
   const [flippedIndices, setFlippedIndices] = useState([]);
   const [matchedIndices, setMatchedIndices] = useState([]);
@@ -37,7 +41,7 @@ const MatchScreen = ({ images = imageUrls }) => {
   const [gameOver, setGameOver] = useState(false);
 const dispatch=useDispatch()
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
-
+  const navigation= useNavigation()
   useEffect(() => {
     if (currentPlayerIndex === 0) {
       resetGameForNextPlayer(); // Initialize the game when the component mounts or when it's the first player's turn
@@ -54,7 +58,7 @@ const dispatch=useDispatch()
     roundStart,
     scores,
   } = useSelector((state) => state.game);
-  const initialTime = 60;
+  const initialTime = 30;
   const playerList =
     gameMode === "individual"
       ? playerNames
@@ -81,10 +85,11 @@ const dispatch=useDispatch()
             dispatch(updateScore(playerList[currentPlayerIndex], false));
             if (currentPlayerIndex + 1 < players) {
               finalizeCurrentPlayerTurn();
-            setResetTimerTrigger((prev) => prev + 1);
+              setResetTimerTrigger((prev) => prev + 1); 
             }
             else{
-              console.log("finished")
+              dispatch(setCurrentPlayerIndex(0));
+              navigation.replace("GuessWord")
             }
             
           },
@@ -105,7 +110,10 @@ const dispatch=useDispatch()
       setIsInteractable(true);
       setShowTurnModal(true);
     }
-    else{console.log('fnished')}
+    else{
+      dispatch(setCurrentPlayerIndex(0));
+      navigation.replace("GuessWord")
+    }
   };
 
   const resetGameForNextPlayer = () => {

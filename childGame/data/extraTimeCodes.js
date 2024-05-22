@@ -13,3 +13,17 @@ export const skipAndScoreCodes = {
     "S15SZ": true,
     "S1ZE5": true
   };
+
+
+  export const minusScore = {
+    "P151D": true,
+    "P1D2E": true,
+    "P1K85": true,
+    "P6JH2": true,
+    "PM15": true
+  };
+
+
+
+
+

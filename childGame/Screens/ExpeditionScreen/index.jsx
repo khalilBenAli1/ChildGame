@@ -79,14 +79,16 @@ const styles = StyleSheet.create({
     width:"70%",
   },
   titleContainer: {
-    marginTop: 20,
+    marginTop: 40,
     alignItems: "center",
+    
   },
   title: {
     fontSize: 40,
-    fontWeight: "bold",
+    fontWeight: "black",
     color: "white",
     textAlign: "center",
+    maxWidth:"83%"
   },
   buttonsContainer: {
     marginBottom: 20,

@@ -21,6 +21,9 @@ import { useNavigation } from "@react-navigation/native";
 import { setCurrentPlayerIndex } from "../../store/actions/gameActions";
 import { updateSeasonStatus } from "../../store/actions/seasonActions";
 import { updateScore } from "../../store/actions/gameActions";
+import { playSound } from "../../utils/sound";
+import useDisableBackButton from "../../utils/useDisableBackButton";
+
 const imageData = [
   {
     word: "PortioFarina",
@@ -66,6 +69,7 @@ const shuffleLetters = (letters) => {
 };
 
 const CompleteWord = () => {
+  useDisableBackButton()
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -76,6 +80,7 @@ const CompleteWord = () => {
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
   const [currentData, setCurrentData] = useState(null);
   const timerDuration = 30;
+  const [usedIndices, setUsedIndices] = useState([]);
   const currentSeason = useSelector((state) => state.seasons.currentSeason);
   const {
     gameMode,
@@ -90,13 +95,20 @@ const CompleteWord = () => {
     gameMode === "individual"
       ? playerNames
       : teamsInfo.map((element) => element.name);
-  useEffect(() => {
-    const randomData = imageData[Math.floor(Math.random() * imageData.length)];
-    setCurrentData(randomData);
-    setSelectedLetters([]);
-    setRemainingLetters(shuffleLetters(randomData.scrambledLetters));
-    setShowTurnModal(true);
-  }, [currentPlayerIndex]);
+      useEffect(() => {
+        const availableIndices = imageData.map((_, index) => index).filter(index => !usedIndices.includes(index));
+        if (availableIndices.length > 0) {
+          const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+          const randomData = imageData[randomIndex];
+          setUsedIndices([...usedIndices, randomIndex]);
+          setCurrentData(randomData);
+          setSelectedLetters([]);
+          setRemainingLetters(shuffleLetters(randomData.scrambledLetters));
+        } else {
+          setShowCompletedModal(true); // Handle the scenario where all words have been completed.
+        }
+        setShowTurnModal(true);
+      }, [currentPlayerIndex]);
 
   const handleLetterSelect = (letter, index) => {
     let newSelected = [...selectedLetters, letter];
@@ -132,6 +144,7 @@ const CompleteWord = () => {
       Alert.alert("Correct Answer", "You got the right answer!", [
         { text: "OK", onPress: () => {
           dispatch(updateScore(playerList[currentPlayerIndex], true))
+          playSound("victory")
           finalizeCurrentPlayerTurn() 
           setResetTimerTrigger(prev=>prev+1)
         }},
@@ -142,6 +155,7 @@ const CompleteWord = () => {
           text: "OK",
           onPress: () => {
             setSelectedLetters([]);
+            playSound("defeat")
             setRemainingLetters(shuffleLetters(currentData.scrambledLetters));
             dispatch(updateScore(playerList[currentPlayerIndex], false))
             setResetTimerTrigger(prev=>prev+1)

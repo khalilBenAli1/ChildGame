@@ -81,6 +81,40 @@ const gameReducer = (state = initialState, action) => {
         ...state,
         guessWord: "",
       };
+   
+    case "ADD_POINTS":
+      const { playerName: playerNameAdd, points } = action.payload;
+      const scoresAdd = state.scores[playerNameAdd] || {
+        correct: 0,
+        incorrect: 0,
+      };
+      return {
+        ...state,
+        scores: {
+          ...state.scores,
+          [playerNameAdd]: {
+            ...scoresAdd,
+            correct: scoresAdd.correct + points,
+          },
+        },
+      };
+
+    case "SUBTRACT_POINTS":
+      const { playerName: playerNameSub, points: pointsSub } = action.payload;
+      const scoresSub = state.scores[playerNameSub] || {
+        correct: 0,
+        incorrect: 0,
+      };
+      return {
+        ...state,
+        scores: {
+          ...state.scores,
+          [playerNameSub]: {
+            ...scoresSub,
+            correct: Math.max(0, scoresSub.correct - pointsSub), 
+          },
+        },
+      };
     default:
       return state;
   }

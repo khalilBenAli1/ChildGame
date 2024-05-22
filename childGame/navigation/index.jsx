@@ -20,7 +20,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="GuessWord"
+        initialRouteName="Language"
         screenOptions={{
           headerShown: false,
         }}
@@ -28,16 +28,58 @@ const MainNavigation = () => {
         <Stack.Screen name="Language" component={LanguageScreen} />
         <Stack.Screen name="Expedition" component={ExpeditionScreen} />
         <Stack.Screen name="GameType" component={GameTypeScreen} />
-        <Stack.Screen name="MatchGame" component={MatchScreen} />
+        <Stack.Screen
+          name="MatchGame"
+          component={MatchScreen}
+          options={{
+            gestureEnabled: false,
+            headerLeft: () => null,
+          }}
+        />
         <Stack.Screen name="Individuals" component={IndividualsScreen} />
         <Stack.Screen name="CreateTeams" component={CreateTeamsScreen} />
-        <Stack.Screen name="Questions" component={QuestionScreen} />
-        <Stack.Screen name="CompleteWord" component={CompleteWord} />
-        <Stack.Screen name="SlidingPuzzle" component={SlidingPuzzle} />
+        <Stack.Screen
+          name="Questions"
+          component={QuestionScreen}
+          options={{
+            gestureEnabled: false,
+            headerLeft: () => null,
+          }}
+        />
+        <Stack.Screen
+          name="CompleteWord"
+          component={CompleteWord}
+          options={{
+            gestureEnabled: false,
+            headerLeft: () => null,
+          }}
+        />
+        <Stack.Screen
+          name="SlidingPuzzle"
+          component={SlidingPuzzle}
+          options={{
+            gestureEnabled: false,
+            headerLeft: () => null,
+          }}
+        />
         <Stack.Screen name="IndividualNames" component={IndividualNames} />
         <Stack.Screen name="Seasons" component={SeasonScreen} />
-        <Stack.Screen name="GuessWord" component={GuessWord} />
-        <Stack.Screen name="AnswerScreen" component={AnswerScreen} />
+        <Stack.Screen
+          name="GuessWord"
+          component={GuessWord}
+          options={{
+            gestureEnabled: false,
+            headerLeft: () => null,
+          }}
+        />
+        <Stack.Screen
+          name="AnswerScreen"
+          component={AnswerScreen}
+          options={{
+            gestureEnabled: false,
+            headerLeft: () => null,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

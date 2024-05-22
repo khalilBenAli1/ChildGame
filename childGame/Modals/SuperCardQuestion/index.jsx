@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
     color: "#389936",
   },
   image: {
-    width: 150,
-    height: 200,
+    width: 130,
+    height: 150,
     resizeMode: "contain",
-    marginVertical: 30,
+    marginVertical: 20,
   },
   description: {
     textAlign: "center",

@@ -74,9 +74,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 200,
-    height: 200,
+    height: 150,
     resizeMode: "contain",
-    marginVertical: 20,
+    marginVertical: 10,
   },
   orderContainer: {
     alignSelf: "stretch",

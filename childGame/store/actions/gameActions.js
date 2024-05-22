@@ -54,3 +54,20 @@ export const setGuessWord = (word) => ({
 export const resetGuessWord = () => ({
   type: "RESET_GUESS_WORD",
 });
+
+export const setScore = (playerName, score) => ({
+  type: "SET_SCORE",
+  payload: { playerName, score },
+});
+
+// Action to add points
+export const addPoints = (playerName, points) => ({
+  type: "ADD_POINTS",
+  payload: { playerName, points },
+});
+
+// Action to subtract points
+export const subtractPoints = (playerName, points) => ({
+  type: "SUBTRACT_POINTS",
+  payload: { playerName, points },
+});

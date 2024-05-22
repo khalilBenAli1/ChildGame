@@ -6,7 +6,7 @@ import CountryFlag from "react-native-country-flag";
 import { useTranslation } from 'react-i18next';
 import i18next from "../../config/i18n"
 import { useNavigation } from '@react-navigation/native';
-
+import RoundPoints from "../../Modals/RoundPoints";
 const LanguageScreen = () => {
     const navigation = useNavigation();
     const { t } = useTranslation();
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
     marginBottom: 30,
-    marginTop:-30,
+    marginTop:-10,
     width:"90%",
     lineHeight:40
     
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     width:"88%",
     color: "black",
     textAlign: "center",
-    marginVertical: 40,
+    marginVertical: 20,
   },
   buttonText: {
     color: "#FFFFFF",

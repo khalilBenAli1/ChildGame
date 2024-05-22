@@ -82,7 +82,7 @@ const CreateTeamsScreen = () => {
               placeholder={t("enterTeamName")}
             />
             <View style={styles.numberContainer}>
-              <Text>{t("numberOfPlayers")}: </Text>
+              <Text>{t("numberOfPlayers")} </Text>
               <NumberOfPlayers
                 initialCount={team.players}
                 onCountChange={(count) => handleSetPlayersCount(count, index)}

@@ -7,26 +7,45 @@ import {
   ImageBackground,
   SafeAreaView,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-const AnswerScreen = () => {
-  const [answer, setAnswer] = useState("");
-  const guessWord = useSelector(state => state.game.guessWord);
-  const navigation = useNavigation();
+import { updateScore } from "../../store/actions/gameActions";
+import { setCurrentPlayerIndex } from "../../store/actions/gameActions";
+import useDisableBackButton from "../../utils/useDisableBackButton";
 
+const AnswerScreen = () => {
+  useDisableBackButton();
+  const [answer, setAnswer] = useState("");
+  const guessWord = useSelector((state) => state.game.guessWord);
+  const navigation = useNavigation();
+  const {
+    gameMode,
+    playerCount,
+    currentPlayerIndex,
+    teamsInfo,
+    playerNames,
+    scores,
+  } = useSelector((state) => state.game);
+  const playerList =
+    gameMode === "individual"
+      ? playerNames
+      : teamsInfo.map((element) => element.name);
+  const dispatch = useDispatch();
   const handleAnswerSubmit = () => {
     if (answer.trim().toLowerCase() === guessWord.word.toLowerCase()) {
-      console.log('Correct answer!');
-     navigation.navigate("GuessWord")
+      dispatch(updateScore(playerNames[currentPlayerIndex], isCorrect));
+      dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
+      navigation.navigate("GuessWord");
     } else {
-      console.log('Wrong answer, the correct word was:', guessWord);
+      dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
       // Optionally handle incorrect guesses
-      navigation.navigate("GuessWord")
+      navigation.navigate("GuessWord");
     }
   };
   return (
@@ -37,7 +56,7 @@ const AnswerScreen = () => {
       {console.log(guessWord)}
       <SafeAreaView style={styles.container}>
         <ProgressBar
-          progress={1} 
+          progress={1}
           width={null}
           style={styles.progressBar}
           color="#389936"
@@ -48,6 +67,8 @@ const AnswerScreen = () => {
           <CountdownTimer
             initialTime={30}
             onEnd={() => console.log("Time's up!")}
+            start={true}
+            extraTime={0}
           />
           <Image
             source={require("../../assets/imgs/Guess.png")}
@@ -63,7 +84,10 @@ const AnswerScreen = () => {
             placeholder="Your word here"
             placeholderTextColor="#ccc"
           />
-          <AppButton backgroundColor={"#389936"} onClick={() => handleAnswerSubmit()}>
+          <AppButton
+            backgroundColor={"#389936"}
+            onClick={() => handleAnswerSubmit()}
+          >
             <Text style={styles.buttonText}>Submit Answer</Text>
           </AppButton>
         </CenteredBox>
@@ -92,27 +116,27 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: "contain",
-    marginVertical:20,
+    marginVertical: 20,
   },
   description: {
     fontSize: 16,
     textAlign: "center",
-    marginVertical:20,
+    marginVertical: 20,
   },
   input: {
     height: 40,
-    width: '80%',
+    width: "80%",
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 20,
     paddingHorizontal: 10,
     color: "#000",
-    marginVertical:20,
+    marginVertical: 20,
   },
   buttonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 });
 
