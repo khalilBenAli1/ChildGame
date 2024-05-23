@@ -24,10 +24,14 @@ import { updateScore } from "../../store/actions/gameActions";
 import { playSound } from "../../utils/sound";
 import useDisableBackButton from "../../utils/useDisableBackButton";
 
+
+
 const imageData = [
   {
     word: "PortioFarina",
-    image: require("../../assets/imgs/nou.png"),
+    image: {
+      uri: "https://drive.fife.usercontent.google.com/u/0/d/1BW_nNR23Fb5mlpqW3db9wAvcViumrNdl=w400-h380-p-k-rw-v1-nu-iv1",
+    },
     scrambledLetters: [
       "P",
       "O",
@@ -141,21 +145,23 @@ const CompleteWord = () => {
     const formedWord = selectedLetters.join("");
 
     if (formedWord.toUpperCase() === currentData.word.toUpperCase()) {
+      playSound("victory")
       Alert.alert("Correct Answer", "You got the right answer!", [
         { text: "OK", onPress: () => {
           dispatch(updateScore(playerList[currentPlayerIndex], true))
-          playSound("victory")
+          
           finalizeCurrentPlayerTurn() 
           setResetTimerTrigger(prev=>prev+1)
         }},
       ]);
     } else {
+      playSound("defait")
       Alert.alert("Incorrect Answer", "Please try again!", [
         {
           text: "OK",
           onPress: () => {
             setSelectedLetters([]);
-            playSound("defeat")
+           
             setRemainingLetters(shuffleLetters(currentData.scrambledLetters));
             dispatch(updateScore(playerList[currentPlayerIndex], false))
             setResetTimerTrigger(prev=>prev+1)

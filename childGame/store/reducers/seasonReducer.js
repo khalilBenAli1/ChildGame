@@ -50,7 +50,7 @@ const seasonReducer = (state = initialState, action) => {
         const newSeasons = state.seasons.map((season, index) => {
           if (season.title === action.payload.seasonTitle) {
             const updatedSeason = { ...season, completed: action.payload.completed };
-            if (action.payload.completed && index + 1 < state.seasons.length) {
+            if (action.payload.completed && index + 1 < state.seasons.length-2) {
               state.seasons[index + 1].playable = true;  
             }
   

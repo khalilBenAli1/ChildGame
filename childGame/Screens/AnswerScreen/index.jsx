@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TextInput,
   ScrollView,
+  Alert
 } from "react-native";
 import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
@@ -19,6 +20,8 @@ import { updateScore } from "../../store/actions/gameActions";
 import { setCurrentPlayerIndex } from "../../store/actions/gameActions";
 import useDisableBackButton from "../../utils/useDisableBackButton";
 import { addPoints } from "../../store/actions/gameActions";
+import { playSound } from "../../utils/sound";
+
 const AnswerScreen = () => {
   useDisableBackButton();
   const [answer, setAnswer] = useState("");
@@ -39,13 +42,28 @@ const AnswerScreen = () => {
   const dispatch = useDispatch();
   const handleAnswerSubmit = () => {
     if (answer.trim().toLowerCase() === guessWord.word.toLowerCase()) {
-      dispatch(updateScore(playerNames[currentPlayerIndex], isCorrect));
-      dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
-      navigation.navigate("GuessWord");
+      playSound("victory");
+      Alert.alert("Correct Answer", "You got the right answer!", [
+        {
+          text: "OK",
+          onPress: () => {
+            dispatch(updateScore(playerNames[currentPlayerIndex], true));
+            dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
+            navigation.navigate("GuessWord");
+          },
+        },
+      ]);
     } else {
-      dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
-      // Optionally handle incorrect guesses
-      navigation.navigate("GuessWord");
+      playSound("defait");
+      Alert.alert("Incorrect Answer", "That's not the right answer.", [
+        {
+          text: "OK",
+          onPress: () => {
+            dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
+            navigation.navigate("GuessWord");
+          },
+        },
+      ]);
     }
   };
   return (

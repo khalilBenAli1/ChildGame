@@ -17,7 +17,7 @@ import { setGuessWord, setCurrentPlayerIndex } from "../../store/actions/gameAct
 import Turn from "../../Modals/Turn";
 import RoundPoints from "../../Modals/RoundPoints";
 import useDisableBackButton from "../../utils/useDisableBackButton";
-
+import { updateSeasonStatus } from "../../store/actions/seasonActions";
 
 const GuessWord = () => {
   useDisableBackButton()
@@ -26,6 +26,7 @@ const GuessWord = () => {
   const [showCompletedModal, setShowCompletedModal] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const currentSeason = useSelector((state) => state.seasons.currentSeason);
   const {
     gameMode,
     playerCount,
@@ -73,7 +74,7 @@ const GuessWord = () => {
         />
         <RoundPoints
           isVisible={showCompletedModal}
-          onClose={() => navigation.navigate("Seasons")} 
+          onClose={() => { dispatch(updateSeasonStatus(currentSeason.title, true)); navigation.navigate("Seasons")}} 
           bannerText={<Text>Final Scores</Text>}
           numberOfPlayers={players}
           mode={gameMode}
