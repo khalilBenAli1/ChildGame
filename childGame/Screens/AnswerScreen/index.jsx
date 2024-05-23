@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import {
-  View,
   Text,
   StyleSheet,
   Image,
   ImageBackground,
   SafeAreaView,
   TextInput,
+  Alert,
   ScrollView,
-  Alert
 } from "react-native";
 import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
@@ -19,7 +18,6 @@ import { useNavigation } from "@react-navigation/native";
 import { updateScore } from "../../store/actions/gameActions";
 import { setCurrentPlayerIndex } from "../../store/actions/gameActions";
 import useDisableBackButton from "../../utils/useDisableBackButton";
-import { addPoints } from "../../store/actions/gameActions";
 import { playSound } from "../../utils/sound";
 
 const AnswerScreen = () => {
@@ -43,11 +41,10 @@ const AnswerScreen = () => {
   const handleAnswerSubmit = () => {
     if (answer.trim().toLowerCase() === guessWord.word.toLowerCase()) {
       playSound("victory");
-      Alert.alert("Correct Answer", "You got the right answer!", [
+      Alert.alert("Bonne réponse", "Vous avez trouvé la bonne réponse !", [
         {
           text: "OK",
           onPress: () => {
-            dispatch(updateScore(playerNames[currentPlayerIndex], true));
             dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
             navigation.navigate("GuessWord");
           },
@@ -55,7 +52,7 @@ const AnswerScreen = () => {
       ]);
     } else {
       playSound("defait");
-      Alert.alert("Incorrect Answer", "That's not the right answer.", [
+      Alert.alert("Réponse incorrecte", "Ce n'est pas la bonne réponse.", [
         {
           text: "OK",
           onPress: () => {
@@ -71,7 +68,6 @@ const AnswerScreen = () => {
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
-      {console.log(guessWord)}
       <SafeAreaView style={styles.container}>
         <ProgressBar
           progress={1}
@@ -82,32 +78,55 @@ const AnswerScreen = () => {
           borderWidth={0}
         />
         <CenteredBox height={"90%"}>
-          <CountdownTimer
-            initialTime={30}
-            onEnd={() => console.log("Time's up!")}
-            start={true}
-            extraTime={0}
-          />
-          <Image
-            source={require("../../assets/imgs/Guess.png")}
-            style={styles.image}
-          />
-          <Text style={styles.description}>
-            Enter the Word that your friend is describing:
-          </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setAnswer}
-            value={answer}
-            placeholder="Your word here"
-            placeholderTextColor="#ccc"
-          />
-          <AppButton
-            backgroundColor={"#389936"}
-            onClick={() => handleAnswerSubmit()}
+          <ScrollView
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Text style={styles.buttonText}>Submit Answer</Text>
-          </AppButton>
+            <CountdownTimer
+              initialTime={30}
+              onEnd={() => {
+                playSound("defait");
+                Alert.alert(
+                  "Réponse incorrecte",
+                  "Ce n'est pas la bonne réponse.",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        dispatch(setCurrentPlayerIndex(currentPlayerIndex + 1));
+                        navigation.navigate("GuessWord");
+                      },
+                    },
+                  ]
+                );
+              }}
+              start={true}
+              extraTime={0}
+            />
+            <Image
+              source={require("../../assets/imgs/Guess.png")}
+              style={styles.image}
+            />
+            <Text style={styles.description}>
+              Saisissez le mot que votre ami décrit :
+            </Text>
+
+            <TextInput
+              style={styles.input}
+              onChangeText={setAnswer}
+              value={answer}
+              placeholder="Your word here"
+              placeholderTextColor="#ccc"
+            />
+            <AppButton
+              backgroundColor={"#389936"}
+              onClick={() => handleAnswerSubmit()}
+            >
+              <Text style={styles.buttonText}>Soumettre la réponse</Text>
+            </AppButton>
+          </ScrollView>
         </CenteredBox>
       </SafeAreaView>
     </ImageBackground>

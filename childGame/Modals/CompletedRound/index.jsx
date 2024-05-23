@@ -5,13 +5,8 @@ import AppButton from "../../Components/AppButton";
 
 const CompletedRound = ({ isVisible, onClose, title, targetName, onClick }) => {
   return (
-    <CustomModal
-      isVisible={isVisible}
-      onClose={onClose}
-      height={"70%"}
-    >
+    <CustomModal isVisible={isVisible} onClose={onClose} height={"70%"}>
       <View style={styles.container}>
-        
         <Image
           source={require("../../assets/newImgs/Group 6969.png")}
           style={styles.image}
@@ -19,11 +14,12 @@ const CompletedRound = ({ isVisible, onClose, title, targetName, onClick }) => {
         />
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>
-          The Player has completed its Questions we move now to team <Text style={styles.teamName}>{targetName}</Text>
+          Le joueur a terminé ses questions, nous passons maintenant à l'équipe{" "}
+          <Text style={styles.teamName}>{targetName}</Text>
         </Text>
       </View>
       <AppButton onClick={onClick} backgroundColor={"#389936"}>
-        <Text style={styles.buttonText}>Move to the next round</Text>
+        <Text style={styles.buttonText}>Passer au tour suivant</Text>
       </AppButton>
     </CustomModal>
   );
@@ -38,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#389936"
+    color: "#389936",
   },
   image: {
     width: 200,
@@ -58,7 +54,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 });
 

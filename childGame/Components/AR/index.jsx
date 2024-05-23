@@ -32,7 +32,6 @@ const AR = ({ scale }) => {
           onLoadEnd={handleLoadEnd}
           onError={handleError}
         />
-   
     </ViroARScene>
   );
 };

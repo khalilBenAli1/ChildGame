@@ -25,22 +25,24 @@ const ScoreSuperCard = ({
         console.log("Used codes:", Array.from(usedCodes));
     
         if (usedCodes.has(upperCaseCode)) {
-            Alert.alert("Error", "This code has already been used.");
+          Alert.alert("Erreur", "Ce code a déjà été utilisé.");
             return;
         }
     
         if (minusScore[upperCaseCode]) {
             if (selectedPlayerIndex == null || selectedPlayerIndex >= players.length || selectedPlayerIndex < 0) {
-                Alert.alert("Error", "No player selected.");
+              Alert.alert("Erreur", "Aucun joueur sélectionné.");
                 return;
             }
             dispatch(subtractPoints(players[selectedPlayerIndex], 2));  // Assuming 2 points to subtract
             usedCodes.add(upperCaseCode);
-            Alert.alert("Success", `2 points removed from ${players[selectedPlayerIndex]}.`);
+            Alert.alert("Succès", `2 points retirés de ${players[selectedPlayerIndex]}.`);
+
             return;
         }
     
-        Alert.alert("Error", "Invalid code");
+        Alert.alert("Erreur", "Code invalide");
+
     };
 
   return (

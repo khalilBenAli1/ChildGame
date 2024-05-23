@@ -1,14 +1,15 @@
 export const imageWords = [
     {
-      image: "https://drive.google.com/uc?export=view&id=1XcwFsubWPCJH16egxrb_BMTZ3GhAb2Br",
+      image: require("../assets/guessWords/Borj elwoustani.png"),
       word: "Borj Elwoustani"
     },
     {
-      image: "https://drive.google.com/uc?export=view&id=1csYvgihkpqPxykbqPfw2wyxoutPl2lej",
+      image: require("../assets/guessWords/EL Nadhour.png"),
       word: "El Nadhour"
     },
     {
-      image: "https://drive.google.com/uc?export=view&id=1roVw-onYJNlaPvP6FZ7WllhPB1tdfOXW",
+      image: require("../assets/guessWords/fricasse lablebi.png"),
       word: "Fricasse Lablebi"
     }
   ];
+

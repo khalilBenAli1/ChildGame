@@ -100,7 +100,7 @@ export const questions = [ {
   question: "En quelle année Ghar El Melh a-t-elle été classée site RAMSAR ?",
   options: [
     { option: "A", text: "2017 " },
-    { option: "B", text: "2007s" },
+    { option: "B", text: "2007" },
     { option: "C", text: "2018" },
   ],
   correctAnswer: "B",

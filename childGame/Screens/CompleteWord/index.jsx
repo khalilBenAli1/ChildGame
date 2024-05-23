@@ -29,9 +29,7 @@ import useDisableBackButton from "../../utils/useDisableBackButton";
 const imageData = [
   {
     word: "PortioFarina",
-    image: {
-      uri: "https://drive.fife.usercontent.google.com/u/0/d/1BW_nNR23Fb5mlpqW3db9wAvcViumrNdl=w400-h380-p-k-rw-v1-nu-iv1",
-    },
+    image: require("../../assets/completeWords/nou.png"),
     scrambledLetters: [
       "P",
       "O",
@@ -49,16 +47,12 @@ const imageData = [
   },
   {
     word: "Gataaya",
-    image: {
-      uri: "https://drive.google.com/uc?export=view&id=1wN4nPLBj3Fb-CLzkF5dzTTDgycuTbQJL",
-    },
+    image: require("../../assets/completeWords/Gataaya.png"),
     scrambledLetters: ["G", "A", "T", "A", "A", "Y", "A"],
   },
   {
     word: "Phéniciens",
-    image: {
-      uri: "https://drive.google.com/uc?export=view&id=1vXaykmelhLQdSi_ZtcZNmk4wZCIvs1ZA",
-    },
+    image: require("../../assets/completeWords/lesPhi.png"),
     scrambledLetters: ["P", "H", "É", "N", "I", "C", "I", "E", "N", "S"],
   },
 ];
@@ -146,7 +140,7 @@ const CompleteWord = () => {
 
     if (formedWord.toUpperCase() === currentData.word.toUpperCase()) {
       playSound("victory")
-      Alert.alert("Correct Answer", "You got the right answer!", [
+      Alert.alert("Bonne réponse", "Vous avez trouvé la bonne réponse !", [
         { text: "OK", onPress: () => {
           dispatch(updateScore(playerList[currentPlayerIndex], true))
           
@@ -156,7 +150,7 @@ const CompleteWord = () => {
       ]);
     } else {
       playSound("defait")
-      Alert.alert("Incorrect Answer", "Please try again!", [
+      Alert.alert("Réponse incorrecte", "Ce n'est pas la bonne réponse.", [
         {
           text: "OK",
           onPress: () => {
@@ -217,7 +211,7 @@ const CompleteWord = () => {
                 <Image source={currentData.image} style={styles.image} />
               </View>
               <Text style={styles.instructionText}>
-                {t("Complete the word based on the images above:")}
+              "Complétez le mot en fonction des images ci-dessus :"
               </Text>
               <View style={styles.lettersContainer}>
                 {selectedLetters.map((letter, index) => (
@@ -247,7 +241,8 @@ const CompleteWord = () => {
                 ))}
               </View>
               <AppButton backgroundColor={"#389936"} onClick={handleSubmit}>
-                <Text style={styles.buttonText}>Submit Answer</Text>
+              <Text style={styles.buttonText}>Soumettre la réponse</Text>
+
               </AppButton>
             </CenteredBox>
           </SafeAreaView>
@@ -279,7 +274,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "80%",
-    height: 200,
+    height: 150,
     resizeMode: "cover",
   },
   instructionText: {

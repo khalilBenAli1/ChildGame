@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TextInput , ScrollView} from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
 
 const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
   const [superCardCode, setSuperCardCode] = useState("");
   const handleCodeSubmit = () => {
-    onClick(superCardCode); 
-    setSuperCardCode(""); 
-    onClose();    
+    onClick(superCardCode);
+    setSuperCardCode("");
+    onClose();
   };
-  
+
   return (
     <CustomModal
       isVisible={isVisible}
@@ -18,33 +25,47 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
       height={"85%"}
       hasBanner
       bannerText={
-        <Text style={{ fontWeight: "bold", color: "white" ,fontSize:24 , marginBottom:14}}>Super Card</Text>
+        <Text
+          style={{
+            fontWeight: "bold",
+            color: "white",
+            fontSize: 24,
+            marginBottom: 14,
+          }}
+        >
+          Super Card
+        </Text>
       }
     >
-      <ScrollView contentContainerStyle={{justifyContent:"center",alignItems:"center"}}>
-      <View style={styles.container}>
-        
-        <Image
-          source={require("../../assets/newImgs/Group 6970.png")}
-          style={styles.image}
-          resizeMode="contain"
-        />
-        <Text style={styles.description}>
-          Enter Your super card code to get an advantage
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={superCardCode}
-          onChangeText={setSuperCardCode}
-          placeholder={"Enter Your Code Here"}
-        />
-      </View>
-      <AppButton onClick={handleCodeSubmit} backgroundColor={"#389936"}>
-        <Text style={styles.buttonText}>Enter Code</Text>
-      </AppButton>
-      <AppButton onClick={onClose} backgroundColor={"#FF2F2F"}>
-        <Text style={styles.buttonText}>Surrender</Text>
-      </AppButton>
+      <ScrollView
+        contentContainerStyle={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View style={styles.container}>
+          <Image
+            source={require("../../assets/newImgs/Group 6970.png")}
+            style={styles.image}
+            resizeMode="contain"
+          />
+          <Text style={styles.description}>
+            Saisissez votre code de super carte pour obtenir un avantage
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            value={superCardCode}
+            onChangeText={setSuperCardCode}
+            placeholder={"Enter Your Code Here"}
+          />
+        </View>
+        <AppButton onClick={handleCodeSubmit} backgroundColor={"#389936"}>
+          <Text style={styles.buttonText}>Entrer le Code</Text>
+        </AppButton>
+        <AppButton onClick={onClose} backgroundColor={"#FF2F2F"}>
+          <Text style={styles.buttonText}>Abandonner</Text>
+        </AppButton>
       </ScrollView>
     </CustomModal>
   );
@@ -64,8 +85,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     padding: 10,
     marginVertical: 20,
-    minWidth:"98%",
-    maxWidth:"98%",
+    minWidth: "98%",
+    maxWidth: "98%",
   },
   title: {
     fontSize: 22,

@@ -3,7 +3,15 @@ import { View, Text, Image, StyleSheet, Modal } from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
 
-const RoundStart = ({ isVisible, onClose, text, mode, orderList,onClick ,bannerText}) => {
+const RoundStart = ({
+  isVisible,
+  onClose,
+  text,
+  mode,
+  orderList,
+  onClick,
+  bannerText,
+}) => {
   return (
     <CustomModal
       isVisible={isVisible}
@@ -21,8 +29,8 @@ const RoundStart = ({ isVisible, onClose, text, mode, orderList,onClick ,bannerT
         <View style={styles.orderContainer}>
           <Text style={styles.sub}>
             {mode === "individual"
-              ? "Player playing order :"
-              : "Team playing order :"}
+              ? "Ordre de jeu des joueurs :"
+              : "Ordre de jeu des équipes :"}
           </Text>
           {orderList.map((name, index) => (
             <View key={index} style={styles.orderItem}>
@@ -35,14 +43,14 @@ const RoundStart = ({ isVisible, onClose, text, mode, orderList,onClick ,bannerT
         </View>
         <Text style={styles.note}>Note :</Text>
         <Text style={styles.description}>
-          Each Team will have A 5 questions and challenges to answer before the
-          end of the timer and <Text style={{fontWeight:"bold",color:"#389936"}}>Good luck</Text>
+          Chaque équipe aura 5 questions et défis à répondre avant la fin du
+          minuteur et{" "}
+          <Text style={{ fontWeight: "bold", color: "#389936" }}>
+            Bonne chance
+          </Text>
         </Text>
       </View>
-      <AppButton
-        onClick={onClick}
-        backgroundColor={"#389936"}
-      >
+      <AppButton onClick={onClick} backgroundColor={"#389936"}>
         <View style={styles.languagesContainer}>
           <Text style={styles.buttonText}>Start the round</Text>
         </View>
@@ -60,17 +68,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color:"#389936"
+    color: "#389936",
   },
   sub: {
     fontSize: 20,
     fontWeight: "bold",
     marginVertical: 20,
   },
-  buttonText:{
-    color:"white",
-    fontSize:20,
-    fontWeight:"bold"
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
   },
   image: {
     width: 200,
@@ -118,11 +126,13 @@ const styles = StyleSheet.create({
 export default RoundStart;
 
 //Usage
-{/* <RoundStart
+{
+  /* <RoundStart
 isVisible={true}
 onClose={() => console.log("Close modal")}
 text="Round Beginning"
 mode="individual"
 orderList={["Alice", "Bob", "Charlie"]}
 onClick={()=>console.log('test')}
-/> */}
+/> */
+}

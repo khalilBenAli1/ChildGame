@@ -8,6 +8,8 @@ import {
   ImageBackground,
   SafeAreaView,
   Alert,
+  Modal,
+  Button,
 } from "react-native";
 import { imageUrls } from "../../data/images";
 import CenteredBox from "../../Components/CenteredBox";
@@ -21,7 +23,9 @@ import Turn from "../../Modals/Turn";
 import { updateScore } from "../../store/actions/gameActions";
 import useDisableBackButton from "../../utils/useDisableBackButton";
 import { useNavigation } from "@react-navigation/native";
-
+import { playSound } from "../../utils/sound";
+import CustomModal from "../../Components/CustomModal";
+import AppButton from "../../Components/AppButton";
 function shuffleArray(array) {
   let shuffled = array.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -32,33 +36,26 @@ function shuffleArray(array) {
 }
 
 const MatchScreen = ({ images = imageUrls }) => {
-  useDisableBackButton()
+  useDisableBackButton();
   const [shuffledImages, setShuffledImages] = useState([]);
   const [flippedIndices, setFlippedIndices] = useState([]);
   const [matchedIndices, setMatchedIndices] = useState([]);
   const [isInteractable, setIsInteractable] = useState(true);
   const [showTurnModal, setShowTurnModal] = useState(true);
-  
+  const [showNextPlayerModal, setShowNextPlayerModal] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const [resetTimerTrigger, setResetTimerTrigger] = useState(0);
-  const navigation= useNavigation()
+  const navigation = useNavigation();
   useEffect(() => {
     if (currentPlayerIndex === 0) {
-      resetGameForNextPlayer(); 
+      resetGameForNextPlayer();
     }
-    console.log(currentPlayerIndex,"currentPlayerIndex")
+    console.log(currentPlayerIndex, "currentPlayerIndex");
   }, [currentPlayerIndex]);
 
-  const {
-    gameMode,
-    playerCount,
-    currentPlayerIndex,
-    teamsInfo,
-    playerNames,
-    roundStart,
-    scores,
-  } = useSelector((state) => state.game);
+  const { gameMode, playerCount, currentPlayerIndex, teamsInfo, playerNames } =
+    useSelector((state) => state.game);
   const initialTime = 30;
   const playerList =
     gameMode === "individual"
@@ -72,29 +69,28 @@ const dispatch=useDispatch()
 
   useEffect(() => {
     if (matchedIndices.length === images.length) {
-      Alert.alert("Congratulations!", "You've won the game!");
+      playSound("victory");
+      Alert.alert("Félicitations !", "Vous avez gagné le jeu !");
       dispatch(updateScore(playerList[currentPlayerIndex], true));
-      setResetTimerTrigger(prev=>prev+1)
-      finalizeCurrentPlayerTurn()
+      setResetTimerTrigger((prev) => prev + 1);
+      finalizeCurrentPlayerTurn();
     }
   }, [matchedIndices, images.length]);
 
   const handleTimeOut = () => {
     if (!gameOver) {
-      Alert.alert("Time's up!", "You've lost the game.", [
+      playSound("defait");
+      Alert.alert("Temps écoulé !", "Vous avez perdu le jeu.", [
         {
           text: "OK",
           onPress: () => {
             dispatch(updateScore(playerList[currentPlayerIndex], false));
             if (currentPlayerIndex + 1 < players) {
               finalizeCurrentPlayerTurn();
-              setResetTimerTrigger((prev) => prev + 1); 
+              setResetTimerTrigger((prev) => prev + 1);
+            } else {
+              setShowNextPlayerModal(true);
             }
-            else{
-              dispatch(setCurrentPlayerIndex(0));
-              navigation.replace("GuessWord")
-            }
-            
           },
         },
       ]);
@@ -112,13 +108,19 @@ const dispatch=useDispatch()
       setFlippedIndices([]); // Reset flipped indices
       setIsInteractable(true);
       setShowTurnModal(true);
-    }
-    else{
-      dispatch(setCurrentPlayerIndex(0));
-      navigation.replace("GuessWord")
+    } else {
+      setShowNextPlayerModal(true);
     }
   };
 
+  const closeNextModal = () => {
+    setShowNextPlayerModal(false);
+    setTimeout(() => {
+      dispatch(setCurrentPlayerIndex(0));
+      navigation.replace("GuessWord");
+    }, 500);
+   
+  };
   const resetGameForNextPlayer = () => {
     setShuffledImages(shuffleArray(images)); // Reset images for next player
     setMatchedIndices([]); // Reset matches
@@ -164,21 +166,36 @@ const dispatch=useDispatch()
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.fullScreen}
     >
-       <Turn
+      <Turn
         isVisible={showTurnModal}
         onClose={() => setShowTurnModal(false)}
         title={`${playerList[currentPlayerIndex]}'s Turn`}
         onClick={() => setShowTurnModal(false)}
       />
+
+      <CustomModal
+      isVisible={showNextPlayerModal}
+      onClose={() => console.log("closed")}
+      height={"60%"}
+      >
+          <Text>Pour le prochain jeu, un seul joueur doit tenir le téléphone et voir le mot.</Text>
+          <AppButton
+              backgroundColor={"#FF2F2F"}
+              onClick={() => closeNextModal()}
+            >
+              <Text style={styles.optionText}>procéder</Text>
+            </AppButton>
+      </CustomModal>
+
       <SafeAreaView style={styles.container}>
         <CenteredBox style={styles.centeredBox} height={"90%"}>
-        <CountdownTimer
-          initialTime={initialTime}
-          onEnd={handleTimeOut}
-          start={!showTurnModal}
-          resetTrigger={resetTimerTrigger}
-          extraTime={0}
-        />
+          <CountdownTimer
+            initialTime={initialTime}
+            onEnd={handleTimeOut}
+            start={!showTurnModal}
+            resetTrigger={resetTimerTrigger}
+            extraTime={0}
+          />
           <View style={styles.grid}>
             {shuffledImages.map((image, index) => (
               <TouchableOpacity
@@ -198,7 +215,7 @@ const dispatch=useDispatch()
                 >
                   {(flippedIndices.includes(index) ||
                     matchedIndices.includes(index)) && (
-                    <Image source={{ uri: image }} style={styles.image} />
+                    <Image source={image} style={styles.image} />
                   )}
                 </View>
               </TouchableOpacity>
@@ -216,6 +233,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  optionText: {
+    maxWidth: "80%",
+    color: "white",
+    fontWeight: "600",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -225,7 +247,7 @@ const styles = StyleSheet.create({
   centeredBox: {
     width: "100%",
     alignItems: "center",
-    marginBottom: 20, // Space between grid and timer
+    marginBottom: 10,
   },
   grid: {
     flexDirection: "row",
@@ -233,9 +255,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   tile: {
-    width: 100,
-    height: 100,
-    margin: 10,
+    width: 80,
+    height: 80,
+    margin: 5,
   },
   card: {
     width: "100%",

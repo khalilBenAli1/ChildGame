@@ -121,7 +121,7 @@ const QuestionScreen = () => {
     const upperCaseCode = code.toUpperCase();
   
     if (usedCodes.has(upperCaseCode)) {
-      Alert.alert("Error", "This code has already been used.");
+      Alert.alert("Erreur", "Ce code a déjà été utilisé.");
       return;
     }
   
@@ -129,7 +129,7 @@ const QuestionScreen = () => {
     if (extraTimeCodes[upperCaseCode]) {
       addExtraTime(extraTimeCodes[upperCaseCode]);
       setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
-      Alert.alert("Success", `Added ${extraTimeCodes[upperCaseCode]} seconds!`);
+      Alert.alert("Succès", `Ajout de ${extraTimeCodes[upperCaseCode]} secondes !`);
       playSound('victory');
       return;
     }
@@ -141,17 +141,17 @@ const QuestionScreen = () => {
         setExtraTime(0)
         dispatch(updateScore(playerList[currentPlayerIndex], true))
       setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
-      Alert.alert("Success", "Skipped question and added score!");
+      Alert.alert("Succès", "Question passée et score ajouté !");
       } else if (currentPlayerIndex + 1 < players) {
         dispatch(updateScore(playerList[currentPlayerIndex], true))
       setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
-      Alert.alert("Success", "Skipped question and added score!");
+      Alert.alert("Succès", "Question passée et score ajouté !");
         setShowfinishedRound(true);
         
       } else {
         dispatch(updateScore(playerList[currentPlayerIndex], true))
       setUsedCodes(prevSet => new Set(prevSet.add(upperCaseCode))); // Add code to the used set
-      Alert.alert("Success", "Skipped question and added score!");
+      Alert.alert("Succès", "Question passée et score ajouté !");
         finalizeCurrentPlayerTurn();
       }
       return;

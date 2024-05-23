@@ -13,20 +13,24 @@ import CenteredBox from "../../Components/CenteredBox";
 import { imageWords } from "../../data/imagesWords";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { setGuessWord, setCurrentPlayerIndex } from "../../store/actions/gameActions";
+import { setGuessWord } from "../../store/actions/gameActions";
 import Turn from "../../Modals/Turn";
 import RoundPoints from "../../Modals/RoundPoints";
 import useDisableBackButton from "../../utils/useDisableBackButton";
 import { updateSeasonStatus } from "../../store/actions/seasonActions";
 
 const GuessWord = () => {
-  useDisableBackButton()
+  useDisableBackButton();
   const [currentWordData, setCurrentWordData] = useState(null);
   const [showTurnModal, setShowTurnModal] = useState(true);
   const [showCompletedModal, setShowCompletedModal] = useState(false);
+
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const currentSeason = useSelector((state) => state.seasons.currentSeason);
+  const [usedWordIndices, setUsedWordIndices] = useState(new Set());
+
   const {
     gameMode,
     playerCount,
@@ -35,21 +39,32 @@ const GuessWord = () => {
     playerNames,
     scores,
   } = useSelector((state) => state.game);
-  const playerList = gameMode === "individual" ? playerNames : teamsInfo.map((element) => element.name);
+  const playerList =
+    gameMode === "individual"
+      ? playerNames
+      : teamsInfo.map((element) => element.name);
   const players = gameMode === "individual" ? playerCount : teamsInfo.length;
 
   useEffect(() => {
-    const randomItem = imageWords[Math.floor(Math.random() * imageWords.length)];
-    setCurrentWordData(randomItem);
-    if(currentPlayerIndex<players){
-      setShowTurnModal(true);
-    }
-    else{
-      setShowCompletedModal(true)
-    }
-    
-  }, [currentPlayerIndex]);
+    let randomIndex;
+    let availableIndices = imageWords
+      .map((_, index) => index)
+      .filter((index) => !usedWordIndices.has(index));
 
+    if (availableIndices.length === 0) {
+      setShowCompletedModal(true);
+    }
+    randomIndex =
+      availableIndices[Math.floor(Math.random() * availableIndices.length)];
+    setCurrentWordData(imageWords[randomIndex]);
+    setUsedWordIndices((prev) => new Set(prev).add(randomIndex));
+
+    if (currentPlayerIndex < players) {
+      setShowTurnModal(true);
+    } else {
+      setShowCompletedModal(true);
+    }
+  }, [currentPlayerIndex]);
 
   const handleOnClick = () => {
     dispatch(setGuessWord(currentWordData));
@@ -74,7 +89,10 @@ const GuessWord = () => {
         />
         <RoundPoints
           isVisible={showCompletedModal}
-          onClose={() => { dispatch(updateSeasonStatus(currentSeason.title, true)); navigation.navigate("Seasons")}} 
+          onClose={() => {
+            dispatch(updateSeasonStatus(currentSeason.title, true));
+            navigation.navigate("Seasons");
+          }}
           bannerText={<Text>Final Scores</Text>}
           numberOfPlayers={players}
           mode={gameMode}
@@ -92,24 +110,22 @@ const GuessWord = () => {
         <CenteredBox height={"90%"}>
           {currentWordData && (
             <>
-              <Image
-                source={{ uri: currentWordData.image }}
-                style={styles.image}
-              />
+              <Image source={currentWordData.image} style={styles.image} />
               <Text style={styles.description}>
-                Describe the word to your Teams and give them the phone to
-                insert:
+                Décrivez le mot à vos équipes et donnez-leur le téléphone pour
+                insérer:
               </Text>
               <Text style={styles.targetWord}>{currentWordData.word}</Text>
             </>
           )}
           <Text style={styles.hint}>
-            Hint: You can insert the correct word after your teammates give you
-            the answer to ensure it's answered correctly.
+            Astuce : Vous pouvez insérer le mot correct après que vos
+            coéquipiers vous l'ont donné la réponse pour vous assurer qu'elle
+            est correctement répondue.
           </Text>
           <View style={styles.myFlex} />
           <AppButton backgroundColor={"#389936"} onClick={handleOnClick}>
-            <Text style={styles.buttonText}>Start the Timer</Text>
+            <Text style={styles.buttonText}>Démarrer la minuterie</Text>
           </AppButton>
         </CenteredBox>
       </SafeAreaView>
