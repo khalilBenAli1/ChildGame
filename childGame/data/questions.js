@@ -105,16 +105,6 @@ export const questions = [ {
   ],
   correctAnswer: "B",
 },
-{
-  id: 1,
-  question: "Qu'est-ce que les Gattayas et où sont-ils situés?",
-  options: [
-    { option: "A", text: "des " },
-    { option: "B", text: "des terres feriles" },
-    { option: "C", text: "des terres dans les montagnes de Ghar el meleh" },
-  ],
-  correctAnswer: "A",
-},
 
 {
   id: 1,

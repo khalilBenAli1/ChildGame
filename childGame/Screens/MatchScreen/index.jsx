@@ -178,7 +178,8 @@ const MatchScreen = ({ images = imageUrls }) => {
       onClose={() => console.log("closed")}
       height={"60%"}
       >
-          <Text>Pour le prochain jeu, un seul joueur doit tenir le téléphone et voir le mot.</Text>
+          <Image source={require("../../assets/imgs/first.png")} style={{height:150}} resizeMode="contain"/>
+          <Text style={{fontSize:14,marginVertical:10}}>Pour le prochain jeu, un seul joueur doit tenir le téléphone et voir le mot.</Text>
           <AppButton
               backgroundColor={"#FF2F2F"}
               onClick={() => closeNextModal()}

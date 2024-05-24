@@ -66,6 +66,7 @@ const QuestionScreen = () => {
   const [showSuperCard, setShowSuperCard] = useState(false);
   const [extraTime, setExtraTime] = useState(0);
   const [usedCodes, setUsedCodes] = useState(new Set());
+  const [playerQuestions, setPlayerQuestions] = useState([]);
 
   const question = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
@@ -75,11 +76,11 @@ const QuestionScreen = () => {
       : teamsInfo.map((element) => element.name);
   const timerDuration = 20;
   const players = gameMode === "individual" ? playerCount : teamsInfo.length;
+
+
   useEffect(() => {
     if (currentSeason && currentSeason.challenges.length > 0) {
       let allQuestions = [...currentSeason.challenges];
-      shuffleArray(allQuestions);
-
       const questionsPerParticipant =
         gameMode === "individual"
           ? Math.floor(allQuestions.length / playerCount)
@@ -99,7 +100,7 @@ const QuestionScreen = () => {
         }));
 
       selectedQuestions.forEach((question) => shuffleArray(question.options));
-
+        shuffleArray(selectedQuestions)
       setQuestions(selectedQuestions);
       setCurrentQuestionIndex(0);
     }
