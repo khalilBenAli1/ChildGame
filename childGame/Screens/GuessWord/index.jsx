@@ -13,7 +13,7 @@ import CenteredBox from "../../Components/CenteredBox";
 import { imageWords } from "../../data/imagesWords";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { setGuessWord } from "../../store/actions/gameActions";
+import { setCurrentPlayerIndex, setGuessWord } from "../../store/actions/gameActions";
 import Turn from "../../Modals/Turn";
 import RoundPoints from "../../Modals/RoundPoints";
 import useDisableBackButton from "../../utils/useDisableBackButton";
@@ -63,6 +63,7 @@ const GuessWord = () => {
       setShowTurnModal(true);
     } else {
       setShowCompletedModal(true);
+      dispatch(setCurrentPlayerrIndex(0));
     }
   }, [currentPlayerIndex]);
 

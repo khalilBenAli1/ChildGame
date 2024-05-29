@@ -45,7 +45,7 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
       >
         <View style={styles.container}>
           <Image
-            source={require("../../assets/newImgs/Group 6970.png")}
+            source={require("../../assets/newImgs/supp.png")}
             style={styles.image}
             resizeMode="contain"
           />

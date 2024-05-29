@@ -190,6 +190,7 @@ const MatchScreen = ({ images = imageUrls }) => {
 
       <SafeAreaView style={styles.container}>
         <CenteredBox style={styles.centeredBox} height={"90%"}>
+
           <CountdownTimer
             initialTime={initialTime}
             onEnd={handleTimeOut}
@@ -197,6 +198,9 @@ const MatchScreen = ({ images = imageUrls }) => {
             resetTrigger={resetTimerTrigger}
             extraTime={0}
           />
+           <Text style={styles.gameDescription}>
+          Trouvez les paires correspondantes le plus rapidement possible pour gagner des points!
+        </Text>
           <View style={styles.grid}>
             {shuffledImages.map((image, index) => (
               <TouchableOpacity
@@ -279,6 +283,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  gameDescription: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "black",
+    textAlign: "center",
+    padding: 10,
+
+    marginVertical: 20,
   },
 });
 

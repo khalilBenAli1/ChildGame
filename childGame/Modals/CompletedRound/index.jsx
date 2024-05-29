@@ -12,7 +12,8 @@ const CompletedRound = ({ isVisible, onClose, title, targetName, onClick }) => {
           style={styles.image}
           resizeMode="contain"
         />
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>Manche terminée</Text>
+        <Text style={styles.sub}>tour de l'équipe {targetName}</Text>
         <Text style={styles.description}>
           Le joueur a terminé ses questions, nous passons maintenant à l'équipe{" "}
           <Text style={styles.teamName}>{targetName}</Text>
@@ -55,6 +56,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  sub:{
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    alignSelf:"center",
+    textAlign:"center",
+    color: "#FF2F2F",
   },
 });
 

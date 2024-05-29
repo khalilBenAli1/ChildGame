@@ -23,8 +23,8 @@ const CountdownTimer = ({ initialTime, onEnd, start, resetTrigger, extraTime }) 
         });
       }, 1000);
     }
-    return () => clearInterval(interval); // Cleanup the interval on component unmount or if start becomes false
-  }, [start, time, onEnd]);
+    return () => clearInterval(interval); 
+  }, [start, time]);
 
   return (
     <View style={styles.container}>

@@ -23,7 +23,7 @@ const RoundStart = ({
       <View style={styles.container}>
         <Text style={styles.title}>{text}</Text>
         <Image
-          source={require("../../assets/newImgs/btata 4.png")}
+          source={require("../../assets/newImgs/Group 6974.png")}
           style={styles.image}
         />
         <View style={styles.orderContainer}>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 200,
-    height: 150,
+    height: 180,
     resizeMode: "contain",
     marginVertical: 10,
   },

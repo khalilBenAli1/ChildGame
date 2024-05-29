@@ -103,7 +103,7 @@ const CompleteWord = () => {
           setSelectedLetters([]);
           setRemainingLetters(shuffleLetters(randomData.scrambledLetters));
         } else {
-          setShowCompletedModal(true); // Handle the scenario where all words have been completed.
+          setShowCompletedModal(true)
         }
         setShowTurnModal(true);
       }, [currentPlayerIndex]);
