@@ -16,9 +16,10 @@ import { useNavigation } from "@react-navigation/native";
 import { resetSeasonAll } from "../../store/actions/seasonActions";
 import { setPlayerCount } from "../../store/actions/gameActions";
 import { setGameMode } from "../../store/actions/gameActions";
+import { changeLanguage } from "../../store/actions/seasonActions";
 const IndividualNames = ({ route }) => {
   const navigation = useNavigation();
-  const { t } = useTranslation();
+  const { t, i18n} = useTranslation();
   const { numberOfPlayers } = route.params;
   const [names, setNames] = useState(Array(numberOfPlayers).fill(""));
   const dispatch = useDispatch();
@@ -56,8 +57,8 @@ const IndividualNames = ({ route }) => {
               dispatch(resetSeasonAll());
               dispatch(setPlayerNames(names));
               dispatch(setPlayerCount(numberOfPlayers))
+              dispatch(changeLanguage(i18n.language))
               dispatch(setGameMode("individual"))
-              console.log(users)
               navigation.navigate("Seasons");
             }}
             backgroundColor="#389936"

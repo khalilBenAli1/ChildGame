@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View ,Text} from "react-native";
-import { Video, AVPlaybackStatus } from "expo-av";
+import { StyleSheet, View, Text } from "react-native";
+import { Video } from "expo-av";
 
 const VideoPlayer = ({ videoUri }) => {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
+  const video = useRef(null);
+  const [status, setStatus] = useState({});
 
-  useEffect(() => {
-    console.log("Video URI:", videoUri);
-  }, [videoUri]);
+
 
   const handlePlaybackStatusUpdate = (status) => {
     setStatus(status);
-    console.log("Playback Status:", status);
   };
 
   return (
@@ -28,8 +25,9 @@ const VideoPlayer = ({ videoUri }) => {
         onError={(error) => {
           console.log("Video Error:", error);
         }}
+        shouldPlay
       />
-       {!status.isLoaded && <Text>Loading video...</Text>}
+      {!status.isLoaded && <Text>Loading video...</Text>}
     </View>
   );
 };
@@ -39,10 +37,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor:"black",
+    borderRadius:10
   },
   video: {
-    width: "100%",
-    height:200,
+    width: 300,
+    height: 4500,
   },
 });
 

@@ -6,22 +6,25 @@ import CountryFlag from "react-native-country-flag";
 import { useTranslation } from 'react-i18next';
 import i18next from "../../config/i18n"
 import { useNavigation } from '@react-navigation/native';
-import RoundPoints from "../../Modals/RoundPoints";
+import { changeLanguage } from "../../store/actions/seasonActions";
+import { useDispatch } from "react-redux";
 const LanguageScreen = () => {
     const navigation = useNavigation();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const currentLanguage = i18n.language;
     const [selectedLanguage, setSelectedLanguage] = useState(null);
 
+
     const handleLanguageChange = (language) => {
+        console.log('current',currentLanguage);
         setSelectedLanguage(language); 
         i18next.changeLanguage(language, (err) => {
             if (err) return console.log('Something went wrong changing the language', err);
-            console.log("Language changed to:", language);
         });
     };
 
     const handleNext = () => {
-        navigation.navigate('Expedition');
+        navigation.navigate('Instructions');
     };
 
     const getButtonColor = (language) => selectedLanguage === language ? "#389936" : "#DEAE48";

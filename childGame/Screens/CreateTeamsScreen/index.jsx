@@ -16,9 +16,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch,useSelector } from "react-redux";
 import { setTeamsInfo,setGameMode  } from "../../store/actions/gameActions";
 import { useNavigation } from "@react-navigation/native";
-import { resetSeasonAll } from "../../store/actions/seasonActions";
+import { changeLanguage, resetSeasonAll } from "../../store/actions/seasonActions";
+
 const CreateTeamsScreen = () => {
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const teamss =useSelector(state=>state.game)
@@ -51,7 +52,9 @@ const CreateTeamsScreen = () => {
       dispatch(setTeamsInfo(teams));
       
       dispatch(setGameMode("teams"));
-      console.log("teams:",teamss,teams)
+
+      dispatch(changeLanguage(i18n.language))
+      
       navigation.navigate("Seasons");
     }
   };

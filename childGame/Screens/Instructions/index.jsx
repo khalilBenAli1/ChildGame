@@ -11,7 +11,7 @@ const Instructions = () => {
     const navigation = useNavigation();
     const { t } = useTranslation();
     const handleNext = () => {
-        navigation.navigate('Expedition');
+        navigation.navigate('VideoScreen');
     };
 
 

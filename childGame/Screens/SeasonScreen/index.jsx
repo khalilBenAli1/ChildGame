@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SeasonCard from "../../Components/SeasonCard";
@@ -8,22 +8,26 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { setCurrentSeason } from "../../store/actions/seasonActions";
 import { toggleRound } from "../../store/actions/gameActions";
+import { useTranslation } from 'react-i18next';
+
 const SeasonScreen = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch()
-  const [modalVisible, setModalVisible] = useState(false);
   const { seasons } = useSelector((state) => state.seasons);
+
   const navigation = useNavigation();
   const handleSubmit = (season)=>{
     dispatch(setCurrentSeason(season))
     dispatch(toggleRound(true));
     navigation.navigate("Questions")
   }
+
   return (
     <ImageBackground
       source={require("../../assets/imgs/imgBg.png")}
       style={styles.background}
     >
-      <Text style={styles.title}>Seasons</Text>
+      <Text style={styles.title}>{t("seasons")}</Text>
       {seasons.map((season, index) => (
         <View key={index} style={styles.cardContainer}>
           <View style={styles.iconAndCardContainer}>
@@ -36,7 +40,7 @@ const SeasonScreen = () => {
               />
             </View>
             <SeasonCard
-              title={"Section"+(index+1)+":"}
+              title={t('section')+(index+1)+":"}
               sub={season.title}
               playable={season.playable}
               numberOfChallenges={season.numberOfChallenges}

@@ -21,3 +21,8 @@ export const setCurrentSeason = (seasonIndex) => ({
 export const resetSeasonAll = () => ({
   type: "RESET_ALL",
 });
+
+export const changeLanguage = (language) => ({
+  type: "CHANGE_LANGUAGE",
+  payload: language,
+});

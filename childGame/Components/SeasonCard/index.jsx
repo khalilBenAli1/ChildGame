@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity ,ImageBackground} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { useTranslation } from 'react-i18next';
 const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color, onClick ,sub,disabled=false,playable}) => {
     const completedBarColor = completed ? '#1BAA76' : 'white';
     const percentageText = completed ? '100%' : '0%';
     const backgroundUrl = 'https://drive.usercontent.google.com/download?id=1wN4nPLBj3Fb-CLzkF5dzTTDgycuTbQJL&export=view&authuser=0';
-
+    const { t } = useTranslation();
     const gradientColors = playable
     ? ['transparent', color]  // Normal colorful gradient if playable
     : ['rgba(0,0,0,0.6)', 'rgba(255,255,255,0.6)'];  // Black and white mask if not playable
@@ -24,8 +24,8 @@ const SeasonCard = ({ title, numberOfChallenges, difficulty, completed, color, o
                 end={{ x: 0, y: 0 }}
             >
                 <Text style={styles.title}>{title}<Text style={[{color:playable?"black":"white"},styles.sub]}>{sub}</Text></Text>
-                <Text style={styles.details}>Challenges: {numberOfChallenges}</Text>
-                <Text style={styles.details}>Difficulty: {difficulty}</Text>
+                <Text style={styles.details}>{t('challenges')}: {numberOfChallenges}</Text>
+                <Text style={styles.details}>{t('difficulty')}: {difficulty}</Text>
                 <View style={styles.footer}>
                     <View style={[styles.completionBar, { backgroundColor: completedBarColor }]} />
                     <Text style={styles.percentage}>{percentageText}</Text>

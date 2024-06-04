@@ -25,7 +25,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="VideoScreen"
+        initialRouteName="Language"
         screenOptions={{
           headerShown: false,
         }}
