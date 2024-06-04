@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "childGame",
+    "name": "Gatay Expédition",
     "slug": "childGame",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,7 +25,7 @@
       "permissions": [
         "INTERNET"
       ],
-      "package": "com.khalil55.childGame"
+      "package": "com.khalil55.GatayExpedition"
     },
     "web": {
       "favicon": "./assets/favicon.png"
