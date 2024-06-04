@@ -17,7 +17,7 @@ const ExpeditionScreen = () => {
   const handleButtonPress = (option) => {
     option === "board_game"
       ? navigation.navigate("GameType")
-      : console.log(option, "button pressed");
+      : navigation.navigate("FreeView")
   };
 
   return (

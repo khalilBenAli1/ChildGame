@@ -6,6 +6,8 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
+import ThreeDModel from "../../Components/ThreeDMode";
+
 
 const HorizontalLayoutScreen = () => {
     const navigation=useNavigation()
@@ -27,8 +29,7 @@ const HorizontalLayoutScreen = () => {
       <LinearGradient colors={["#244023", "#359A60"]} style={styles.background}>
         <View style={styles.leftColumn}>
           <View style={styles.modelContainer}>
-            {/* Placeholder for 3D Model */}
-            <Text>3D Model Goes Here</Text>
+            <ThreeDModel modelPath={require('../../assets/3d/test.obj')} />
           </View>
           <View style={styles.buttonsContainer}>
             <AppButton
@@ -120,7 +121,6 @@ const styles = StyleSheet.create({
   modelContainer: {
     width: "100%",
     height: 200,
-    backgroundColor: "#ddd", // Just for visibility
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
