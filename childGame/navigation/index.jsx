@@ -15,13 +15,15 @@ import CompleteWord from "../Screens/CompleteWord";
 import GuessWord from "../Screens/GuessWord";
 import AnswerScreen from "../Screens/AnswerScreen";
 import ARScene from "../Screens/ArScreen";
+import HorizontalLayoutScreen from "../Screens/FreeViewScreen";
+
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="ArScreen"
+        initialRouteName="FreeView"
         screenOptions={{
           headerShown: false,
         }}
@@ -29,6 +31,7 @@ const MainNavigation = () => {
         <Stack.Screen name="Language" component={LanguageScreen} />
         <Stack.Screen name="Expedition" component={ExpeditionScreen} />
         <Stack.Screen name="GameType" component={GameTypeScreen} />
+        <Stack.Screen name="FreeView" component={HorizontalLayoutScreen} />
         <Stack.Screen
           name="MatchGame"
           component={MatchScreen}
