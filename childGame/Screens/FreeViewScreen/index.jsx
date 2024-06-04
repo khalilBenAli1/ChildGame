@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text, ScrollView , Image} from "react-native";
+import { View, StyleSheet, Text, ScrollView, Image } from "react-native";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "react-i18next";
 
 const HorizontalLayoutScreen = () => {
+  const { t } = useTranslation();
   useEffect(() => {
     // Lock the orientation to landscape mode when this component mounts
     const changeScreenOrientation = async () => {
@@ -35,34 +37,40 @@ const HorizontalLayoutScreen = () => {
               backgroundColor="#389936"
               borderColor="#CD9777"
             >
-              <Text style={styles.buttonText}>Free View</Text>
+              <Text style={styles.buttonText}>{t("Free View")}</Text>
             </AppButton>
             <AppButton
               onClick={() => console.log("Button 2 clicked")}
               backgroundColor="#389936"
               borderColor="#CD9777"
             >
-              <Text style={styles.buttonText}>Augmented Reality</Text>
+              <Text style={styles.buttonText}>{t("Augmented Reality")}</Text>
             </AppButton>
           </View>
         </View>
         <View style={styles.rightColumn}>
           <CenteredBox height={"90%"}>
             <ScrollView contentContainerStyle={styles.contentContainer}>
-              <Text style={styles.title}>Borj Lazarit</Text>
+              <Text style={styles.title}>{t("Borj Lazarit")}</Text>
               <Text style={styles.subtitle}>
-                Under the impetus of Moriscan engineers, the fortification of
-                the 17th century adopted the technique of “hollow masonry” which
-                appears to be the main characteristic of this new school. The
-                forts of Ghar El Melh are among their works. The first fort,
-                located at the entrance to the city and built-in 1659 under the
-                orders
+                {t(
+                  "Under the impetus of Moriscan engineers, the fortification of the 17th century adopted the technique of “hollow masonry” which appears to be the main characteristic of this new school. The forts of Ghar El Melh are among their works. The first fort, located at the entrance to the city and built-in 1654 under the orders"
+                )}
               </Text>
               <View style={styles.imageRow}>
-          <Image source={require('../../assets/FreeView/1.png')} style={styles.image} />
-          <Image source={require('../../assets/FreeView/2.png')} style={styles.image} />
-          <Image source={require('../../assets/FreeView/3.png')} style={styles.image} />
-        </View>
+                <Image
+                  source={require("../../assets/FreeView/1.png")}
+                  style={styles.image}
+                />
+                <Image
+                  source={require("../../assets/FreeView/2.png")}
+                  style={styles.image}
+                />
+                <Image
+                  source={require("../../assets/FreeView/3.png")}
+                  style={styles.image}
+                />
+              </View>
             </ScrollView>
           </CenteredBox>
         </View>
@@ -83,13 +91,13 @@ const styles = StyleSheet.create({
     alignSelf: "left",
     justifyContent: "flex-start",
     textAlign: "left",
-    padding:10
+    padding: 10,
   },
   title: {
-    color:"#0D5239",
-    fontWeight:"black",
-    fontSize:25,
-    marginBottom:10
+    color: "#0D5239",
+    fontWeight: "black",
+    fontSize: 25,
+    marginBottom: 10,
   },
   buttonText: {
     color: "white",
@@ -124,15 +132,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
     marginTop: 16,
   },
   image: {
-    width: '30%',
+    width: "30%",
     aspectRatio: 1,
-    borderRadius:9
+    borderRadius: 9,
   },
 });
 
