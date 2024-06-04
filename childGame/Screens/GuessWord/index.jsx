@@ -63,7 +63,7 @@ const GuessWord = () => {
       setShowTurnModal(true);
     } else {
       setShowCompletedModal(true);
-      dispatch(setCurrentPlayerrIndex(0));
+      
     }
   }, [currentPlayerIndex]);
 
@@ -92,6 +92,7 @@ const GuessWord = () => {
           isVisible={showCompletedModal}
           onClose={() => {
             dispatch(updateSeasonStatus(currentSeason.title, true));
+            dispatch(setCurrentPlayerIndex(0));
             navigation.navigate("Seasons");
           }}
           bannerText={<Text>Final Scores</Text>}
