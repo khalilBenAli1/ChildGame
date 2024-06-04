@@ -14,13 +14,14 @@ import SeasonScreen from "../Screens/SeasonScreen";
 import CompleteWord from "../Screens/CompleteWord";
 import GuessWord from "../Screens/GuessWord";
 import AnswerScreen from "../Screens/AnswerScreen";
+import ARScene from "../Screens/ArScreen";
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Language"
+        initialRouteName="ArScreen"
         screenOptions={{
           headerShown: false,
         }}
@@ -38,6 +39,7 @@ const MainNavigation = () => {
         />
         <Stack.Screen name="Individuals" component={IndividualsScreen} />
         <Stack.Screen name="CreateTeams" component={CreateTeamsScreen} />
+        <Stack.Screen name="ArScreen" component={ARScene} />
         <Stack.Screen
           name="Questions"
           component={QuestionScreen}
