@@ -38,7 +38,7 @@ const ARScene = () => {
   };
 
   const goBack = () => {
-    navigation.goBack()
+    navigation.replace("FreeView")
   };
   
   return (

@@ -5,21 +5,20 @@ import CenteredBox from "../../Components/CenteredBox";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
 
 const HorizontalLayoutScreen = () => {
+    const navigation=useNavigation()
   const { t } = useTranslation();
   useEffect(() => {
-    // Lock the orientation to landscape mode when this component mounts
     const changeScreenOrientation = async () => {
       await ScreenOrientation.lockAsync(
         ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
       );
     };
     changeScreenOrientation();
-
-    // Reset orientation to default (portrait) when the component unmounts
     return () => {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT);
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     };
   }, []);
 
@@ -40,7 +39,7 @@ const HorizontalLayoutScreen = () => {
               <Text style={styles.buttonText}>{t("Free View")}</Text>
             </AppButton>
             <AppButton
-              onClick={() => console.log("Button 2 clicked")}
+              onClick={() => navigation.replace("ArScreen")}
               backgroundColor="#389936"
               borderColor="#CD9777"
             >
