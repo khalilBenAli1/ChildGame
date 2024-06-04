@@ -26,6 +26,9 @@ import { useNavigation } from "@react-navigation/native";
 import { playSound } from "../../utils/sound";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
+import { useTranslation } from "react-i18next";
+
+
 function shuffleArray(array) {
   let shuffled = array.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -36,6 +39,7 @@ function shuffleArray(array) {
 }
 
 const MatchScreen = ({ images = imageUrls }) => {
+  const {t}=useTranslation()
   useDisableBackButton();
   const [shuffledImages, setShuffledImages] = useState([]);
   const [flippedIndices, setFlippedIndices] = useState([]);
@@ -179,12 +183,12 @@ const MatchScreen = ({ images = imageUrls }) => {
       height={"60%"}
       >
           <Image source={require("../../assets/imgs/first.png")} style={{height:150}} resizeMode="contain"/>
-          <Text style={{fontSize:14,marginVertical:10}}>Pour le prochain jeu, un seul joueur doit tenir le téléphone et voir le mot.</Text>
+          <Text style={{fontSize:14,marginVertical:10}}>{t('one_player_hold_phone')}</Text>
           <AppButton
               backgroundColor={"#FF2F2F"}
               onClick={() => closeNextModal()}
             >
-              <Text style={styles.optionText}>procéder</Text>
+              <Text style={styles.optionText}>{t('proceed')}</Text>
             </AppButton>
       </CustomModal>
 
@@ -199,8 +203,8 @@ const MatchScreen = ({ images = imageUrls }) => {
             extraTime={0}
           />
            <Text style={styles.gameDescription}>
-          Trouvez les paires correspondantes le plus rapidement possible pour gagner des points!
-        </Text>
+           {t('find_matching_pairs')}
+           </Text>
           <View style={styles.grid}>
             {shuffledImages.map((image, index) => (
               <TouchableOpacity

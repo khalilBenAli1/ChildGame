@@ -18,14 +18,14 @@ import Turn from "../../Modals/Turn";
 import RoundPoints from "../../Modals/RoundPoints";
 import useDisableBackButton from "../../utils/useDisableBackButton";
 import { updateSeasonStatus } from "../../store/actions/seasonActions";
-
+import { useTranslation } from "react-i18next";
 const GuessWord = () => {
   useDisableBackButton();
   const [currentWordData, setCurrentWordData] = useState(null);
   const [showTurnModal, setShowTurnModal] = useState(true);
   const [showCompletedModal, setShowCompletedModal] = useState(false);
 
-
+  const {t}=useTranslation()
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const currentSeason = useSelector((state) => state.seasons.currentSeason);
@@ -114,20 +114,17 @@ const GuessWord = () => {
             <>
               <Image source={currentWordData.image} style={styles.image} />
               <Text style={styles.description}>
-                Décrivez le mot à vos équipes et donnez-leur le téléphone pour
-                insérer:
+               {t('describe_word_to_team')}
               </Text>
               <Text style={styles.targetWord}>{currentWordData.word}</Text>
             </>
           )}
           <Text style={styles.hint}>
-            Astuce : Vous pouvez insérer le mot correct après que vos
-            coéquipiers vous l'ont donné la réponse pour vous assurer qu'elle
-            est correctement répondue.
+          {t('hint_insert_correct_word')}
           </Text>
           <View style={styles.myFlex} />
           <AppButton backgroundColor={"#389936"} onClick={handleOnClick}>
-            <Text style={styles.buttonText}>Démarrer la minuterie</Text>
+            <Text style={styles.buttonText}>{t('start_timer')}</Text>
           </AppButton>
         </CenteredBox>
       </SafeAreaView>

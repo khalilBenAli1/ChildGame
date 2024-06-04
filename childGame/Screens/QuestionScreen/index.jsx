@@ -81,10 +81,8 @@ const QuestionScreen = () => {
   useEffect(() => {
     if (currentSeason && currentSeason.challenges.length > 0) {
       let allQuestions = [...currentSeason.challenges];
-      const questionsPerParticipant =
-        gameMode === "individual"
-          ? Math.floor(allQuestions.length / playerCount)
-          : Math.floor(allQuestions.length / 3);
+      const questionsPerParticipant =3
+
 
       const startIndex = currentPlayerIndex * questionsPerParticipant;
       const endIndex = Math.min(
@@ -173,7 +171,7 @@ const QuestionScreen = () => {
     } else {
       dispatch(setCurrentPlayerIndex(0));
       console.log(currentSeason.title)
-      if (currentSeason.title==="Printemps") {
+      if (currentSeason.title==="Printemps" || currentSeason.title==="الربيع") {
         navigation.replace("CompleteWord");
       } else {
         navigation.replace("MatchGame");

@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
-
+import { useTranslation } from "react-i18next";
 const CompletedRound = ({ isVisible, onClose, title, targetName, onClick }) => {
+  const {t}=useTranslation()
   return (
     <CustomModal isVisible={isVisible} onClose={onClose} height={"70%"}>
       <View style={styles.container}>
@@ -12,15 +13,15 @@ const CompletedRound = ({ isVisible, onClose, title, targetName, onClick }) => {
           style={styles.image}
           resizeMode="contain"
         />
-        <Text style={styles.title}>Manche terminée</Text>
-        <Text style={styles.sub}>tour de l'équipe {targetName}</Text>
+        <Text style={styles.title}>{t("round_completed")}</Text>
+        <Text style={styles.sub}>{t("team_turn")} {targetName}</Text>
         <Text style={styles.description}>
-          Le joueur a terminé ses questions, nous passons maintenant à l'équipe{" "}
-          <Text style={styles.teamName}>{targetName}</Text>
+        {t("player_completed_questions")}
+        <Text style={styles.teamName}>{targetName}</Text>
         </Text>
       </View>
       <AppButton onClick={onClick} backgroundColor={"#389936"}>
-        <Text style={styles.buttonText}>Passer au tour suivant</Text>
+        <Text style={styles.buttonText}>{t("move_to_next_turn")}</Text>
       </AppButton>
     </CustomModal>
   );

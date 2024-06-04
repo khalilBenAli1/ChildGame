@@ -15,12 +15,12 @@ import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { updateScore } from "../../store/actions/gameActions";
 import { setCurrentPlayerIndex } from "../../store/actions/gameActions";
 import useDisableBackButton from "../../utils/useDisableBackButton";
 import { playSound } from "../../utils/sound";
-
+import { useTranslation } from "react-i18next";
 const AnswerScreen = () => {
+  const {t}=useTranslation()
   useDisableBackButton();
   const [answer, setAnswer] = useState("");
   const guessWord = useSelector((state) => state.game.guessWord);
@@ -110,7 +110,7 @@ const AnswerScreen = () => {
               style={styles.image}
             />
             <Text style={styles.description}>
-              Saisissez le mot que votre ami décrit :
+             {t("enter_word_friend_describes")}
             </Text>
 
             <TextInput
@@ -124,7 +124,7 @@ const AnswerScreen = () => {
               backgroundColor={"#389936"}
               onClick={() => handleAnswerSubmit()}
             >
-              <Text style={styles.buttonText}>Soumettre la réponse</Text>
+              <Text style={styles.buttonText}>  {t("submit_answer")}</Text>
             </AppButton>
           </ScrollView>
         </CenteredBox>

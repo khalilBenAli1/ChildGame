@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
+import { useTranslation } from 'react-i18next';
 
 const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
   const [superCardCode, setSuperCardCode] = useState("");
+  const { t } = useTranslation();
+  
   const handleCodeSubmit = () => {
     onClick(superCardCode);
     setSuperCardCode("");
@@ -33,7 +36,7 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
             marginBottom: 14,
           }}
         >
-          Super Card
+         {t('super_card')}
         </Text>
       }
     >
@@ -50,7 +53,7 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
             resizeMode="contain"
           />
           <Text style={styles.description}>
-            Saisissez votre code de super carte pour obtenir un avantage
+          {t('enter_super_card_code')}
           </Text>
 
           <TextInput
@@ -61,10 +64,10 @@ const SuperCardQuestion = ({ isVisible, onClose, onClick }) => {
           />
         </View>
         <AppButton onClick={handleCodeSubmit} backgroundColor={"#389936"}>
-          <Text style={styles.buttonText}>Entrer le Code</Text>
+          <Text style={styles.buttonText}>{t('enter_code')}</Text>
         </AppButton>
         <AppButton onClick={onClose} backgroundColor={"#FF2F2F"}>
-          <Text style={styles.buttonText}>Abandonner</Text>
+          <Text style={styles.buttonText}>{t('cancel')}</Text>
         </AppButton>
       </ScrollView>
     </CustomModal>

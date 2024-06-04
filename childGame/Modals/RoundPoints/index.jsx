@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
 import ScoreSuperCard from "../ScoreSuperCard";
+import { useTranslation } from "react-i18next";
 
 const RoundPoints = ({
   isVisible,
@@ -14,15 +15,15 @@ const RoundPoints = ({
   scores,
 }) => {
   const [showSuperCard, setShowSuperCard] = useState(false);
-
+ const {t}=useTranslation()
   const getRankDetails = (rank) => {
     if (rank === 0) {
       // Highest score
-      return { message: "Roll Dice + BONUS CARD", color: "#389936" };
+      return { message: `${t("roll_dice_bonus_card")}`, color: "#389936" };
     } else if (rank === 1 && (numberOfPlayers > 2)) {
-      return { message: "Roll Dice", color: "#389936" };
+      return { message: `${t("roll_dice")}`, color: "#389936" };
     } else {
-      return { message: "No Card No Rolling Dice", color: "#FF2156" };
+      return { message: `${t("no_card_no_rolling_dice")}`, color: "#FF2156" };
     }
   };
 
@@ -49,7 +50,7 @@ const RoundPoints = ({
             setShowSuperCard(false);
           }}
         />
-        <Text style={styles.roundPointsTitle}>Round Points</Text>
+        <Text style={styles.roundPointsTitle}>{t("round_points")}</Text>
         <View style={styles.namesContainer}>
           {players &&
             players.map((name, index) => (
@@ -70,7 +71,7 @@ const RoundPoints = ({
               </React.Fragment>
             ))}
         </View>
-        <Text style={styles.roundResult}>Round Result</Text>
+        <Text style={styles.roundResult}>{t("round_result")}</Text>
         <View style={styles.namesContainer}>
           {sortedPlayers.map((player, index) => {
             const rankDetails = getRankDetails(index);
@@ -103,10 +104,10 @@ const RoundPoints = ({
         onClick={() => setShowSuperCard(true)}
         backgroundColor={"#FF2F2F"}
       >
-        <Text style={styles.buttonText}>Super Card</Text>
+        <Text style={styles.buttonText}>{t("super_card")}</Text>
       </AppButton>
       <AppButton onClick={onClose} backgroundColor={"#389936"}>
-        <Text style={styles.buttonText}>Move to the next round</Text>
+        <Text style={styles.buttonText}>{t("move_to_next_round")}</Text>
       </AppButton>
     </CustomModal>
   );

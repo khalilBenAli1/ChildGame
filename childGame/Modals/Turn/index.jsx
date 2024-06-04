@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
-
+import { useTranslation } from 'react-i18next';
 const Turn = ({ isVisible, onClose, title, onClick }) => {
+  const { t } = useTranslation();
   return (
     <CustomModal
       isVisible={isVisible}
@@ -18,11 +19,11 @@ const Turn = ({ isVisible, onClose, title, onClick }) => {
         />
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>
-        Its player turn to play this round get ready and click on the start button to start playing
+        {t("its_player_turn")}
         </Text>
       </View>
       <AppButton onClick={onClick} backgroundColor={"#389936"}>
-        <Text style={styles.buttonText}>Start The Round</Text>
+        <Text style={styles.buttonText}>{t("start_round")}</Text>
       </AppButton>
     </CustomModal>
   );

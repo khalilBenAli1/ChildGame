@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet, Modal } from "react-native";
 import CustomModal from "../../Components/CustomModal";
 import AppButton from "../../Components/AppButton";
+import { useTranslation } from 'react-i18next';
 
 const RoundStart = ({
   isVisible,
@@ -12,6 +13,8 @@ const RoundStart = ({
   onClick,
   bannerText,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <CustomModal
       isVisible={isVisible}
@@ -41,18 +44,17 @@ const RoundStart = ({
             </View>
           ))}
         </View>
-        <Text style={styles.note}>Note :</Text>
+        <Text style={styles.note}>{t("note")}:</Text>
         <Text style={styles.description}>
-          Chaque équipe aura 5 questions et défis à répondre avant la fin du
-          minuteur et{" "}
+        {t("each_team_note")}
           <Text style={{ fontWeight: "bold", color: "#389936" }}>
-            Bonne chance
+          {t("good_luck")}
           </Text>
         </Text>
       </View>
       <AppButton onClick={onClick} backgroundColor={"#389936"}>
         <View style={styles.languagesContainer}>
-          <Text style={styles.buttonText}>Start the round</Text>
+          <Text style={styles.buttonText}>{t("start_round")}</Text>
         </View>
       </AppButton>
     </CustomModal>

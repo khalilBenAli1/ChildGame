@@ -10,7 +10,6 @@ import {
   Alert,
 } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Bar as ProgressBar } from "react-native-progress";
 import AppButton from "../../Components/AppButton";
 import CenteredBox from "../../Components/CenteredBox";
 import CountdownTimer from "../../Components/CountdownTimer";
@@ -28,14 +27,13 @@ import useDisableBackButton from "../../utils/useDisableBackButton";
 
 const imageData = [
   {
-    word: "PortioFarina",
+    word: "PortoFarina",
     image: require("../../assets/completeWords/nou.png"),
     scrambledLetters: [
       "P",
       "O",
       "R",
       "T",
-      "I",
       "O",
       "F",
       "A",
@@ -211,7 +209,7 @@ const CompleteWord = () => {
                 <Image source={currentData.image} style={styles.image} />
               </View>
               <Text style={styles.instructionText}>
-              "Complétez le mot en fonction des images ci-dessus :"
+              {t("complete_word_based_on_images")}
               </Text>
               <View style={styles.lettersContainer}>
                 {selectedLetters.map((letter, index) => (
@@ -241,7 +239,7 @@ const CompleteWord = () => {
                 ))}
               </View>
               <AppButton backgroundColor={"#389936"} onClick={handleSubmit}>
-              <Text style={styles.buttonText}>Soumettre la réponse</Text>
+              <Text style={styles.buttonText}>{t("submit_answer")}</Text>
 
               </AppButton>
             </CenteredBox>

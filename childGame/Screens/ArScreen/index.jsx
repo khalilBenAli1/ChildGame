@@ -49,7 +49,13 @@ const ARScene = () => {
         scene: () => (
           <ViroARScene >
             <Viro3DObject
-              source={require('../../assets/3d/test.obj')}
+              source={require('../../assets/3d/borj_lazarit_.obj')}
+              resources={[
+                require('../../assets/3d/borj_lazarit_.mtl'),
+                require('../../assets/3d/borj_lazarit.bin'),
+                require('../../assets/3d/Material _25_Normal_OpenGL_1001.jpg'),
+                require('../../assets/3d/Material _25_Base_color_1001.jpg')
+              ]}
               position={[-3, -3, -2]}
               scale={[scale, scale, scale]}
               onTrackingUpdated={(state, reason) => console.log("Tracking state: ", state, " Reason: ", reason)}

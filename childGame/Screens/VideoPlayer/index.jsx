@@ -24,7 +24,7 @@ const VideoPlayerScreen = () => {
     >
       <CenteredBox height={"90%"}>
         <View style={styles.videoContainer}>
-        <VideoPlayer videoUri={require("../../assets/vid/eas.mp4")} />
+        <VideoPlayer videoUri={require("../../assets/vid/gataaya video.mp4")} />
         </View>
         <View style={styles.nextButtonContainer}>
           <AppButton onClick={handleNext} backgroundColor="#389936">
