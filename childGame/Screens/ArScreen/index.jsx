@@ -53,7 +53,7 @@ const ARScene = () => {
             <Viro3DObject
               source={require('../../assets/3d/try3.obj')}
               resources={[
-                require('../../assets/3d/try3.mtl'),
+                require('../../assets/3d/try3Mtl.mtl'),
                 require('../../assets/3d/Material _25_Normal_OpenGL_1001.jpg'),
                 require('../../assets/3d/Material _25_Base_color_1001.jpg')
               ]}

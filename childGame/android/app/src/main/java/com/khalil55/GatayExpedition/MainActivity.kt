@@ -1,4 +1,4 @@
-package com.khalil55.childGame
+package com.khalil55.GatayExpedition
 
 import android.os.Build
 import android.os.Bundle

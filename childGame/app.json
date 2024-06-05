@@ -12,8 +12,7 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*",
-      "./assets/3d/*.fbx"
+      "**/*"
     ],
     "ios": {
       "supportsTablet": true
@@ -53,9 +52,7 @@
         "projectId": "6ac50eea-4561-485b-832f-c2011c25b85d"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion":"1.0.0",
     "updates": {
       "url": "https://u.expo.dev/6ac50eea-4561-485b-832f-c2011c25b85d"
     }
