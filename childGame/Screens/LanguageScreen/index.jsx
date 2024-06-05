@@ -52,8 +52,7 @@ const LanguageScreen = () => {
                 </AppButton>
                 <AppButton
                     onClick={() => handleLanguageChange("en")}
-                    backgroundColor={"#D9D9D9"}
-                    disabled
+                        backgroundColor={getButtonColor("en")}
                 >
                     <View style={styles.languagesContainer}>
                         <View style={styles.flags}>

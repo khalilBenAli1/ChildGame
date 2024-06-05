@@ -32,8 +32,8 @@ const RoundStart = ({
         <View style={styles.orderContainer}>
           <Text style={styles.sub}>
             {mode === "individual"
-              ? "Ordre de jeu des joueurs :"
-              : "Ordre de jeu des équipes :"}
+              ? `${t("player_turn_order")} :`
+              : `${t("team_turn_order")} :`}
           </Text>
           {orderList.map((name, index) => (
             <View key={index} style={styles.orderItem}>

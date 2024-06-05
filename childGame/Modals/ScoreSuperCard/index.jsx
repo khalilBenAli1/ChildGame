@@ -6,6 +6,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { minusScore } from "../../data/extraTimeCodes";
 import { useDispatch } from "react-redux";
 import { subtractPoints } from "../../store/actions/gameActions";
+import { useTranslation } from "react-i18next";
+
 const ScoreSuperCard = ({
   isVisible,
   onClose,
@@ -18,6 +20,7 @@ const ScoreSuperCard = ({
     const [code,setCode]=useState("")
     const [usedCodes, setUsedCodes] = useState(new Set());
     const dispatch=useDispatch()
+    const {t}=useTranslation()
     const handleSuperCardSubmit = () => {
         const upperCaseCode = code.toUpperCase();
         console.log("Submitted code:", upperCaseCode);
@@ -56,8 +59,7 @@ const ScoreSuperCard = ({
         <ScrollView contentContainerStyle={{justifyContent:"center",alignItems:"center" , flex:1}}>
       <View style={styles.container}>
         <Text style={styles.description}>
-          Remove <Text style={styles.highlight}>2</Text> points in this round
-          from one of the Players
+          {t('remove')} <Text style={styles.highlight}>2</Text> {t('points_in_this_round_from_one_of_the_players')}
         </Text>
         <TextInput
               style={styles.input}
@@ -91,10 +93,10 @@ const ScoreSuperCard = ({
         </View>
       </View>
       <AppButton onClick={handleSuperCardSubmit} backgroundColor={"#FF2F2F"}>
-        <Text style={styles.buttonText}>Activate Super Card</Text>
+        <Text style={styles.buttonText}>{t('activate_super_card')}</Text>
       </AppButton>
       <TouchableOpacity onPress={onClose} style={{alignItems:"center",justifyContent:"center"}}>
-        <Text style={{ color: "#FF2F2F", fontSize:18 }}>Cancel</Text>
+        <Text style={{ color: "#FF2F2F", fontSize:18 }}>{t('cancel')}</Text>
       </TouchableOpacity>
       </ScrollView>
     </CustomModal>

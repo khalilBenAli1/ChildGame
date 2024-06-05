@@ -1,5 +1,6 @@
 import { questions } from "../../data/questions";
 import { arabicQuestions } from "../../data/arabicQuestions";
+import { englishQuestions } from "../../data/englishQuestion";
 const initialState = {
   seasons: [
     {
@@ -44,17 +45,17 @@ const getSeasonsForLanguage = (language) => {
     en: [
       {
         title: "Spring",
-        numberOfChallenges: Math.floor(questions.length / 2 + 2),
+        numberOfChallenges: Math.floor(englishQuestions.length / 2 + 2),
         difficulty: "Easy",
-        challenges: questions.slice(0, questions.length / 2),
+        challenges: englishQuestions.slice(0, englishQuestions.length / 2),
         playable: true,
         completed: false,
       },
       {
         title: "Summer",
-        numberOfChallenges: Math.floor(questions.length / 2 + 2),
+        numberOfChallenges: Math.floor(englishQuestions.length / 2 + 2),
         difficulty: "Medium",
-        challenges: questions.slice(questions.length / 2, questions.length),
+        challenges: englishQuestions.slice(englishQuestions.length / 2, englishQuestions.length),
         playable: false,
         completed: false,
       },

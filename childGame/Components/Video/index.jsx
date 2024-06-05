@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   video: {
     width: 300,
-    height: 4500,
+    height: 500,
   },
 });
 

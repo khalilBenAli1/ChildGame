@@ -3,6 +3,7 @@ import {
   ViroARScene,
   ViroARSceneNavigator,
   Viro3DObject,
+  ViroAmbientLight
 } from '@viro-community/react-viro';
 import { MaterialIcons } from '@expo/vector-icons';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
@@ -48,16 +49,16 @@ const ARScene = () => {
       initialScene={{
         scene: () => (
           <ViroARScene >
+             <ViroAmbientLight color="#ffffff" intensity={200} />
             <Viro3DObject
-              source={require('../../assets/3d/borj_lazarit_.obj')}
+              source={require('../../assets/3d/try3.obj')}
               resources={[
-                require('../../assets/3d/borj_lazarit_.mtl'),
-                require('../../assets/3d/borj_lazarit.bin'),
+                require('../../assets/3d/try3.mtl'),
                 require('../../assets/3d/Material _25_Normal_OpenGL_1001.jpg'),
                 require('../../assets/3d/Material _25_Base_color_1001.jpg')
               ]}
-              position={[-3, -3, -2]}
-              scale={[scale, scale, scale]}
+              position={[0,-10, -10]}
+              scale={[0.3, 0.3, 0.3]}
               onTrackingUpdated={(state, reason) => console.log("Tracking state: ", state, " Reason: ", reason)}
               onLoadStart={() => console.log("Loading OBJ start")}
               onLoadEnd={() => console.log("Loading OBJ end")}

@@ -171,7 +171,7 @@ const QuestionScreen = () => {
     } else {
       dispatch(setCurrentPlayerIndex(0));
       console.log(currentSeason.title)
-      if (currentSeason.title==="Printemps" || currentSeason.title==="الربيع") {
+      if (currentSeason.title==="Printemps" || currentSeason.title==="الربيع" ||currentSeason.title==='Spring') {
         navigation.replace("CompleteWord");
       } else {
         navigation.replace("MatchGame");
@@ -227,6 +227,7 @@ const QuestionScreen = () => {
       setSelectedOption(null);
       setRevealAnswers(false);
       setButtonsDisabled(false);
+      setExtraTime(0)
       setResetTimerTrigger((prev) => prev + 1);
     }, 2000);
   };
@@ -363,7 +364,7 @@ const QuestionScreen = () => {
                   ? answer.option === selectedOption?.option
                     ? answer.option === question.correctAnswer
                       ? "#389936" // Green
-                      : "#FF2F2F" // Red
+                      : "#FF2F2F" // Redrou
                     : "#D9D9D9" // Dim
                   : "#DEAE48" // Default
               }
@@ -390,7 +391,7 @@ const QuestionScreen = () => {
               backgroundColor={"#FF2F2F"}
               onClick={() => setShowSuperCard(true)}
             >
-              <Text style={styles.optionText}>Super Card</Text>
+              <Text style={styles.optionText}>{t('super_card')}</Text>
             </AppButton>
           </View>
         </CenteredBox>

@@ -1,48 +1,60 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ImageBackground, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 import CenteredBox from "../../Components/CenteredBox";
 import AppButton from "../../Components/AppButton";
-import { useTranslation } from 'react-i18next';
-import i18next from "../../config/i18n"
-import { useNavigation } from '@react-navigation/native';
-
+import { useTranslation } from "react-i18next";
+import i18next from "../../config/i18n";
+import { useNavigation } from "@react-navigation/native";
 
 const Instructions = () => {
-    const navigation = useNavigation();
-    const { t } = useTranslation();
-    const handleNext = () => {
-        navigation.navigate('VideoScreen');
-    };
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+  const handleNext = () => {
+    navigation.navigate("VideoScreen");
+  };
 
+  return (
+    <ImageBackground
+      source={require("../../assets/imgs/imgBg.png")}
+      style={styles.background}
+    >
+      <CenteredBox height={"90%"}>
+        <ScrollView>
+          <Text style={styles.title}>{t("Instructions")}</Text>
+          <Text style={styles.subtitle}>{t("game_rules")}</Text>
+          <Text style={styles.content}>{t("game_rules_text")}</Text>
 
-    return (
-        <ImageBackground
-            source={require("../../assets/imgs/imgBg.png")}
-            style={styles.background}
-        >
-            <CenteredBox height={"90%"}>
-                <ScrollView>
-                <Text style={styles.title}>{t('Instructions')}</Text>
-                <Text style={styles.subtitle}>
-                {t('ALLInstructions')}
-                </Text>
-                </ScrollView>
-                <View style={styles.nextButtonContainer}>
-                    <AppButton onClick={handleNext} backgroundColor="#389936">
-                        <Text style={styles.nextButtonText}>{t('next')}</Text>
-                    </AppButton>
-                </View>
-            </CenteredBox>
-        </ImageBackground>
-    );
+          <Text style={styles.subtitle}>{t("throwing_dice")}</Text>
+          <Text style={styles.content}>{t("throwing_dice_text")}</Text>
+
+          <Text style={styles.subtitle}>{t("winning_conditions")}</Text>
+          <Text style={styles.content}>{t("winning_conditions_text")}</Text>
+
+          <Text style={styles.subtitle}>{t("tie_conditions")}</Text>
+          <Text style={styles.content}>{t("tie_conditions_text")}</Text>
+        </ScrollView>
+        <View style={styles.nextButtonContainer}>
+          <AppButton onClick={handleNext} backgroundColor="#389936">
+            <Text style={styles.nextButtonText}>{t("next")}</Text>
+          </AppButton>
+        </View>
+      </CenteredBox>
+    </ImageBackground>
+  );
 };
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
     justifyContent: "center",
-    paddingTop:10,
-    width: '100%',
+    paddingTop: 10,
+    width: "100%",
   },
   title: {
     fontSize: 30,
@@ -50,36 +62,35 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
     marginBottom: 30,
-    marginTop:-10,
-    width:"100%",
-    lineHeight:40
-    
+    marginTop: -10,
+    width: "100%",
+    lineHeight: 40,
   },
   subtitle: {
     fontSize: 18,
-    lineHeight:30,
-    maxWidth:"100%",
-    color: "black",
-    textAlign: "center",
+    lineHeight: 30,
+    maxWidth: "100%",
+    color: "#389936",
+    fontWeight:"bold",
     marginVertical: 20,
   },
   buttonText: {
     color: "#FFFFFF",
     marginLeft: 10,
-    fontWeight:"bold",
-    fontSize:20
+    fontWeight: "bold",
+    fontSize: 20,
   },
   nextButtonText: {
     color: "#FFFFFF",
-    fontSize:20,
-    fontWeight:"bold",
+    fontSize: 20,
+    fontWeight: "bold",
   },
 
   nextButtonContainer: {
     marginTop: 20,
     width: "90%",
     alignSelf: "center",
-    alignItems:"center"
+    alignItems: "center",
   },
   languagesContainer: {
     display: "flex",
