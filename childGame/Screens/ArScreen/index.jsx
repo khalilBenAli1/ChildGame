@@ -53,12 +53,12 @@ const ARScene = () => {
             <Viro3DObject
               source={require('../../assets/3d/try3.obj')}
               resources={[
-                require('../../assets/3d/try3Mtl.mtl'),
-                require('../../assets/3d/Material _25_Normal_OpenGL_1001.jpg'),
-                require('../../assets/3d/Material _25_Base_color_1001.jpg')
+                require('../../assets/3d/try3Mat.mtl'),
+                require('../../assets/3d/base_texture.jpg'),
+                require('../../assets/3d/normal_map.jpg')
               ]}
-              position={[0,-10, -10]}
-              scale={[0.3, 0.3, 0.3]}
+              position={[0,-2 , -3]}
+              scale={[0.1, 0.1, 0.1]}
               onTrackingUpdated={(state, reason) => console.log("Tracking state: ", state, " Reason: ", reason)}
               onLoadStart={() => console.log("Loading OBJ start")}
               onLoadEnd={() => console.log("Loading OBJ end")}

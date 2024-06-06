@@ -29,16 +29,12 @@ const HorizontalLayoutScreen = () => {
       <LinearGradient colors={["#244023", "#359A60"]} style={styles.background}>
         <View style={styles.leftColumn}>
           <View style={styles.modelContainer}>
-  
+          <Image
+                  source={require("../../assets/FreeView/beb.jpg")}
+                  style={styles.imagebeb}
+                />
           </View>
           <View style={styles.buttonsContainer}>
-            <AppButton
-              onClick={() => console.log("Button 1 clicked")}
-              backgroundColor="#389936"
-              borderColor="#CD9777"
-            >
-              <Text style={styles.buttonText}>{t("Free View")}</Text>
-            </AppButton>
             <AppButton
               onClick={() => navigation.replace("ArScreen")}
               backgroundColor="#389936"
@@ -85,6 +81,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "stretch",
   },
+  imagebeb:{
+    width:"100%",
+    height:"100%",
+    borderRadius:10,
+  },
   contentContainer: {
     width: "100%",
     alignItems: "flex-start",
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     width: "50%",
-    alignSelf: "flex-start",
+    alignSelf: "center",
   },
   background: {
     flex: 1,
@@ -119,11 +120,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modelContainer: {
-    width: "100%",
+    width: "90%",
     height: 200,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
+    borderRadius:10,
   },
   rightColumn: {
     flex: 1,
