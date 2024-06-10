@@ -1,4 +1,4 @@
-import React,{ useState ,useRef   } from 'react';
+import React,{ useState ,useRef  ,useEffect } from 'react';
 import {
   ViroARScene,
   ViroARSceneNavigator,
@@ -9,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { captureRef } from 'react-native-view-shot';
+import { Asset } from 'expo-asset';
 
 const ARScene = () => {
   const [scale, setScale] = useState(1);
@@ -16,6 +17,18 @@ const ARScene = () => {
 
   const arSceneRef = useRef();
 
+  const preloadAssets = async () => {
+    await Asset.loadAsync([
+      require('../../assets/3d/try3.obj'),
+      require('../../assets/3d/try3Mat.mtl'),
+      require('../../assets/3d/base_texture.jpg'),
+      require('../../assets/3d/normal_map.jpg'),
+    ]);
+  };
+
+  useEffect(() => {
+    preloadAssets();
+  }, []);
   const _onPinch = (pinchState, scaleFactor, source) => {
     if (pinchState === 2) { 
       const newScale = scale * scaleFactor;
@@ -58,7 +71,7 @@ const ARScene = () => {
                 require('../../assets/3d/normal_map.jpg')
               ]}
               position={[0,-2 , -3]}
-              scale={[0.1, 0.1, 0.1]}
+              scale={[0.07, 0.07, 0.07]}
               onTrackingUpdated={(state, reason) => console.log("Tracking state: ", state, " Reason: ", reason)}
               onLoadStart={() => console.log("Loading OBJ start")}
               onLoadEnd={() => console.log("Loading OBJ end")}
